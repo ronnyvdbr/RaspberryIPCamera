@@ -1,0 +1,14 @@
+ok, let's get started.
+To begin with, start by downloading a Raspbian Jessie Lite image from the Raspbian foundation website, write to sd card, boot it up.
+Ssh into it with username pi and password raspberry
+
+Bring the OS up to date:
+sudo apt-get update && sudo apt-get upgrade
+
+Install our webserver with PHP support
+sudo apt-get install ngingx
+
+sudo rm /etc/nginx/sites-enabled/default
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/RaspberryIPCamera
+sed -i "s/# alias l=/alias l=/g" /etc/nginx/sites-available/RaspberryIPCamera
+
