@@ -5,6 +5,15 @@ Ssh into it with username pi and password raspberry
 Bring the OS up to date:
 sudo apt-get update && sudo apt-get upgrade
 
+Install git since we'll be pulling this from git repo
+apt-get -y install git
+
+Clone our git repository
+git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git
+
+sudo usermod -a -G www-data pi
+
+
 Install our webserver with PHP support
 sudo apt-get install ngingx
 
