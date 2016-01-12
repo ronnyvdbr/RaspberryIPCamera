@@ -19,5 +19,9 @@ sudo apt-get install ngingx
 
 sudo rm /etc/nginx/sites-enabled/default
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/RaspberryIPCamera
-sed -i "s/# alias l=/alias l=/g" /etc/nginx/sites-available/RaspberryIPCamera
-
+sudo sed -i "s/root \/var\/www\/html;/root \/home\/pi\/RaspberryIPCamera\/www;/g" /etc/nginx/sites-available/RaspberryIPCamera
+sudo sed -i "s/index index.html/index index.php index.html/g" /etc/nginx/sites-available/RaspberryIPCamera
+sudo sed -i "s/server_name _;/server_name RaspberryIPCamera;/g" /etc/nginx/sites-available/RaspberryIPCamera
+sudo sed -i "s/#location ~ \.php$ {/location ~ \.php$ {/g" /etc/nginx/sites-available/RaspberryIPCamera
+sudo sed -i "s/#       include snippets/fastcgi-php.conf;/include snippets/fastcgi-php.conf;/g" /etc/nginx/sites-available/RaspberryIPCamera
+sudo sed -i "s/#       fastcgi_pass unix:/var/run/php5-fpm.sock;/fastcgi_pass unix:/var/run/php5-fpm.sock; }/g" /etc/nginx/sites-available/RaspberryIPCamera
