@@ -1,0 +1,1 @@
+ffmpeg  -f mjpeg -y -use_wallclock_as_timestamps 1 -i 'http://x.x.x.x:8090/test1?.mjpg' -r 3 -reconnect 1 -loglevel 16 -c:v mjpeg -an -qscale 10 -copyts '1.mp4'
