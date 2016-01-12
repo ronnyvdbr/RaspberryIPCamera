@@ -1,27 +1,43 @@
-ok, let's get started.
-To begin with, start by downloading a Raspbian Jessie Lite image from the Raspbian foundation website, write to sd card, boot it up.
-Ssh into it with username pi and password raspberry
+# ok, let's get started.
+# To begin with, start by downloading a Raspbian Jessie Lite image from the Raspbian foundation website, write to sd card, boot it up.
+# Ssh into it with username pi and password raspberry
 
-Bring the OS up to date:
+# Bring the OS up to date:
 sudo apt-get update && sudo apt-get upgrade
 
-Install git since we'll be pulling this from git repo
+# Install git since we'll be pulling this from git repo.
 apt-get -y install git
 
-Clone our git repository
+# Clone our git repository.
 git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git
 
+# add our pi user to www-data group.
 sudo usermod -a -G www-data pi
 
+# Install our webserver with PHP support.
+sudo apt-get -y install ngingx
 
-Install our webserver with PHP support
-sudo apt-get install ngingx
+# Install php5 fast process manager.
+sudo apt-get -y install php5-fpm
 
+# Disable the nginx default website
 sudo rm /etc/nginx/sites-enabled/default
+
+# Create a new website config file from the default website
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/RaspberryIPCamera
+
+# Modify some configuration entries in our new website config file.
 sudo sed -i "s/root \/var\/www\/html;/root \/home\/pi\/RaspberryIPCamera\/www;/g" /etc/nginx/sites-available/RaspberryIPCamera
 sudo sed -i "s/index index.html/index index.php index.html/g" /etc/nginx/sites-available/RaspberryIPCamera
 sudo sed -i "s/server_name _;/server_name RaspberryIPCamera;/g" /etc/nginx/sites-available/RaspberryIPCamera
-sudo sed -i "s/#location ~ \.php$ {/location ~ \.php$ {/g" /etc/nginx/sites-available/RaspberryIPCamera
-sudo sed -i "s/#       include snippets/fastcgi-php.conf;/include snippets/fastcgi-php.conf;/g" /etc/nginx/sites-available/RaspberryIPCamera
-sudo sed -i "s/#       fastcgi_pass unix:/var/run/php5-fpm.sock;/fastcgi_pass unix:/var/run/php5-fpm.sock; }/g" /etc/nginx/sites-available/RaspberryIPCamera
+sudo sed -i "s/#location ~/location ~/g" /etc/nginx/sites-available/RaspberryIPCamera
+
+# TODO: match below manual, can't match it via sed.
+sudo sed -i "s/#  include snippets\/fastcgi-php.conf/include snippets\/fastcgi-php.conf/g" /etc/nginx/sites-available/RaspberryIPCamera
+sudo sed -i "s/#  fastcgi_pass unix:\/var\/run\/php5-fpm.sock;/fastcgi_pass unix:\/var\/run\/php5-fpm.sock; }/g" /etc/nginx/sites-available/RaspberryIPCamera
+
+# Let's enable our new website:
+sudo ln -s /etc/nginx/sites-available/RaspberryIPCamera /etc/nginx/sites-enabled/RaspberryIPCamera
+
+# Restart our web server to pick up the new config.
+sudo service nginx restart
