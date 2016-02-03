@@ -42,9 +42,11 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-container">
           <ul class="nav navbar-nav">
+			  <!-- InstanceBeginEditable name="navbar" -->
               <li class="active"><a href="Status.php">Status</a></li>
               <li><a href="network-settings.php">Network Settings</a></li>
               <li><a href="camera-settings.php">Camera Settings</a></li>
+			  <!-- InstanceEndEditable -->
           </ul>
         </div>
       </div>

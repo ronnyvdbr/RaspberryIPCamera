@@ -11,9 +11,9 @@
 <file name="ie10-viewport-bug-workaround.css" server="192.168.20.121//home/pi/RaspberryIPCamera/www/" local="130970209828807062" remote="130970515590000000" Dst="1" />
 <file name="signin.css" server="192.168.20.121//home/pi/RaspberryIPCamera/www/" local="130970209828902466" remote="130970515590000000" Dst="1" />
 <file name="Status.css" server="192.168.20.121//home/pi/RaspberryIPCamera/www/" local="130970789786492118" remote="130970789740000000" Dst="1" />
-<file name="bootstrap.min.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209828318695" remote="130971735470000000" Dst="1" />
-<file name="Status.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970789786492118" remote="130971735480000000" Dst="1" />
-<file name="ie10-viewport-bug-workaround.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209828807062" remote="130971735480000000" Dst="1" />
+<file name="bootstrap.min.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130985725781495682" remote="130985746080000000" Dst="1" />
+<file name="Status.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130985725781200622" remote="130985746080000000" Dst="1" />
+<file name="ie10-viewport-bug-workaround.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130985725781535688" remote="130985746080000000" Dst="1" />
 <file name="bootstrap.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209828022523" remote="130971736130000000" Dst="1" />
 <file name="bootstrap.css.map" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209828202186" remote="130971736130000000" Dst="1" />
 <file name="bootstrap.min.css.map" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209828517014" remote="130971736130000000" Dst="1" />

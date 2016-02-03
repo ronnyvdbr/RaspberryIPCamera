@@ -42,9 +42,11 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-container">
           <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Status</a></li>
-              <li><a href="#">Network Settings</a></li>
-              <li><a href="#">Camera Settings</a></li>
+			  <!-- InstanceBeginEditable name="navbar" -->
+              <li class="active"><a href="Status.php">Status</a></li>
+              <li><a href="network-settings.php">Network Settings</a></li>
+              <li><a href="camera-settings.php">Camera Settings</a></li>
+			  <!-- InstanceEndEditable -->
           </ul>
         </div>
       </div>
@@ -100,6 +102,9 @@
   -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+
+  <!-- InstanceBeginEditable name="php code" -->
+  <!-- InstanceEndEditable -->
 
 </body>
 <!-- InstanceEnd --></html>
