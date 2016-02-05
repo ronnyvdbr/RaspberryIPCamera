@@ -22,6 +22,11 @@
 	  return $data;
 	}
 	
+	function test_input_no_trim($data) {
+	  $data = stripslashes($data);
+	  $data = htmlspecialchars($data);
+	  return $data;
+	}
 
 	function hostapd_addbridge($action) {
 		$hostapdconfig = parse_ini_file("/etc/hostapd/hostapd.conf");

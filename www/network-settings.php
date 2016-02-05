@@ -23,7 +23,7 @@
     <![endif]-->
 	<!-- InstanceBeginEditable name="head" -->
     <?php include 'functions.php';?>
-	<?php logmessage("Loading page Configuration-DateTime.php");?>
+	<?php logmessage("Loading page network-settings.php");?>
 	<!-- InstanceEndEditable -->
 </head>
 
@@ -76,6 +76,7 @@
 		$timeserver = test_input($_POST["txt-timeserver"]);
 		if (!preg_match("/^[0-9a-zA-Z.]*$/",$timeserver)) {
 		  $timeservererr = "Time Server: Only letters, numbers and . allowed!<br />"; 
+		  logmessage($timeservererr);
 		}
 	  }
 	
@@ -123,33 +124,39 @@
 		$ipaddress = test_input($_POST["ip-address"]);
 		if (!preg_match("/^[0-9.]*$/",$ipaddress)) {
 		  $ipaddresserr = "ipaddress field contains incorrect data, only a-zA-Z0-9_- allowed!<br />"; 
+		  logmessage($ipaddresserr);
 		}
 	  }
 	  if (!empty($_POST["network-mask"])) {
 		$subnetmask = test_input($_POST["network-mask"]);
 		if (!preg_match("/^[0-9.]*$/",$subnetmask)) {
 		  $subnetmaskerr = "subnetmask field contains incorrect data, only a-zA-Z0-9_- allowed!<br />"; 
+		  logmessage($subnetmaskerr);
+		  
 		}
 	  }
 	  if (!empty($_POST["gateway"])) {
 		$defaultgateway = test_input($_POST["gateway"]);
 		if (!preg_match("/^[0-9.]*$/",$defaultgateway)) {
 		  $defaultgatewayerr = "defaultgateway field contains incorrect data, only a-zA-Z0-9_- allowed!<br />"; 
+		  logmessage($defaultgatewayerr);
 		}
 	  }
 	  if (!empty($_POST["dns1"])) {
 		$primarydns = test_input($_POST["dns1"]);
 		if (!preg_match("/^[a-zA-Z0-9.]*$/",$primarydns)) {
-		  $primarydnserr = "primarydns field contains incorrect data, only a-zA-Z0-9_- allowed!<br />"; 
+		  $primarydnserr = "primarydns field contains incorrect data, only a-zA-Z0-9_- allowed!<br />";
+		  logmessage($primarydnserr);
 		}
 	  }
 	  if (!empty($_POST["dns2"])) {
 		$secondarydns = test_input($_POST["dns2"]);
 		if (!preg_match("/^[a-zA-Z0-9.]*$/",$secondarydns)) {
 		  $secondarydnserr = "secondarydns field contains incorrect data, only a-zA-Z0-9_- allowed!<br />"; 
+		  logmessage($secondarydnserr);
 		}
 	  }
-	  if(empty($ipaddresserr) && empty($subnetmaskerr) && empty($defaultgatewayerr) && empty($primarydnserr) && empty($secondarydnserr) && !empty($ipaddress) && !empty($subnetmask)) {
+	  if(empty($ipaddresserr) && empty($subnetmaskerr) && empty($defaultgatewayerr) && empty($primarydnserr) && empty($secondarydnserr)) {
 		
 		$configurationsettings['IPAssignment'] = $IPAssignment;
 		
@@ -172,27 +179,25 @@
 			$configurationsettings['Dns2'] = "";
 
 		write_php_ini($configurationsettings, "/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
-
-		/*update_interfaces_file($configurationsettings['operationmode']);*/
 	  }
 	}
   ?>
 <!-- ********************************************************************************************************************** -->
-<!-- ********************************************************************************************************************** -->
   <?php
-	if($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-wifi-apply'])) {
 	   
 		$wifi = $ssid = $securitymode = $password = "";
-		$ssiderror = $securitymodeerr = $passworderr = "";
+		$ssiderror = $securitymodeerr = "";
 		
 		if(isset($_POST['chk-enable-wifi'])) {
 			$wifi = "enabled";
 		}
 	  
 		if (!empty($_POST["ssid"])) {
-		  $ssid = test_input($_POST["ssid"]);
-		  if (!preg_match("/^[a-zA-Z0-9_-]*$/",$ssid)) {
+		  $ssid = test_input_no_trim($_POST["ssid"]);
+		  if (!preg_match("/^[a-zA-Z0-9_\-\s]*$/",$ssid)) {
 			  $ssiderror = "ssid field contains incorrect data, only a-zA-Z0-9 _ - allowed!<br />"; 
+			  logmessage($ssiderror);
 		  }
 		}
 		
@@ -200,19 +205,16 @@
 		  $securitymode = test_input($_POST["wifi-security"]);
 		  if (!strcmp($securitymode, "None") && !strcmp($securitymode, "WEP") && !strcmp($securitymode, "WPA/WPA2 PSK")) {
 			  $securitymodeerr = "Incorrect input received for Operation Mode!";
+			  logmessage($securitymodeerr);
 		  }
 		}
 		
 		if (!empty($_POST["wifi-password"])) {
-		  $password = test_input($_POST["wifi-password"]);
-		  if (!preg_match("/^[a-zA-Z0-9]*$/",$password)) {
-			  $passworderr = "Password field contains incorrect data, only a-zA-Z0-9 allowed!<br />"; 
-		  }
+		  $password = $_POST["wifi-password"];
 		}
 
-
 	  // only apply actions when no form errors are present
-	  if(empty($ssiderror) && empty($securitymodeerr) && empty($passworderr)) {
+	  if(empty($ssiderror) && empty($securitymodeerr)) {
 		  switch($wifi) {
 			  case "":
 				  $configurationsettings['WifiClient'] = "disabled";
@@ -241,8 +243,6 @@
 	}
 ?>
 <!-- ********************************************************************************************************************** -->
-
- 
  <div class="container">
   	<h3 class="text-center">Date/Time Configuration</h3>
     <br />
@@ -341,19 +341,19 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="ip-address">IP Address:</label>
                 <div class="col-sm-5">
-                  <input name="ip-address" type="text" autofocus required class="form-control" id="ip-address" form="frm-ipconfig" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['IPAddress'])) {echo "value=" . $configurationsettings['IPAddress'];}?>>
+                  <input name="ip-address" type="text" autofocus required class="form-control" id="ip-address" form="frm-ipconfig" placeholder="192.168.0.1" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['IPAddress'])) {echo "value=" . $configurationsettings['IPAddress'];}?>>
                 </div>
               </div><!--form group-->
               <div class="form-group">
                 <label class="control-label col-sm-4" for="network-mask">Network Mask:</label>
                 <div class="col-sm-5">
-                  <input name="network-mask" type="text" required class="form-control" id="network-mask" form="frm-ipconfig" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['NetworkMask'])) {echo "value=" . $configurationsettings['NetworkMask'];}?>>
+                  <input name="network-mask" type="text" required class="form-control" id="network-mask" form="frm-ipconfig" placeholder="255.255.255.0" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['NetworkMask'])) {echo "value=" . $configurationsettings['NetworkMask'];}?>>
                 </div>
               </div><!--form group-->
               <div class="form-group">
                 <label class="control-label col-sm-4" for="gateway">Gateway:</label>
                 <div class="col-sm-5">
-                  <input name="gateway" type="text" class="form-control" id="gateway" form="frm-ipconfig" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Gateway'])) {echo "value=" . $configurationsettings['Gateway'];}?>>
+                  <input name="gateway" type="text" class="form-control" id="gateway" form="frm-ipconfig" placeholder="192.168.0.254" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Gateway'])) {echo "value=" . $configurationsettings['Gateway'];}?>>
                 </div>
               </div><!--form group-->
             
@@ -362,13 +362,13 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="dns1">DNS Server 1:</label>
                 <div class="col-sm-5">
-                  <input name="dns1" type="text" class="form-control" id="dns1" form="frm-ipconfig" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns1'])) {echo "value=" . $configurationsettings['Dns1'];}?>>
+                  <input name="dns1" type="text" class="form-control" id="dns1" form="frm-ipconfig" placeholder="8.8.8.8" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns1'])) {echo "value=" . $configurationsettings['Dns1'];}?>>
                 </div>
               </div><!--form group-->
               <div class="form-group">
                 <label class="control-label col-sm-4" for="dns2">DNS Server 2:</label>
                 <div class="col-sm-5">
-                  <input name="dns2" type="text" class="form-control" id="dns2" form="frm-ipconfig" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns2'])) {echo "value=" . $configurationsettings['Dns2'];}?>>
+                  <input name="dns2" type="text" class="form-control" id="dns2" form="frm-ipconfig" placeholder="8.8.4.4" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns2'])) {echo "value=" . $configurationsettings['Dns2'];}?>>
                 </div>
               </div><!--form group-->
             </div><!-- end div ipconfig -->
@@ -398,7 +398,7 @@
             <div class="form-group">
               <label class="control-label col-sm-4" for="ssid">Connect to SSID:</label>
               <div class="col-sm-5">
-                <input name="ssid" type="text" class="form-control" id="ssid" form="frm-wificonfig" pattern="^[a-zA-Z0-9_-]*$" <?php if(!empty($configurationsettings['WifiSsid'])) {echo "value=" . $configurationsettings['WifiSsid'];}?>>
+                <input name="ssid" type="text" class="form-control" id="ssid" form="frm-wificonfig" pattern="^[a-zA-Z0-9_\-\s]*$" value="<?php echo($configurationsettings['WifiSsid']); ?>">
               </div>
             </div><!--form group-->
            
@@ -416,7 +416,7 @@
             <div class="form-group">
               <label class="control-label col-sm-4" for="wifi-password">Password:</label>
               <div class="col-sm-5">
-                <input name="wifi-password" type="password" class="form-control" id="wifi-password" form="frm-wificonfig" pattern="^[a-zA-Z0-9]*$" <?php if(!empty($configurationsettings['WifiPassword'])) {echo "value=" . $configurationsettings['WifiPassword'];}?>>
+                <input name="wifi-password" type="password" class="form-control" id="wifi-password" form="frm-wificonfig" <?php if(!empty($configurationsettings['WifiPassword'])) {echo "value=" . $configurationsettings['WifiPassword'];}?>>
               </div>
             </div><!--form group-->
             <div class="form-group"> 
@@ -445,7 +445,7 @@
 <!-- ********************************************************************************************************************** -->
 <script>
 $("#ip-assignment-select").on('change', function() { if($(this).val() == 'STATIC') {$("#ipconfig").show();} });
-$("#ip-assignment-select").on('change', function() { if($(this).val() == 'DHCP') {$("#ipconfig").hide();} });
+$("#ip-assignment-select").on('change', function() { if($(this).val() == 'DHCP') {$("#ipconfig").hide();$("#ip-address").removeAttr('required');$("#network-mask").removeAttr('required');} });
 </script>
 <!-- ********************************************************************************************************************** -->
   <?php
@@ -469,6 +469,106 @@ $("#ip-assignment-select").on('change', function() { if($(this).val() == 'DHCP')
 	}
   ?>
 <!-- ********************************************************************************************************************** -->
+  <?php
+	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-network-apply'])) {
+	  if(empty($ipaddresserr) && empty($subnetmaskerr) && empty($defaultgatewayerr) && empty($primarydnserr) && empty($secondarydnserr)) {
+		  logmessage("about to apply network settings");
+		  if($configurationsettings['IPAssignment'] == 'DHCP') {
+			  shell_exec("sudo sed -i '42,\$d' /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("sudo dhcpcd -n eth0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+	  		  if($configurationsettings['WifiClient'] == 'enabled') {
+				  shell_exec("sudo dhcpcd -n wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+		  }
+		  if($configurationsettings['IPAssignment'] == 'STATIC') {
+			  shell_exec("sudo sed -i '42,\$d' /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("echo '\ninterface eth0' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("echo 'static ip_address=" . $configurationsettings['IPAddress'] . "/" . mask2cidr($configurationsettings['NetworkMask']) . "' >> /etc/dhcpcd.conf  2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  if($configurationsettings['Gateway'] != "") {
+			  	shell_exec("echo 'static routers=" . $configurationsettings['Gateway'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] == "") {
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+			  if($configurationsettings['Dns1'] == "" && $configurationsettings['Dns2'] != "") {
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] != "") {
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . " " . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+			  shell_exec("echo '\ninterface wlan0' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("echo 'static ip_address=" . $configurationsettings['IPAddress'] . "/" . mask2cidr($configurationsettings['NetworkMask']) . "' >> /etc/dhcpcd.conf  2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  if($configurationsettings['Gateway'] != "") {
+			  	shell_exec("echo 'static routers=" . $configurationsettings['Gateway'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] == "") {
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+			  if($configurationsettings['Dns1'] == "" && $configurationsettings['Dns2'] != "") {
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] != "") {
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . " " . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+
+  			  shell_exec("sudo dhcpcd -n eth0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+	  		  if($configurationsettings['WifiClient'] == 'enabled') {
+				  shell_exec("sudo dhcpcd -n wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  }
+		  }
+	  }
+	}
+  ?>
+<!-- ********************************************************************************************************************** -->
+  <?php
+	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-wifi-apply'])) {
+	  if(empty($ssiderror) && empty($securitymodeerr)) {
+
+		if($configurationsettings['WifiSecurityMode'] == 'None') {
+		  logmessage("Configuring Wifi for open authentication and no security.");
+		  logmessage("Writing Wifi configuration to /etc/network/interfaces");
+		  shell_exec("sudo sed -i '16,\$d' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wireless-essid \"" . $configurationsettings['WifiSsid'] . "\"' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		}
+
+		if($configurationsettings['WifiSecurityMode'] == 'WEP') {
+		  logmessage("Configuring Wifi for open authentication and WEP security.");
+		  logmessage("Writing Wifi configuration to /etc/network/interfaces");
+		  shell_exec("sudo sed -i '16,\$d' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wireless-essid \"" . $configurationsettings['WifiSsid'] . "\"' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wireless-key \"" . $configurationsettings['WifiPassword'] . "\"' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		}
+       
+		if($configurationsettings['WifiSecurityMode'] == 'WPA/WPA2 PSK') {
+		  logmessage("Writing Wifi configuration to /etc/network/interfaces");
+		  shell_exec("sudo sed -i '16,\$d' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  logmessage("Writing WPA configuration to /etc/wpa_supplicant/wpa_supplicant.conf");
+		  shell_exec("sudo sed -i '3,\$d' /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo '\nnetwork={' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'ssid=\"" . $configurationsettings['WifiSsid'] . "\"' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'proto=RSN' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'key_mgmt=WPA-PSK' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'pairwise=CCMP' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'group=CCMP' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'psk=\"" . $configurationsettings['WifiPassword'] . "\"' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo '}' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		}
+
+		if($configurationsettings['WifiClient'] == 'enabled') {
+			logmessage("Bringing down interface wlan0.");
+			shell_exec("sudo ifdown wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			logmessage("Bringing up interface wlan0.");
+			shell_exec("sudo ifup wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		}
+		if($configurationsettings['WifiClient'] == 'disabled') {
+			logmessage("Bringing down interface wlan0.");
+			shell_exec("sudo ifdown wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		}
+
+	  }
+	}
+  ?>
   <!-- InstanceEndEditable -->
 
 </body>
