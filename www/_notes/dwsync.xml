@@ -18,4 +18,7 @@
 <file name="index.html" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970480980000000" remote="130970480980000000" Dst="1" />
 <file name="Status.html" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970223180000000" remote="130970223180000000" Dst="1" />
 <file name="Status2.php" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130971873300000000" remote="130971873300000000" Dst="1" />
+<file name="camera-settings.php" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130991619936713502" remote="130991619810000000" Dst="1" />
+<file name="camera-settings.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130992467827385011" remote="130992422100000000" Dst="1" />
+<file name="functions.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130991535703581168" remote="130992408110000000" Dst="1" />
 </dwsync>
