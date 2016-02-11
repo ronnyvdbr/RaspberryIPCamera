@@ -57,8 +57,24 @@
 			}
 			else $res[] = "$key = ".(is_numeric($val) ? $val : '"'.$val.'"');
 		}
-		safefilerewrite($file, implode("\r\n", $res));
+		safefilerewrite($file, implode("\n", $res));
 	}
+
+	function write_camerasettings_conf($array, $file)
+	{
+		$res = array();
+		foreach($array as $key => $val)
+		{
+			if(is_array($val))
+			{
+				$res[] = "[$key]";
+				foreach($val as $skey => $sval) $res[] = "$skey = $sval";
+			}
+			else $res[] = "$key = $val";
+		}
+		safefilerewrite($file, implode("\n", $res));
+	}
+
 
 	function write_hostapd_conf($array, $file)
 	{

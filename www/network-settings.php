@@ -438,7 +438,6 @@
       Bootstrap javascript and JQuery should be loaded
       Placed at the end of the document for faster load times
   -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
 
   <!-- InstanceBeginEditable name="php code" -->
