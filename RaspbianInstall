@@ -2,11 +2,12 @@
 # To begin with, start by downloading a Raspbian Jessie Lite image from the Raspbian foundation website, write to sd card, boot it up.
 # Ssh into it with username pi and password raspberry
 
+
 # Bring the OS up to date:
-sudo apt-get update && sudo apt-get upgrade
+sudo apt-get update && sudo apt-get -y upgrade
 
 # Install git since we'll be pulling this from git repo.
-apt-get -y install git
+sudo apt-get -y install git
 
 # Clone our git repository.
 git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git
@@ -15,7 +16,7 @@ git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git
 sudo usermod -a -G www-data pi
 
 # Install our webserver with PHP support.
-sudo apt-get -y install ngingx
+sudo apt-get -y install nginx
 
 # Install php5 fast process manager.
 sudo apt-get -y install php5-fpm
