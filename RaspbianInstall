@@ -24,21 +24,38 @@ sudo apt-get -y install php5-fpm
 # Disable the nginx default website
 sudo rm /etc/nginx/sites-enabled/default
 
-# Create a new website config file from the default website
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/RaspberryIPCamera
-
-# Modify some configuration entries in our new website config file.
-sudo sed -i "s/root \/var\/www\/html;/root \/home\/pi\/RaspberryIPCamera\/www;/g" /etc/nginx/sites-available/RaspberryIPCamera
-sudo sed -i "s/index index.html/index index.php index.html/g" /etc/nginx/sites-available/RaspberryIPCamera
-sudo sed -i "s/server_name _;/server_name RaspberryIPCamera;/g" /etc/nginx/sites-available/RaspberryIPCamera
-sudo sed -i "s/#location ~/location ~/g" /etc/nginx/sites-available/RaspberryIPCamera
-
-# TODO: match below manual, can't match it via sed.
-sudo sed -i "s/#  include snippets\/fastcgi-php.conf/include snippets\/fastcgi-php.conf/g" /etc/nginx/sites-available/RaspberryIPCamera
-sudo sed -i "s/#  fastcgi_pass unix:\/var\/run\/php5-fpm.sock;/fastcgi_pass unix:\/var\/run\/php5-fpm.sock; }/g" /etc/nginx/sites-available/RaspberryIPCamera
+# Copy our own website config file to the nginx available website configurations
+sudo cp RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
 
 # Let's enable our new website:
-sudo ln -s /etc/nginx/sites-available/RaspberryIPCamera /etc/nginx/sites-enabled/RaspberryIPCamera
+sudo ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
 
 # Restart our web server to pick up the new config.
-sudo service nginx restart
+sudo systemctl restart nginx.service
+
+# Enable the Raspberry Pi Camera Module
+sudo mount -o remount rw /boot
+sudo echo "start_x=1" | sudo tee -a /boot/config.txt
+sudo echo "gpu_mem=256" | sudo tee -a /boot/config.txt
+sudo echo "disable_camera_led=1" | sudo tee -a /boot/config.txt
+
+# put a sudoers file in the correct location for php shell commands integration
+sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands
+
+# Put correct security rights on configuration files
+sudo chgrp www-data /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
+sudo chmod 664 /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
+
+sudo chgrp www-data /etc/timezone
+sudo chmod 664 /etc/timezone
+
+sudo chgrp www-data /etc/ntp.conf
+sudo chmod 664 /etc/ntp.conf
+
+sudo chgrp www-data /etc/dhcpcd.conf
+sudo chmod 664 /etc/dhcpcd.conf
+
+
+
+
+sudo sed -i "s/#location ~/location ~/g" /etc/nginx/sites-available/RaspberryIPCamera
