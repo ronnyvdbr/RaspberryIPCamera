@@ -62,6 +62,15 @@ sudo chgrp www-data /etc/ntp.conf
 sudo chmod 664 /etc/ntp.conf
 
 
+## install mjpeg streamer
+# first install dependencies
+sudo apt-get install libv4l-dev
+sudo apt-get install libjpeg-dev
+git clone https://github.com/ronnyvdbr/mjpg-streamer.git
+cd ~/mjpg-streamer/mjpg-streamer
+make USE_LIBV4L2=true clean all
+
+
 
 
 
