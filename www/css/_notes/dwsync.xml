@@ -22,7 +22,15 @@
 <file name="bootstrap-theme.min.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209827597969" remote="130971736130000000" Dst="1" />
 <file name="bootstrap-theme.min.css.map" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209827642106" remote="130971736130000000" Dst="1" />
 <file name="bootstrap-theme.css" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209826901859" remote="130971736130000000" Dst="1" />
-<file name="bootstrap.min.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781495682" remote="130991623920000000" Dst="1" />
-<file name="Status.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781200622" remote="130991623920000000" Dst="1" />
-<file name="ie10-viewport-bug-workaround.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781535688" remote="130991623920000000" Dst="1" />
+<file name="bootstrap.min.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781495682" remote="130997036610000000" Dst="1" />
+<file name="Status.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781200622" remote="130997036620000000" Dst="1" />
+<file name="ie10-viewport-bug-workaround.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781535688" remote="130997036620000000" Dst="1" />
+<file name="bootstrap-theme.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781255687" remote="130997386030000000" Dst="1" />
+<file name="bootstrap-theme.css.map" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781295691" remote="130997386030000000" Dst="1" />
+<file name="bootstrap-theme.min.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781335687" remote="130997386040000000" Dst="1" />
+<file name="bootstrap-theme.min.css.map" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781365680" remote="130997386040000000" Dst="1" />
+<file name="bootstrap.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781405681" remote="130997386040000000" Dst="1" />
+<file name="bootstrap.css.map" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781455685" remote="130997386040000000" Dst="1" />
+<file name="bootstrap.min.css.map" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781515686" remote="130997386040000000" Dst="1" />
+<file name="signin.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781555684" remote="130997386040000000" Dst="1" />
 </dwsync>

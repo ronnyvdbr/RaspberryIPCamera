@@ -439,6 +439,7 @@
       Placed at the end of the document for faster load times
   -->
   <script src="js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 
   <!-- InstanceBeginEditable name="php code" -->
 <!-- ********************************************************************************************************************** -->
@@ -481,33 +482,33 @@ $("#ip-assignment-select").on('change', function() { if($(this).val() == 'DHCP')
 		  }
 		  if($configurationsettings['IPAssignment'] == 'STATIC') {
 			  shell_exec("sudo sed -i '42,\$d' /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-			  shell_exec("echo '\ninterface eth0' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-			  shell_exec("echo 'static ip_address=" . $configurationsettings['IPAddress'] . "/" . mask2cidr($configurationsettings['NetworkMask']) . "' >> /etc/dhcpcd.conf  2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("echo '\ninterface eth0' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("echo 'static ip_address=" . $configurationsettings['IPAddress'] . "/" . mask2cidr($configurationsettings['NetworkMask']) . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  if($configurationsettings['Gateway'] != "") {
-			  	shell_exec("echo 'static routers=" . $configurationsettings['Gateway'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static routers=" . $configurationsettings['Gateway'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
 			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] == "") {
-			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
 			  if($configurationsettings['Dns1'] == "" && $configurationsettings['Dns2'] != "") {
-			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns2'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
 			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] != "") {
-			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . " " . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . " " . $configurationsettings['Dns2'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
-			  shell_exec("echo '\ninterface wlan0' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-			  shell_exec("echo 'static ip_address=" . $configurationsettings['IPAddress'] . "/" . mask2cidr($configurationsettings['NetworkMask']) . "' >> /etc/dhcpcd.conf  2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("echo '\ninterface wlan0' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  shell_exec("echo 'static ip_address=" . $configurationsettings['IPAddress'] . "/" . mask2cidr($configurationsettings['NetworkMask']) . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  if($configurationsettings['Gateway'] != "") {
-			  	shell_exec("echo 'static routers=" . $configurationsettings['Gateway'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static routers=" . $configurationsettings['Gateway'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
 			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] == "") {
-			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
 			  if($configurationsettings['Dns1'] == "" && $configurationsettings['Dns2'] != "") {
-			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns2'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
 			  if($configurationsettings['Dns1'] != "" && $configurationsettings['Dns2'] != "") {
-			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . " " . $configurationsettings['Dns2'] . "' >> /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			  	shell_exec("echo 'static domain_name_servers=" . $configurationsettings['Dns1'] . " " . $configurationsettings['Dns2'] . "' | sudo tee -a /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
 
   			  shell_exec("sudo dhcpcd -n eth0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
@@ -527,31 +528,31 @@ $("#ip-assignment-select").on('change', function() { if($(this).val() == 'DHCP')
 		  logmessage("Configuring Wifi for open authentication and no security.");
 		  logmessage("Writing Wifi configuration to /etc/network/interfaces");
 		  shell_exec("sudo sed -i '16,\$d' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'wireless-essid \"" . $configurationsettings['WifiSsid'] . "\"' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wireless-essid \"" . $configurationsettings['WifiSsid'] . "\"' | sudo tee -a /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}
 
 		if($configurationsettings['WifiSecurityMode'] == 'WEP') {
 		  logmessage("Configuring Wifi for open authentication and WEP security.");
 		  logmessage("Writing Wifi configuration to /etc/network/interfaces");
 		  shell_exec("sudo sed -i '16,\$d' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'wireless-essid \"" . $configurationsettings['WifiSsid'] . "\"' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'wireless-key \"" . $configurationsettings['WifiPassword'] . "\"' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wireless-essid \"" . $configurationsettings['WifiSsid'] . "\"' | sudo tee -a /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wireless-key \"" . $configurationsettings['WifiPassword'] . "\"' | sudo tee -a /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}
        
 		if($configurationsettings['WifiSecurityMode'] == 'WPA/WPA2 PSK') {
 		  logmessage("Writing Wifi configuration to /etc/network/interfaces");
 		  shell_exec("sudo sed -i '16,\$d' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf' >> /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf' | sudo tee -a /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		  logmessage("Writing WPA configuration to /etc/wpa_supplicant/wpa_supplicant.conf");
 		  shell_exec("sudo sed -i '3,\$d' /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo '\nnetwork={' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'ssid=\"" . $configurationsettings['WifiSsid'] . "\"' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'proto=RSN' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'key_mgmt=WPA-PSK' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'pairwise=CCMP' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'group=CCMP' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo 'psk=\"" . $configurationsettings['WifiPassword'] . "\"' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		  shell_exec("echo '}' >> /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo '\nnetwork={' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'ssid=\"" . $configurationsettings['WifiSsid'] . "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'proto=RSN' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'key_mgmt=WPA-PSK' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'pairwise=CCMP' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'group=CCMP' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo 'psk=\"" . $configurationsettings['WifiPassword'] . "\"' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		  shell_exec("echo '}' | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}
 
 		if($configurationsettings['WifiClient'] == 'enabled') {

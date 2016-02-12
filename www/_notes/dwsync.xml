@@ -19,7 +19,20 @@
 <file name="Status.html" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970223180000000" remote="130970223180000000" Dst="1" />
 <file name="Status2.php" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130971873300000000" remote="130971873300000000" Dst="1" />
 <file name="camera-settings.php" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130991619936713502" remote="130991619810000000" Dst="1" />
-<file name="camera-settings.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130996934679463153" remote="130996864460000000" Dst="1" />
-<file name="functions.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130996927766265247" remote="130996857590000000" Dst="1" />
-<file name="camera-settings-array.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130996867546429978" remote="130996797380000000" Dst="1" />
+<file name="camera-settings.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130997386266605708" remote="130997386100000000" Dst="1" />
+<file name="functions.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130996958211729326" remote="130997036620000000" Dst="1" />
+<file name="camera-settings-array.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130996958210370969" remote="130997386050000000" Dst="1" />
+<file name="network-settings.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130997428098764561" remote="130997427930000000" Dst="1" />
+<file name="camera-settings - special id's.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130997385719222269" remote="130997386030000000" Dst="1" />
+<file name="Status.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130997385722163135" remote="130997386030000000" Dst="1" />
+<file name="Status2.php" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130997385722203744" remote="130997386030000000" Dst="1" />
+<file name="wr_commands.txt" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130996958212439442" remote="130997386030000000" Dst="1" />
+<file name="bootstrap-3.3.6-dist.zip" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781200622" remote="130997386040000000" Dst="1" />
+<file name="Hello World.html" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725779935425" remote="130997386040000000" Dst="1" />
+<file name="index.html" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782035683" remote="130997386040000000" Dst="1" />
+<file name="Login-Test.html" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725780035432" remote="130997386040000000" Dst="1" />
+<file name="Login.html" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725780100488" remote="130997386040000000" Dst="1" />
+<file name="RaspberryIPCameraSettings.ini" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725780120492" remote="130997386040000000" Dst="1" />
+<file name="Status.html" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725780160497" remote="130997386040000000" Dst="1" />
+<file name="Status.php.old" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725780795566" remote="130997386050000000" Dst="1" />
 </dwsync>
