@@ -47,6 +47,7 @@ echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main"
 sudo apt-get update
 sudo apt-get -y install uv4l uv4l-raspicam
 sudo apt-get -y install uv4l-raspicam-extras
+sudo apt-get -y install uv4l-uvc
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 sudo chgrp www-data /etc/uv4l/uv4l-raspicam.conf
 sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
