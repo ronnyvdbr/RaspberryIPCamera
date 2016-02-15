@@ -1,3 +1,5 @@
+<!-- check if our login_user is set, otherwise redirect to the logon screen -->
+<?php include('logincheck.php');?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -35,7 +37,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>                                
             </button>
-            <a href="#" class="pull-left">
+            <a href="Status.php" class="pull-left">
               <img src="Images/IP-cam-icon-w110-flip.png" alt="" width="57" height="50" />
              </a>
           <p class="navbar-brand">Raspberry IP Camera</p>
@@ -44,9 +46,10 @@
           <ul class="nav navbar-nav">
 			  <!-- InstanceBeginEditable name="navbar" -->
               <li class="active"><a href="Status.php">Status</a></li>
-              <li><a href="network-settings.php">Network Settings</a></li>
+              <li><a href="network-settings.php">System Settings</a></li>
               <li><a href="camera-settings.php">Camera Settings</a></li>
 			  <!-- InstanceEndEditable -->
+              <li><a href="logout.php">Log Off</a></li>
           </ul>
         </div>
       </div>
@@ -58,38 +61,49 @@
 
     <div class="container">
       <div class="row">
-        <img class="img-responsive img-rounded" src="http://192.168.20.138:8090/?action=stream" alt=""/>
-        <h3 class="text-center">General Settings</h3>
+          <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">Camera View</h4></div><!--end panel heading-->
+          
+          <div class="panel-body">
+            <img class="img-responsive img-rounded" src="http://<?php echo shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");?>:8080/?action=stream" alt=""/>
+          </div><!--end panel-body-->
+          </div><!--end panel-->
+      </div>  <!-- /row -->
+      <div class="row">
+          <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">General Settings</h4></div><!--end panel heading-->
+          <div class="panel-body">
             	<div class="col-sm-6"><p class="text-center bg-info">Current Timezone:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo date_default_timezone_get();?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . date_default_timezone_get();?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Current Date/Time:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo date('d/m/Y - H:i:s');?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . date('d/m/Y - H:i:s');?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Software Version:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo $configsettings['SoftwareVersion'];?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . $configsettings['SoftwareVersion'];?></p></div>
+          </div><!--end panel-body-->
+          </div><!--end panel-->
       </div>  <!-- /row -->
       <div class="row">
-        <h3 class="text-center">Network Settings</h3>
+          <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">Network Settings</h4></div><!--end panel heading-->
+          <div class="panel-body">
             	<div class="col-sm-6"><p class="text-center bg-info">IP Address Assignment:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo $configsettings['IPAssignment'];?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . $configsettings['IPAssignment'];?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Cable Connection Status:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo shell_exec("cat /sys/class/net/eth0/operstate");?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /sys/class/net/eth0/operstate");?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Mac Address:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo shell_exec("cat /sys/class/net/eth0/address");?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /sys/class/net/eth0/address");?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">IP Address:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Subnet Mask:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo shell_exec("ifconfig eth0 | awk '/Mask:/{ print $4;} ' | sed 's/Mask://'");?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("ifconfig eth0 | awk '/Mask:/{ print $4;} ' | sed 's/Mask://'");?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Default Gateway:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo shell_exec("ip route | awk '/default/ { print $3 }'");?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("ip route | awk '/default/ { print $3 }'");?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Primary DNS Server:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo shell_exec("cat /etc/resolv.conf | awk -v n=1 '/^nameserver/{l++} (l==n){print}' | sed -e 's/nameserver //g'");?></p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /etc/resolv.conf | awk -v n=1 '/^nameserver/{l++} (l==n){print}' | sed -e 's/nameserver //g'");?></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info">Secondary DNS Server:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo shell_exec("cat /etc/resolv.conf | awk -v n=2 '/^nameserver/{l++} (l==n){print}' | sed -e 's/nameserver //g'");?></p></div>
-      </div>  <!-- /row -->
-      <div class="row">
-        <h3 class="text-center">Camera Settings</h3>        
-            	<div class="col-sm-6"><p class="text-center bg-info">Secondary DNS Server:</p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">192.168.20.254</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /etc/resolv.conf | awk -v n=2 '/^nameserver/{l++} (l==n){print}' | sed -e 's/nameserver //g'");?></p></div>
+          </div><!--end panel-body-->
+          </div><!--end panel-->
       </div>  <!-- /row -->
     </div> <!-- /container -->
   <!-- InstanceEndEditable -->
@@ -100,8 +114,8 @@
       Bootstrap javascript and JQuery should be loaded
       Placed at the end of the document for faster load times
   -->
-  <script src="js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
 
   <!-- InstanceBeginEditable name="php code" -->
   <!-- InstanceEndEditable -->

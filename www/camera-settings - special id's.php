@@ -37,7 +37,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>                                
             </button>
-            <a href="#" class="pull-left">
+            <a href="Status.php" class="pull-left">
               <img src="Images/IP-cam-icon-w110-flip.png" alt="" width="57" height="50" />
              </a>
           <p class="navbar-brand">Raspberry IP Camera</p>
@@ -49,6 +49,7 @@
               <li><a href="network-settings.php">Network Settings</a></li>
               <li class="active"><a href="camera-settings.php">Camera Settings</a></li>
 			  <!-- InstanceEndEditable -->
+              <li><a href="logout.php">Log Off</a></li>
           </ul>
         </div>
       </div>
@@ -331,8 +332,8 @@
       Bootstrap javascript and JQuery should be loaded
       Placed at the end of the document for faster load times
   -->
-  <script src="js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
 
   <!-- InstanceBeginEditable name="php code" -->
   <!-- InstanceEndEditable -->

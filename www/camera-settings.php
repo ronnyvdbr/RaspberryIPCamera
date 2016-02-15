@@ -1,3 +1,5 @@
+<!-- check if our login_user is set, otherwise redirect to the logon screen -->
+<?php include('logincheck.php');?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -38,7 +40,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>                                
             </button>
-            <a href="#" class="pull-left">
+            <a href="Status.php" class="pull-left">
               <img src="Images/IP-cam-icon-w110-flip.png" alt="" width="57" height="50" />
              </a>
           <p class="navbar-brand">Raspberry IP Camera</p>
@@ -47,9 +49,10 @@
           <ul class="nav navbar-nav">
 			  <!-- InstanceBeginEditable name="navbar" -->
               <li><a href="Status.php">Status</a></li>
-              <li><a href="network-settings.php">Network Settings</a></li>
+              <li><a href="network-settings.php">System Settings</a></li>
               <li class="active"><a href="camera-settings.php">Camera Settings</a></li>
 			  <!-- InstanceEndEditable -->
+              <li><a href="logout.php">Log Off</a></li>
           </ul>
         </div>
       </div>
@@ -60,6 +63,7 @@
  <!-- ********************************************************************************************************************** -->
   <?php 
 	$camerasettings = parse_ini_file("/etc/uv4l/uv4l-raspicam.conf");
+	//var_dump($camerasettings);
   ?>
 <!-- ********************************************************************************************************************** -->
   <?php
@@ -199,83 +203,83 @@
 		
 		if (!empty($_POST["horizontalmirror"])) {
 		  $horizontalmirror = test_input($_POST["horizontalmirror"]);
-		  if (!$horizontalmirror == "on") {
+		  if (!$horizontalmirror == "true") {
 			$horizontalmirrorerr = "Incorrect response received from horizontalmirror checkbox!"; 
 			logmessage($horizontalmirror);
 		  }
 		  else {
-			$horizontalmirror = "true";
+			$horizontalmirror = "1";
 		  }
 
 		}
 
 		if (!empty($_POST["verticalmirror"])) {
 		  $verticalmirror = test_input($_POST["verticalmirror"]);
-		  if (!$verticalmirror == "on") {
+		  if (!$verticalmirror == "true") {
 			$verticalmirrorerr = "Incorrect response received from verticalmirror checkbox!"; 
 			logmessage($verticalmirrorerr);
 		  }
 		  else {
-			$verticalmirror = "true";
+			$verticalmirror = "1";
 		  }
 
 		}
 
 		if (!empty($_POST["textoverlay"])) {
 		  $textoverlay = test_input($_POST["textoverlay"]);
-		  if (!$textoverlay == "on") {
+		  if (!$textoverlay == "true") {
 			$textoverlayerr = "Incorrect response received from textoverlay checkbox!"; 
 			logmessage($textoverlayerr);
 		  }
 		  else {
-			$textoverlay = "true";
+			$textoverlay = "1";
 		  }
 		}
 
 		if (!empty($_POST["objectfacedetection"])) {
 		  $objectfacedetection = test_input($_POST["objectfacedetection"]);
-		  if (!$objectfacedetection == "on") {
+		  if (!$objectfacedetection == "true") {
 			$objectfacedetectionerr = "Incorrect response received from objectfacedetection checkbox!"; 
 			logmessage($objectfacedetectionerr);
 		  }
 		  else {
-			$objectfacedetection = "true";
+			$objectfacedetection = "1";
 		  }
 
 		}
 
 		if (!empty($_POST["stillsdenoise"])) {
 		  $stillsdenoise = test_input($_POST["stillsdenoise"]);
-		  if (!$stillsdenoise == "on") {
+		  if (!$stillsdenoise == "true") {
 			$stillsdenoiseerr = "Incorrect response received from stillsdenoise checkbox!"; 
 			logmessage($stillsdenoiseerr);
 		  }
 		  else {
-			$stillsdenoise = "true";
+			$stillsdenoise = "1";
 		  }
 
 		}
 
 		if (!empty($_POST["videodenoise"])) {
 		  $videodenoise = test_input($_POST["videodenoise"]);
-		  if (!$videodenoise == "on") {
+		  if (!$videodenoise == "true") {
 			$videodenoiseerr = "Incorrect response received from videodenoise checkbox!"; 
 			logmessage($videodenoiseerr);
 		  }
 		  else {
-			$videodenoise = "true";
+			$videodenoise = "1";
 		  }
 
 		}
 
 		if (!empty($_POST["imagestabilisation"])) {
 		  $imagestabilisation = test_input($_POST["imagestabilisation"]);
-		  if (!$imagestabilisation == "on") {
+		  if (!$imagestabilisation == "true") {
 			$imagestabilisationerr = "Incorrect response received from imagestabilisation checkbox!"; 
 			logmessage($imagestabilisationerr);
 		  }
 		  else {
-			$imagestabilisation = "true";
+			$imagestabilisation = "1";
 		  }
 		}
 
@@ -340,8 +344,11 @@
 			$camerasettings['metering'] = $exposuremetering;
 			$camerasettings['drc'] = $drcstrenght;
 /*var_dump($cameradefaultsettings);
+echo "<br>";
 var_dump($camerasettings);
-var_dump($camerasettings + $cameradefaultsettings);*/
+echo "<br>";
+var_dump($camerasettings + $cameradefaultsettings);
+echo "<br>";*/
 			write_camerasettings_conf($camerasettings + $cameradefaultsettings, "/etc/uv4l/uv4l-raspicam.conf");
 		}
 	}
@@ -523,49 +530,49 @@ var_dump($camerasettings + $cameradefaultsettings);*/
               <div class="form-group">
                 <label class="control-label col-sm-4" for="horizontalmirror">Horizontal Mirror:</label>
                   <div class="col-sm-1">
-                    <input name="horizontalmirror" type="checkbox" class="form-control" id="horizontalmirror" form="frm-camerasettings" value="enabled" <?php if ($camerasettings['hflip'] == "true") {echo "checked";}?>>
+                    <input name="horizontalmirror" type="checkbox" class="form-control" id="horizontalmirror" form="frm-camerasettings" value="1" <?php if ($camerasettings['hflip'] == "1") {echo "checked";}?>>
                   </div>
               </div><!--form group-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="verticalmirror">Vertical Mirror:</label>
                   <div class="col-sm-1">
-                    <input name="verticalmirror" type="checkbox" class="form-control" id="verticalmirror" form="frm-camerasettings" value="enabled" <?php if ($camerasettings['vflip'] == "true") {echo "checked";}?>>
+                    <input name="verticalmirror" type="checkbox" class="form-control" id="verticalmirror" form="frm-camerasettings" value="1" <?php if ($camerasettings['vflip'] == "1") {echo "checked";}?>>
                   </div>
               </div><!--form group-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="textoverlay">Text Overlay:</label>
                   <div class="col-sm-1">
-                    <input name="textoverlay" type="checkbox" class="form-control" id="textoverlay" form="frm-camerasettings" value="enabled" <?php if ($camerasettings['text-overlay'] == "true") {echo "checked";}?>>
+                    <input name="textoverlay" type="checkbox" class="form-control" id="textoverlay" form="frm-camerasettings" value="1" <?php if ($camerasettings['text-overlay'] == "1") {echo "checked";}?>>
                   </div>
               </div><!--form group-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="objectfacedetection">Object/Face detection:</label>
                   <div class="col-sm-1">
-                    <input name="objectfacedetection" type="checkbox" class="form-control" id="objectfacedetection" form="frm-camerasettings" value="enabled" <?php if ($camerasettings['object-detection'] == "true") {echo "checked";}?>>
+                    <input name="objectfacedetection" type="checkbox" class="form-control" id="objectfacedetection" form="frm-camerasettings" value="1" <?php if ($camerasettings['object-detection'] == "1") {echo "checked";}?>>
                   </div>
               </div><!--form group-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="stillsdenoise">Stills denoise:</label>
                   <div class="col-sm-1">
-                    <input name="stillsdenoise" type="checkbox" class="form-control" id="stillsdenoise" form="frm-camerasettings" value="enabled" <?php if ($camerasettings['stills-denoise'] == "true") {echo "checked";}?>>
+                    <input name="stillsdenoise" type="checkbox" class="form-control" id="stillsdenoise" form="frm-camerasettings" value="1" <?php if ($camerasettings['stills-denoise'] == "1") {echo "checked";}?>>
                   </div>
               </div><!--form group-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="videodenoise">Video denoise:</label>
                   <div class="col-sm-1">
-                    <input name="videodenoise" type="checkbox" class="form-control" id="videodenoise" form="frm-camerasettings" value="enabled" <?php if ($camerasettings['video-denoise'] == "true") {echo "checked";}?>>
+                    <input name="videodenoise" type="checkbox" class="form-control" id="videodenoise" form="frm-camerasettings" value="1" <?php if ($camerasettings['video-denoise'] == "1") {echo "checked";}?>>
                   </div>
               </div><!--form group-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="imagestabilisation">Image Stabilisation:</label>
                   <div class="col-sm-1">
-                    <input name="imagestabilisation" type="checkbox" class="form-control" id="imagestabilisation" form="frm-camerasettings" value="enabled" <?php if ($camerasettings['vstab'] == "true") {echo "checked";}?>>
+                    <input name="imagestabilisation" type="checkbox" class="form-control" id="imagestabilisation" form="frm-camerasettings" value="1" <?php if ($camerasettings['vstab'] == "1") {echo "checked";}?>>
                   </div>
               </div><!--form group-->
 
@@ -626,7 +633,7 @@ var_dump($camerasettings + $cameradefaultsettings);*/
                       <option value="high" <?php if($camerasettings['drc'] == "high") {echo "selected='selected'";}?>>high</option>
                       <option value="low" <?php if($camerasettings['drc'] == "low") {echo "selected='selected'";}?>>low</option>
                       <option value="medium" <?php if($camerasettings['drc'] == "medium") {echo "selected='selected'";}?>>medium</option>
-                      <option value="off" <?php if($camerasettings['drc'] == "off") {echo "selected='selected'";}?>>off</option>
+                      <option value="off" <?php if($camerasettings['drc'] == "") {echo "selected='selected'";}?>>off</option>
                     </select>
                   </div>
               </div><!--form group-->
@@ -664,8 +671,8 @@ var_dump($camerasettings + $cameradefaultsettings);*/
       Bootstrap javascript and JQuery should be loaded
       Placed at the end of the document for faster load times
   -->
-  <script src="js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
 
   <!-- InstanceBeginEditable name="php code" -->
   <!-- ********************************************************************************************************************** -->
@@ -674,8 +681,17 @@ var_dump($camerasettings + $cameradefaultsettings);*/
 		// Only continue when no errors are found.
 		if(empty($widtherr) && empty($heighterr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
 		
-		shell_exec("sudo systemctl restart uv4l_raspicam.service"); 
-			
+		
+		
+		logmessage("Stopping mjpg-server.");
+		shell_exec("sudo systemctl stop mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		logmessage("Restarting uv4l_raspicam.service via systemctl.");
+		shell_exec("sudo systemctl restart uv4l_raspicam.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log"); 
+		logmessage("Writing changes for mjpg-server to systemd unit file.");
+		shell_exec("sudo sed -i '9s/.*/ExecStart=\/home\/pi\/mjpg-streamer\/mjpg-streamer\/mjpg_streamer -i \"\/home\/pi\/mjpg-streamer\/mjpg-streamer\/input_uvc.so -d \/dev\/video0 -r " . $camerasettings['width'] . "x" . $camerasettings['height'] . " -f " . $camerasettings['framerate'] . " -n\" -o \/home\/pi\/mjpg-streamer\/mjpg-streamer\/output_http.so/' /etc/systemd/system/mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+		
+		logmessage("Starting mjpg-server.");
+		shell_exec("sudo systemctl start mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}
 	}
   ?>

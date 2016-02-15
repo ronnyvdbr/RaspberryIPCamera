@@ -68,9 +68,9 @@
 			if(is_array($val))
 			{
 				$res[] = "[$key]";
-				foreach($val as $skey => $sval) $res[] = "$skey = $sval";
+				foreach($val as $skey => $sval) $res[] = "$skey=$sval";
 			}
-			else $res[] = "$key = $val";
+			else $res[] = "$key=$val";
 		}
 		safefilerewrite($file, implode("\n", $res));
 	}

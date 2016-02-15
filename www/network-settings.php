@@ -1,3 +1,5 @@
+<!-- check if our login_user is set, otherwise redirect to the logon screen -->
+<?php //include('logincheck.php');?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -37,7 +39,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>                                
             </button>
-            <a href="#" class="pull-left">
+            <a href="Status.php" class="pull-left">
               <img src="Images/IP-cam-icon-w110-flip.png" alt="" width="57" height="50" />
              </a>
           <p class="navbar-brand">Raspberry IP Camera</p>
@@ -46,9 +48,10 @@
           <ul class="nav navbar-nav">
 			  <!-- InstanceBeginEditable name="navbar" -->
               <li><a href="Status.php">Status</a></li>
-              <li class="active"><a href="network-settings.php">Network Settings</a></li>
+              <li class="active"><a href="network-settings.php">System Settings</a></li>
               <li><a href="camera-settings.php">Camera Settings</a></li>
 			  <!-- InstanceEndEditable -->
+              <li><a href="logout.php">Log Off</a></li>
           </ul>
         </div>
       </div>
@@ -181,11 +184,11 @@
 		write_php_ini($configurationsettings, "/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
 	  }
 	}
-  ?>
+	     ?>
 <!-- ********************************************************************************************************************** -->
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-wifi-apply'])) {
-	   
+
 		$wifi = $ssid = $securitymode = $password = "";
 		$ssiderror = $securitymodeerr = "";
 		
@@ -243,192 +246,288 @@
 	}
 ?>
 <!-- ********************************************************************************************************************** -->
+  <?php
+	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-password-apply'])) {
+		$passworderror = "";
+		
+		if(!$_POST['currentpassword'] == $configurationsettings['AdminPassword']) {
+			$passworderror = "Current password is incorrect!";
+		}
+		elseif(!$_POST['newpassword'] == $_POST['passwordrepeat']) {
+			$passworderror = "New passwords don't match";
+		}
+		else {
+			$configurationsettings['AdminPassword'] = $_POST['newpassword'];
+			write_php_ini($configurationsettings, "/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+			echo "<script type='text/javascript'> document.location = 'logout.php'; </script>"; // Redirecting To Login Page
+		}
+	}
+  ?>
+
+<!-- ********************************************************************************************************************** -->
  <div class="container">
-  	<h3 class="text-center">Date/Time Configuration</h3>
-    <br />
-
-   <h4 class="text-center">Time Synchronisation</h4>
-
-	  <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-timesync" role="form">
-            <div class="form-group">
-              <div class="checkbox col-sm-offset-4 col-sm-8">
-                <label><input name="timesync_checkbox" type="checkbox" id="timesync_checkbox" form="frm-timesync" value="on" <?php if ($configurationsettings['ntpclient'] == "enabled") {echo "checked";}?>>Enable time synchronisation</label>
-              </div>
-            </div><!--formgroup-->
-            
-            <div id="div-timesync">
-            
+ 
+       <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">Network Configuration</h4></div><!--end panel heading-->
+        <div class="panel-body">
+        
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-ipconfig" role="form">
               <div class="form-group">
-                <label class="control-label col-sm-4" for="timeserver">Time Server:</label>
-                <div class="col-sm-5">
-                  <input name="txt-timeserver" type="text" class="form-control" id="timeserver" form="frm-timesync" placeholder="pool.ntp.org" pattern="^[0-9a-zA-Z.]*$" value="<?php echo rtrim(array_shift(array_slice($arrconfigfilefiltered, 0, 1)));?>" maxlength="40">
-                </div>
+                <label class="control-label col-sm-4" for="ip-assignment-select">IP Assignment:</label>
+                  <div class="col-sm-5">
+                    <select name="ip-assignment-select" class="form-control" id="ip-assignment-select" form="frm-ipconfig">
+                      <option value="DHCP" <?php if($configurationsettings['IPAssignment'] == "DHCP") {echo "selected='selected'";}?>>DHCP</option>
+                      <option value="STATIC" <?php if($configurationsettings['IPAssignment'] == "STATIC") {echo "selected='selected'";}?>>STATIC</option>
+                    </select>
+                  </div>
               </div><!--form group-->
+  
+              <!-- begin ip configuration -->
+              <div id="ipconfig" <?php if($configurationsettings["IPAssignment"] == "DHCP") echo 'style="display:none"'; ?>>
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="ip-address">IP Address:</label>
+                  <div class="col-sm-5">
+                    <input name="ip-address" type="text" autofocus required class="form-control" id="ip-address" form="frm-ipconfig" placeholder="192.168.0.1" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['IPAddress'])) {echo "value=" . $configurationsettings['IPAddress'];}?>>
+                  </div>
+                </div><!--form group-->
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="network-mask">Network Mask:</label>
+                  <div class="col-sm-5">
+                    <input name="network-mask" type="text" required class="form-control" id="network-mask" form="frm-ipconfig" placeholder="255.255.255.0" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['NetworkMask'])) {echo "value=" . $configurationsettings['NetworkMask'];}?>>
+                  </div>
+                </div><!--form group-->
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="gateway">Gateway:</label>
+                  <div class="col-sm-5">
+                    <input name="gateway" type="text" class="form-control" id="gateway" form="frm-ipconfig" placeholder="192.168.0.254" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Gateway'])) {echo "value=" . $configurationsettings['Gateway'];}?>>
+                  </div>
+                </div><!--form group-->
               
+                <br />
+                <h4 class="text-center">DNS Servers</h4>
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="dns1">DNS Server 1:</label>
+                  <div class="col-sm-5">
+                    <input name="dns1" type="text" class="form-control" id="dns1" form="frm-ipconfig" placeholder="8.8.8.8" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns1'])) {echo "value=" . $configurationsettings['Dns1'];}?>>
+                  </div>
+                </div><!--form group-->
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="dns2">DNS Server 2:</label>
+                  <div class="col-sm-5">
+                    <input name="dns2" type="text" class="form-control" id="dns2" form="frm-ipconfig" placeholder="8.8.4.4" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns2'])) {echo "value=" . $configurationsettings['Dns2'];}?>>
+                  </div>
+                </div><!--form group-->
+              </div><!-- end div ipconfig -->
               <div class="form-group"> 
                 <div class="col-sm-offset-4 col-sm-8">
-                  <input name="btn-timesync-apply" type="submit" class="btn btn-default" id="btn-timesync-apply" form="frm-timesync" value="Apply"></button>
+                  <input name="btn-network-apply" type="submit" class="btn btn-default" id="btn-network-apply" form="frm-ipconfig" value="Apply"></button>
                 </div>
               </div><!--form group-->
-            </div><!-- end div div-timesync -->
-          </form>
-        </div><!-- end div col-sm-10 -->
-      <div class="col-sm-1"></div>
+            </form>
+          </div><!-- col-sm-10 -->
+        <div class="col-sm-1"></div>
+      </div><!--end panel-body-->
+      </div><!--end panel-->
+    </div><!--row-->
+          
+          
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">Wifi Configuration</h4></div><!--end panel heading-->
+        <div class="panel-body">
+      
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-wificonfig" role="form">
+              <div class="form-group">
+                <div class="checkbox col-sm-offset-4 col-sm-8">
+                  <label><input name="chk-enable-wifi" id="chk-enable-wifi" type="checkbox" id="chk-enable-wifi" value="1" form="frm-wificonfig" <?php if ($configurationsettings['WifiClient'] == "enabled") {echo "checked";}?>>Enable Wifi</label>
+                </div>
+              </div><!--formgroup-->
+
+              <div id="wificonfig" <?php if($configurationsettings["WifiClient"] == "disabled") echo 'style="display:none"'; ?>>
+              
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="ssid">Connect to SSID:</label>
+                  <div class="col-sm-5">
+                    <input name="ssid" type="text" class="form-control" id="ssid" form="frm-wificonfig" pattern="^[a-zA-Z0-9_\-\s]*$" value="<?php echo($configurationsettings['WifiSsid']); ?>">
+                  </div>
+                </div><!--form group-->
+               
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="wifi-security">Security mode:</label>
+                    <div class="col-sm-5">
+                      <select name="wifi-security" class="form-control" id="wifi-security" form="frm-wificonfig">
+                        <option value="None" <?php if($configurationsettings['WifiSecurityMode'] == "None") {echo "selected='selected'";}?>>None</option>
+                        <option value="WEP" <?php if($configurationsettings['WifiSecurityMode'] == "WEP") {echo "selected='selected'";}?>>WEP</option>
+                        <option value="WPA/WPA2 PSK" <?php if($configurationsettings['WifiSecurityMode'] == "WPA/WPA2 PSK") {echo "selected='selected'";}?>>WPA/WPA2 PSK</option>
+                      </select>
+                    </div>
+                </div><!--form group-->
+                
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="wifi-password">Password:</label>
+                  <div class="col-sm-5">
+                    <input name="wifi-password" type="password" class="form-control" id="wifi-password" form="frm-wificonfig" <?php if(!empty($configurationsettings['WifiPassword'])) {echo "value=" . $configurationsettings['WifiPassword'];}?>>
+                  </div>
+                </div><!--form group-->
+              
+              </div><!-- end div wificonfig-->
+              <div class="form-group"> 
+                <div class="col-sm-offset-4 col-sm-8">
+                  <input name="btn-wifi-apply" type="submit" class="btn btn-default" id="btn-wifi-apply" form="frm-wificonfig" value="Apply"></button>
+                </div>
+              </div><!--form group-->
+            
+            </form>
+          </div><!--col-sm-10-->
+        <div class="col-sm-1"></div>
+      </div><!--end panel-body-->
+      </div><!--end panel-->
+
+    </div><!--row-->
+
+       <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">Password Configuration</h4></div><!--end panel heading-->
+        <div class="panel-body">
+        
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <form action="" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-password" role="form">
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="currentpassword">Current Password:</label>
+                  <div class="col-sm-5">
+                    <input name="currentpassword" type="password" required="required" class="form-control" id="currentpassword" form="frm-password" >
+                  </div>
+                </div><!--form group-->
+                
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="newpassword">New Password:</label>
+                  <div class="col-sm-5">
+                    <input name="newpassword" type="password" required="required" class="form-control" id="newpassword" form="frm-password" >
+                  </div>
+                </div><!--form group-->
+
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="passwordrepeat">Password Repeat:</label>
+                  <div class="col-sm-5">
+                    <input name="passwordrepeat" type="password" required="required" class="form-control" id="passwordrepeat" form="frm-password" >
+                  </div>
+                </div><!--form group-->
+
+              <div class="form-group"> 
+                <div class="col-sm-offset-4 col-sm-8">
+                  <input name="btn-password-apply" type="submit" class="btn btn-default" id="btn-password-apply" form="frm-password" value="Apply"></button>
+                  <span style="color:red"><?php echo $passworderror; ?></span>
+                </div>
+              </div><!--form group-->
+                
+                     </form>
+          </div><!--col-sm-10-->
+        <div class="col-sm-1"></div>
+      </div><!--end panel-body-->
+      </div><!--end panel-->
+    </div><!--row-->
+   
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+ 
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">Time Synchronisation</h4></div><!--end panel heading-->
+        <div class="panel-body">
+
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-timesync" role="form">
+              <div class="form-group">
+                <div class="checkbox col-sm-offset-4 col-sm-8">
+                  <label><input name="timesync_checkbox" type="checkbox" id="timesync_checkbox" form="frm-timesync" value="on" <?php if ($configurationsettings['ntpclient'] == "enabled") {echo "checked";}?>>Enable time synchronisation</label>
+                </div>
+              </div><!--formgroup-->
+              
+              <div id="div-timesync" <?php if($configurationsettings["ntpclient"] == "disabled") echo 'style="display:none"'; ?>>
+                <div class="form-group">
+                  <label class="control-label col-sm-4" for="timeserver">Time Server:</label>
+                  <div class="col-sm-5">
+                    <input name="txt-timeserver" type="text" class="form-control" id="timeserver" form="frm-timesync" placeholder="pool.ntp.org" pattern="^[0-9a-zA-Z.]*$" value="<?php echo rtrim(array_shift(array_slice($arrconfigfilefiltered, 0, 1)));?>" maxlength="40">
+                  </div>
+                </div><!--form group-->
+              </div><!-- end div div-timesync -->
+                <div class="form-group"> 
+                  <div class="col-sm-offset-4 col-sm-8">
+                    <input name="btn-timesync-apply" type="submit" class="btn btn-default" id="btn-timesync-apply" form="frm-timesync" value="Apply"></button>
+                  </div>
+                </div><!--form group-->
+            </form>
+          </div><!-- end div col-sm-10 -->
+        <div class="col-sm-1"></div>
+      </div><!--end panel-body-->
+      </div><!--end panel-->
     </div><!-- end div row -->
 
-   <div id="div-timesync2">
-      <h4 class="text-center">Timezone</h4>
       <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-timezone" role="form">
-            <div class="form-group">
-              <label class="control-label col-sm-4" for="sel-timezone">Set Timezone:</label>
-              <div class="col-sm-5">
-                <select name="sel-timezone" class="form-control" id="sel-timezone" form="frm-timezone">
-                  <?php
-                  $timezones = timezone_identifiers_list();
-                  $systemtimezone = trim(file_get_contents("/etc/timezone"),"\n");
-                  
-                  foreach($timezones as $timezone)
-                  {
-                    if (($systemtimezone == $timezone) || ($systemtimezone == "Etc/UTC")) {
-                      echo '<option selected="selected" value="' . $timezone . '">' . $timezone . '</option>';
+        <div class="panel panel-default">
+          <div class="panel-heading"><h4 class="text-center">Timezone Configuration</h4></div><!--end panel heading-->
+        <div class="panel-body">
+      
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-timezone" role="form">
+              <div class="form-group">
+                <label class="control-label col-sm-4" for="sel-timezone">Set Timezone:</label>
+                <div class="col-sm-5">
+                  <select name="sel-timezone" class="form-control" id="sel-timezone" form="frm-timezone">
+                    <?php
+                    $timezones = timezone_identifiers_list();
+                    $systemtimezone = trim(file_get_contents("/etc/timezone"),"\n");
+                    
+                    foreach($timezones as $timezone)
+                    {
+                      if (($systemtimezone == $timezone) || ($systemtimezone == "Etc/UTC")) {
+                        echo '<option selected="selected" value="' . $timezone . '">' . $timezone . '</option>';
+                      }
+                      else {
+                        echo '<option value="' . $timezone . '">' . $timezone . '</option>';
+                      }
                     }
-                    else {
-                      echo '<option value="' . $timezone . '">' . $timezone . '</option>';
-                    }
-                  }
-                  ?>
-                </select>
+                    ?>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="form-group"> 
-              <div class="col-sm-offset-4 col-sm-8">
-                <input name="btn-timezone-apply" type="submit" class="btn btn-default" id="btn-timezone-apply" form="frm-timezone" value="Apply"></button>
-              </div>
-            </div><!--form group-->
-          </form>
-        </div><!--col-sm-10-->
-        <div class="col-sm-1"></div>
+              <div class="form-group"> 
+                <div class="col-sm-offset-4 col-sm-8">
+                  <input name="btn-timezone-apply" type="submit" class="btn btn-default" id="btn-timezone-apply" form="frm-timezone" value="Apply"></button>
+                </div>
+              </div><!--form group-->
+            </form>
+          </div><!--col-sm-10-->
+          <div class="col-sm-1"></div>
+        </div><!--end panel-body-->
+        </div><!--end panel-->
       </div><!--row-->
-    </div><!-- end div div-timesync -->
-
+ 
           
-    <br>
-    <h3 class="text-center">Network Configuration</h3>
-    <br />
-    <h4 class="text-center">IP Addressing</h4>
-      <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-ipconfig" role="form">
-            <div class="form-group">
-              <label class="control-label col-sm-4" for="ip-assignment-select">IP Assignment:</label>
-                <div class="col-sm-5">
-                  <select name="ip-assignment-select" class="form-control" id="ip-assignment-select" form="frm-ipconfig">
-                    <option value="DHCP" <?php if($configurationsettings['IPAssignment'] == "DHCP") {echo "selected='selected'";}?>>DHCP</option>
-                    <option value="STATIC" <?php if($configurationsettings['IPAssignment'] == "STATIC") {echo "selected='selected'";}?>>STATIC</option>
-                  </select>
-                </div>
-            </div><!--form group-->
-
-			<!-- begin ip configuration -->
-            <div id="ipconfig" <?php if($configurationsettings["IPAssignment"] == "DHCP") echo 'style="display:none"'; ?>>
-              <div class="form-group">
-                <label class="control-label col-sm-4" for="ip-address">IP Address:</label>
-                <div class="col-sm-5">
-                  <input name="ip-address" type="text" autofocus required class="form-control" id="ip-address" form="frm-ipconfig" placeholder="192.168.0.1" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['IPAddress'])) {echo "value=" . $configurationsettings['IPAddress'];}?>>
-                </div>
-              </div><!--form group-->
-              <div class="form-group">
-                <label class="control-label col-sm-4" for="network-mask">Network Mask:</label>
-                <div class="col-sm-5">
-                  <input name="network-mask" type="text" required class="form-control" id="network-mask" form="frm-ipconfig" placeholder="255.255.255.0" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['NetworkMask'])) {echo "value=" . $configurationsettings['NetworkMask'];}?>>
-                </div>
-              </div><!--form group-->
-              <div class="form-group">
-                <label class="control-label col-sm-4" for="gateway">Gateway:</label>
-                <div class="col-sm-5">
-                  <input name="gateway" type="text" class="form-control" id="gateway" form="frm-ipconfig" placeholder="192.168.0.254" pattern="^[0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Gateway'])) {echo "value=" . $configurationsettings['Gateway'];}?>>
-                </div>
-              </div><!--form group-->
-            
-              <br />
-              <h4 class="text-center">DNS Servers</h4>
-              <div class="form-group">
-                <label class="control-label col-sm-4" for="dns1">DNS Server 1:</label>
-                <div class="col-sm-5">
-                  <input name="dns1" type="text" class="form-control" id="dns1" form="frm-ipconfig" placeholder="8.8.8.8" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns1'])) {echo "value=" . $configurationsettings['Dns1'];}?>>
-                </div>
-              </div><!--form group-->
-              <div class="form-group">
-                <label class="control-label col-sm-4" for="dns2">DNS Server 2:</label>
-                <div class="col-sm-5">
-                  <input name="dns2" type="text" class="form-control" id="dns2" form="frm-ipconfig" placeholder="8.8.4.4" pattern="^[a-zA-Z0-9.]*$" maxlength="15" <?php if(!empty($configurationsettings['Dns2'])) {echo "value=" . $configurationsettings['Dns2'];}?>>
-                </div>
-              </div><!--form group-->
-            </div><!-- end div ipconfig -->
-            <div class="form-group"> 
-              <div class="col-sm-offset-4 col-sm-8">
-                <input name="btn-network-apply" type="submit" class="btn btn-default" id="btn-network-apply" form="frm-ipconfig" value="Apply"></button>
-              </div>
-            </div><!--form group-->
-          </form>
-        </div><!-- col-sm-10 -->
-      <div class="col-sm-1"></div>
-    </div><!--row-->
-          
-          
-    <br />
-    <h4 class="text-center">Wifi Settings</h4>
-      <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" id="frm-wificonfig" role="form">
-            <div class="form-group">
-              <div class="checkbox col-sm-offset-4 col-sm-8">
-                <label><input name="chk-enable-wifi" id="chk-enable-wifi" type="checkbox" id="chk-enable-wifi" form="frm-wificonfig" <?php if ($configurationsettings['WifiClient'] == "enabled") {echo "checked";}?>>Enable Wifi</label>
-              </div>
-            </div><!--formgroup-->
-            
-            <div class="form-group">
-              <label class="control-label col-sm-4" for="ssid">Connect to SSID:</label>
-              <div class="col-sm-5">
-                <input name="ssid" type="text" class="form-control" id="ssid" form="frm-wificonfig" pattern="^[a-zA-Z0-9_\-\s]*$" value="<?php echo($configurationsettings['WifiSsid']); ?>">
-              </div>
-            </div><!--form group-->
-           
-            <div class="form-group">
-              <label class="control-label col-sm-4" for="wifi-security">Security mode:</label>
-                <div class="col-sm-5">
-                  <select name="wifi-security" class="form-control" id="wifi-security" form="frm-wificonfig">
-                    <option value="None" <?php if($configurationsettings['WifiSecurityMode'] == "None") {echo "selected='selected'";}?>>None</option>
-                    <option value="WEP" <?php if($configurationsettings['WifiSecurityMode'] == "WEP") {echo "selected='selected'";}?>>WEP</option>
-                    <option value="WPA/WPA2 PSK" <?php if($configurationsettings['WifiSecurityMode'] == "WPA/WPA2 PSK") {echo "selected='selected'";}?>>WPA/WPA2 PSK</option>
-                  </select>
-                </div>
-            </div><!--form group-->
-            
-            <div class="form-group">
-              <label class="control-label col-sm-4" for="wifi-password">Password:</label>
-              <div class="col-sm-5">
-                <input name="wifi-password" type="password" class="form-control" id="wifi-password" form="frm-wificonfig" <?php if(!empty($configurationsettings['WifiPassword'])) {echo "value=" . $configurationsettings['WifiPassword'];}?>>
-              </div>
-            </div><!--form group-->
-            <div class="form-group"> 
-              <div class="col-sm-offset-4 col-sm-8">
-                <input name="btn-wifi-apply" type="submit" class="btn btn-default" id="btn-wifi-apply" form="frm-wificonfig" value="Apply"></button>
-              </div>
-            </div><!--form group-->
-          
-          </form>
-        </div><!--col-sm-10-->
-      <div class="col-sm-1"></div>
-    </div><!--row-->
   </div><!--container-->
   <!-- InstanceEndEditable -->
 
@@ -438,8 +537,8 @@
       Bootstrap javascript and JQuery should be loaded
       Placed at the end of the document for faster load times
   -->
-  <script src="js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
 
   <!-- InstanceBeginEditable name="php code" -->
 <!-- ********************************************************************************************************************** -->
@@ -447,6 +546,12 @@
 $("#ip-assignment-select").on('change', function() { if($(this).val() == 'STATIC') {$("#ipconfig").show();} });
 $("#ip-assignment-select").on('change', function() { if($(this).val() == 'DHCP') {$("#ipconfig").hide();$("#ip-address").removeAttr('required');$("#network-mask").removeAttr('required');} });
 </script>
+<script>
+$("#chk-enable-wifi").on('click', function() { if($(this).is(':checked')) {$("#wificonfig").show();} else {$("#wificonfig").hide();} });
+$("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("#div-timesync").show();} else {$("#div-timesync").hide();} });
+
+</script>
+
 <!-- ********************************************************************************************************************** -->
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-timezone-apply'])) {

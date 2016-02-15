@@ -5,52 +5,52 @@
   $cameradefaultsettings = array(
 	"driver" => "raspicam",
 	"video_nr" => "0",
-	"auto-video_nr" => "yes",
+	"auto-video_nr" => "true",
 	"verbosity" => "6",
 	"syslog-host" => "localhost",
 	"syslog-port" => "514",
 	"frame-timeout" => "5000",
 	"frame-buffers" => "4",
-	"drop-bad-frames" => "yes",
-	"relaxed-ownership" => "yes",
+	"drop-bad-frames" => "true",
+	"relaxed-ownership" => "true",
 ##################################
 # raspicam driver options
 ##################################
 	"encoding" => "mjpeg",
-	"width" => "640",
-	"height" => "480",
+	"width" => "1920",
+	"height" => "1080",
 	"framerate" => "30",
-    "custom-sensor-config" => "2",
+#   "custom-sensor-config" => "2",
 ### dual camera options:
-	"stereoscopic-mode" => "side_by_side",
-	"camera-number" => "1",
-	"decimate" => "yes",
-	"swap-eyes" => "yes",
+#	"stereoscopic-mode" => "side_by_side",
+#	"camera-number" => "1",
+#	"decimate" => "true",
+#	"swap-eye" => "true",
 ### still and/or video options:
 	"quality" => "85",
-	"stills-denoise" => "yes",
-	"video-denoise" => "yes",
-	"raw" => "no",
+	"stills-denoise" => "false",
+	"video-denoise" => "false",
+	"raw" => "false",
 ### h264 options:
 	"profile" => "high",
 	"bitrate" => "17000000",
 	"intra-refresh-mode" => "dummy",
 # intra-period = #arg
-# inline-headers = yes
+# inline-headers = true
 # quantisation-parameter #arg
 ### video overlay options:
-	"nopreview" => "no",
-	"fullscreen" => "no", 
-	"opacity" => "255",
+	"nopreview" => "true",
+#	"fullscreen" => "false", 
+#	"opacity" => "255",
 ### preview window <x, y, w, h>:
 # preview = 480
 # preview = 240
 # preview = 320
 # preview = 240
 ### post-processing options:
-	"text-overlay" => "yes",
+	"text-overlay" => "false",
 # text-filename = /usr/share/uv4l/raspicam/text.json
-	"object-detection" => "yes",
+	"object-detection" => "false",
 # object-detection-mode = accurate_tracking
 # min-object-size = 80
 # min-object-size = 80
@@ -62,21 +62,21 @@
 	"brightness" => "50",
 	"saturation" => "0",
 	"iso" => "400",
-	"vstab" => "yes",
+	"vstab" => "false",
 	"ev" => "0",
 	"exposure" => "auto",
 	"awb" => "auto",
-	"imgfx" => "none",
+#	"imgfx" => "none",
 	"metering" => "average",
 	"rotation" => "0",
-	"hflip" => "no",
-	"vflip" => "no",
+	"hflip" => "false",
+	"vflip" => "false",
 	"shutter-speed" => "0",
 	"drc" => "off",
 	"red-gain" => "100",
 	"blue-gain" => "100");
 #	"text-annotation" => "HelloWorld!"
-#	"text-annotation-background" = "yes"
+#	"text-annotation-background" = "true"
 ### ROI <x, y, w, h> normalized to [0, 1]
 # roi = 0
 # roi = 0
@@ -84,7 +84,7 @@
 # roi = 1
 
 ### advanced options:
-# statistics = yes
+# statistics = true
 # output-buffers = 3
 
 ### serial Number & License Key:
@@ -116,10 +116,10 @@
 # server-option = --ssl-certificate-file=#path
 
 ### WebRTC options:
-# server-option = --enable-webrtc=yes
-# server-option = --enable-webrtc-video=yes
-# server-option = --enable-webrtc-audio=yes
-# server-option = --webrtc-receive-video=yes
+# server-option = --enable-webrtc=true
+# server-option = --enable-webrtc-video=true
+# server-option = --enable-webrtc-audio=true
+# server-option = --webrtc-receive-video=true
 ### video rendering window size on display
 ### all four lines below one for each (x, y, width, height)
 ### fullscreen should be disabled if you want to set the size of the window:
@@ -130,19 +130,19 @@
 # server-option = --webrtc-renderer-fullscreen=no
 # server-option = --webrtc-renderer-rotation=180
 # server-option = --webrtc-renderer-opacity=255
-# server-option = --webrtc-receive-audio=yes
+# server-option = --webrtc-receive-audio=true
 # server-option = --webrtc-received-audio-volume=5.0
-# server-option = --webrtc-vad=yes
+# server-option = --webrtc-vad=true
 # server-option = --webrtc-preferred-vcodec=0
-# server-option = --webrtc-enable-hw-codec=yes
+# server-option = --webrtc-enable-hw-codec=true
 # server-option = --webrtc-hw-vcodec-minbitrate=2000
 # server-option = --webrtc-cpu-overuse-detection=no
 # server-option = --webrtc-combined-audiovideo-bwe=no
 # server-option = --webrtc-stun-urls=stun:stun.l.google.com:19302
 # server-option = --webrtc-ice-servers=[{"urls": "stun:stun1.example.net"}, {"urls": "turn:turn.example.org", "username": "user", "credential": "myPassword"}]
-# server-option = --webrtc-stun-server=yes
-# server-option = --webrtc-tcp-candidate-policy=yes
-# server-option = --webrtc-ignore-loopback=yes
+# server-option = --webrtc-stun-server=true
+# server-option = --webrtc-tcp-candidate-policy=true
+# server-option = --webrtc-ignore-loopback=true
 
 ### XMPP options:
 # server-option = --xmpp-server=lambada.jitsi.net
@@ -152,7 +152,7 @@
 # server-option = --xmpp-room-password=room_password
 # server-option = --xmpp-username=me
 # server-option = --xmpp-password=mypassword
-# server-option = --xmpp-reconnect=yes
+# server-option = --xmpp-reconnect=true
 # server-option = --xmpp-bosh-enable
 # server-option = --xmpp-bosh-tls
 # server-option = --xmpp-bosh-server
@@ -164,14 +164,14 @@
 
 ### Fine-tuning options:
 # server-option = --connection-timeout=15
-# server-option = --enable-keepalive=yes
+# server-option = --enable-keepalive=true
 # server-option = --max-keepalive-requests=0
 # server-option = --keepalive-timeout=7
 # server-option = --max-queued-connections=8
 # server-option = --max-streams=3
 # server-option = --max-threads=5
 # server-option = --thread-idle-time=10
-# server-option = --chuncked-transfer-encoding=yes
+# server-option = --chuncked-transfer-encoding=true
 
 ### Advanced options:
 # server-option = --frame-timeout=5000
@@ -179,4 +179,4 @@
 
 ### Other options:
 # server-option = --editable-config-file=#path
-# server-option = --enable-control-panel=yes
+# server-option = --enable-control-panel=true

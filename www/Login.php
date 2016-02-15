@@ -1,3 +1,4 @@
+<?php session_start(); // Starting Session ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,23 +30,50 @@
   </head>
 
   <body>
+<?php
+$configurationsettings = parse_ini_file("/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+
+$error=''; // Variable To Store Error Message
+if (isset($_POST['submit'])) {
+	if (empty($_POST['username']) || empty($_POST['password'])) {
+	  $error = "Username or Password is invalid";
+	}
+	else {
+	  // Define $username and $password
+	  if($_POST['username'] == $configurationsettings['AdminUsername'] && $_POST['password'] == $configurationsettings['AdminPassword']) {		  
+
+		$_SESSION['login_user']=$_POST['username']; // Initializing Session
+		echo "<script type='text/javascript'> document.location = 'Status.php'; </script>"; // Redirecting To Other Page
+	  } 
+	  else {
+		$error = "Username or Password is invalid";
+	  }
+	}
+}
+
+
+if(isset($_SESSION['login_user'])){
+echo "<script type='text/javascript'> document.location = 'Status.php'; </script>";
+}
+?>
 
     <div class="container">
 
-      <form class="form-signin">
+      <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post" enctype="application/x-www-form-urlencoded" class="form-signin" id="frm-login">
         <h2 class="form-signin-heading"><img class="center-block" src="Images/IP-cam-icon-w110-flip.png" width="110" height="96"  alt=""/></h2>
         <h2 class="form-signin-heading">Raspberry IP Camera</h2>
         <p>Log in to get access to configuration settings.</p>
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <label for="username" class="sr-only">Username</label>
+        <input name="username" type="text" autofocus required class="form-control" id="user-name" form="frm-login" placeholder="Username">
+        <label for="password" class="sr-only">Password</label>
+        <input name="password" type="password" required="required" class="form-control" id="pass-word" form="frm-login" placeholder="Password">
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <input name="submit" type="submit" class="btn btn-lg btn-primary btn-block" id="submit" form="frm-login" value="Log In"><br>
+        <span style="color:red"><?php echo $error; ?></span>
       </form>
 
     </div> <!-- /container -->
