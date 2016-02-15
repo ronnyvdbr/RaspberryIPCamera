@@ -1,6 +1,0 @@
-
-
-export LD_LIBRARY_PATH=.
-./mjpg_streamer -i "./input_uvc.so -d /dev/video0 -r 1920x1080 -f 30 -n" -o "./output_http.so"
-/home/pi/mjpg-streamer/mjpg-streamer/mjpg_streamer -i "/home/pi/mjpg-streamer/mjpg-streamer/input_uvc.so -d /dev/video0 -r 1280x720 -f 15 -n" -o /home/pi/mjpg-streamer/mjpg-streamer/output_http.so
-
