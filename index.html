@@ -1,1 +1,79 @@
-My Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Raspberry Pi - IP Camera</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="jumbotron">
+        <h1>Raspberry Pi - IP Camera</h1> 
+        <p>Bootstrap/PHP web interface for the Raspberry Pi Camera.</p> 
+      </div><!-- end jumbotron -->
+    </div><!-- end div col-xs-12 -->
+  </div><!--end div row-->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="text-center">Welcome to the Raspberry Pi - IP Camera project.</h3>
+          <p class="text-center">Raspberry IP Camera configurable through Bootstrap/PHP web interface.</p>
+        </div>
+        <div class="panel-body">
+          <p>Hi, welcome to my Raspberry IP Camera build. This project was brought to life out of personal interest for the Raspberry Pi camera features and the lack of readily available sources of easy configurable Web gui software for the Raspberry Pi's camera.<br>For a project of my interest I was looking for an IP camera which was cheap, had high specs, and was easy configurable.<br>Unfortunately that's not easy to find, for a capable IP camera you need to count dollars, and that's something which I wanted to avoid.  If you go the DIY way then the Raspberry Pi is a usefull tool and respectable alternative to a professional solution, unfortunately that thing needs software to function.  I just wanted to buy a Raspberry Pi, a camera module, drop in an SD card and go with it, but wasn't able to find any ready built SD card which was fit for my purpose, hence this project, which is a throw at such a software.</p><br>
+          
+          <div class="row">
+            <img src="images/commercial1.PNG" class="img-rounded img-responsive center-block" alt="Cinque Terre">
+          </div><!--end div row-->
+          <br>
+          <div class="row">
+            <div class="col-xs-3"></div>
+            <div class="col-xs-6">
+            	<a href="http://cheetah.dscloud.me:8080/RaspberryPI-IP-Camera-v1.0-beta.zip">
+            	<button type="button" class="form-control btn btn-success"><strong>Download -Raspberry Pi - IP Camera 1.0 beta</strong></button>
+                </a>            
+            </div>
+            <div class="col-xs-4"></div>
+          </div><!--end div class row-->
+          <br>
+          <p>Features:</p>
+          <ul>
+            <li>Raspberry Pi - With Raspbian Jessie Minimal image</li>
+            <li>A Raspberry Pi Camera Module</li>
+            <li>PHP/Bootstrap Web Interface with secured login page</li>
+            <li>Two streaming standards, MJPEG and H.264</li>
+            <li>Integrated RTSP server</li>
+          </ul>
+          
+          <p>The IP camera is built on top of a foundation Raspbian Jessie Minimal image and consists of three major parts:</p>
+          <ul>
+          <li>The PHP/Bootstrap web interface (built in this project)</li>
+          <li>The UV4L software from <a href="http://www.linux-projects.org" target="_blank">http://www.linux-projects.org</a></li>
+<li>The MJPG-server from <a href="https://github.com/codewithpassion/mjpg-streamer" target="_blank">https://github.com/codewithpassion/mjpg-streamer</a></li>
+          <li>The RTSP server from <a href="https://github.com/mpromonet/h264_v4l2_rtspserver" target="_blank">https://github.com/mpromonet/h264_v4l2_rtspserver</a></li>
+          </ul>
+          
+          <p>Everyone can build the camera themselves according to the instruction manual in my github repository (see installation.sh). Pls note that this documentation on this project is a work in progress.</p>
+          <p>If you want to test-drive the Raspberry IP Camera, you can download a pre-built image here, just write to SD card and boot it up.</p>
+          <ul>
+            <li>The default configuration is set to obtain an IP address via DHCP from the wired ethernet connection.</li>
+            <li>To access the web interface, enter 'admin' as username and 'raspberry' as password.</li>
+            <li>To login via SSH, login with username 'pi' and password 'raspberry', and use sudo for root access.</li>
+          </ul>
+          
+
+        </div>
+      </div><!--end div panel -->
+    </div><!-- end div col-xs-12 -->
+  </div><!--end div row-->
+</div><!-- end div container -->
+</body>
+</html>
