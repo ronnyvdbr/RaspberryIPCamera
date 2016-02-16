@@ -14,7 +14,7 @@ The IP camera is built on top of a foundation Raspbian Jessie Minimal image and 
 * The UV4L software from http://www.linux-projects.org
 * The RTSP server from https://github.com/mpromonet/h264_v4l2_rtspserver
 
-Everyone can build the camera themselves according to the instruction manual in this github repository (see installation.sh) or just download the image at https://...
+Everyone can build the camera themselves according to the instruction manual in this github repository (see installation.sh) or just download the image at http://cheetah.dscloud.me:8080/RaspberryPI-IP-Camera-v1.1-beta.zip
 
 
 
