@@ -14,23 +14,23 @@ git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git
 # add our pi user to www-data group.
 sudo usermod -a -G www-data pi
 
-# Install our webserver with PHP support.
-sudo apt-get -y install nginx
-
-# Install php5 fast process manager.
-sudo apt-get -y install php5-fpm
-
-# Disable the nginx default website
-sudo rm /etc/nginx/sites-enabled/default
-
-# Copy our own website config file to the nginx available website configurations
-sudo cp RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
-
-# Let's enable our new website:
-sudo ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
-
-# Restart our web server to pick up the new config.
-sudo systemctl restart nginx.service
+# checking if apache exists, if not, deploy ngingx.
+if [ $(dpkg-query -W -f='${Status}' apache apache2 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+  echo No apache found, installing nginx;
+  # Install our webserver with PHP support.
+  sudo apt-get -y install nginx
+  # Install php5 fast process manager.
+  sudo apt-get -y install php5-fpm
+  # Disable the nginx default website
+  sudo rm /etc/nginx/sites-enabled/default
+  # Copy our own website config file to the nginx available website configurations
+  sudo cp RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
+  # Let's enable our new website:
+  sudo ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
+  # Restart our web server to pick up the new config.
+  sudo systemctl restart nginx.service
+fi
 
 # Enable the Raspberry Pi Camera Module
 sudo mount -o remount rw /boot
