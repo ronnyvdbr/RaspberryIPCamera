@@ -16,8 +16,11 @@ The IP camera is built on top of a foundation Raspbian Jessie Minimal image and 
 
 Everyone can build the camera themselves according to the instruction manual in this github repository (see installation.sh) or just download the pre-built Raspbian Jessie Minimal image from the following locations:
 [Google Drive](https://drive.google.com/uc?export=download&id=0BzcZ1Ce8u9-Gd0I5VUkxVXB6LVU)
+
 [Microsoft OneDrive](https://onedrive.live.com/download?resid=239F6FFEE91BAEAF!4237&authkey=!AACEUUd11othiQM&ithint=file%2czip)
+
 [DropBox](https://dl.dropboxusercontent.com/s/2x60gnm46sy2bra/RaspberryPI-IP-Camera-v1.1-beta.zip?dl=0)
+
 [Direct Download](http://cheetah.dscloud.me:8080/RaspberryPI-IP-Camera-v1.1-beta.zip)
 
 
