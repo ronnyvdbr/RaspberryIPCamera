@@ -15,6 +15,7 @@ The IP camera is built on top of a foundation Raspbian Jessie Minimal image and 
 * The RTSP server from https://github.com/mpromonet/h264_v4l2_rtspserver
 
 Everyone can build the camera themselves according to the instruction manual in this github repository (see installation.sh) or just download the pre-built Raspbian Jessie Minimal image from the following locations:
+
 [Google Drive](https://drive.google.com/uc?export=download&id=0BzcZ1Ce8u9-Gd0I5VUkxVXB6LVU)
 
 [Microsoft OneDrive](https://onedrive.live.com/download?resid=239F6FFEE91BAEAF!4237&authkey=!AACEUUd11othiQM&ithint=file%2czip)
