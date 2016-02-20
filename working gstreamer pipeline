@@ -1,0 +1,1 @@
+raspivid -w 1920 -h 1080 -fps 30 -pf high -n -o - | gst-launch-1.0 -e fdsrc fd=0 ! video/x-h264,width=1920,height=1080,framerate=30/1,stream-format=byte-stream ! h264parse ! mp4mux ! filesink location=video.mp4
