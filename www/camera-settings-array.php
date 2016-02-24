@@ -103,7 +103,7 @@
 ### in this configuration file.
 #server-config-file = #path
 
-# server-option = --port=8081
+#	"server-option" => "--port=8081",
 # server-option = --user-password=myp4ssw0rd
 # server-option = --admin-password=myp4ssw0rd
 ### To enable 'config' user authentication
@@ -163,19 +163,19 @@
 # server-option = --xmpp-bridge-port=7999
 
 ### Fine-tuning options:
-# server-option = --connection-timeout=15
-# server-option = --enable-keepalive=true
-# server-option = --max-keepalive-requests=0
-# server-option = --keepalive-timeout=7
-# server-option = --max-queued-connections=8
-# server-option = --max-streams=3
-# server-option = --max-threads=5
-# server-option = --thread-idle-time=10
-# server-option = --chuncked-transfer-encoding=true
+##	"server-option" => "--connection-timeout=15",
+#	"server-option" => "--enable-keepalive=true",
+#	"server-option" => "--max-keepalive-requests=0",
+#	"server-option" => "--keepalive-timeout=7",
+#	"server-option" => "--max-queued-connections=8",
+#	"server-option" => "--max-streams=3",
+#	"server-option" => "--max-threads=5",
+#	"server-option" => "--thread-idle-time=10",
+#	"server-option" => "--chuncked-transfer-encoding=true",
 
 ### Advanced options:
-# server-option = --frame-timeout=5000
-# server-option = --frame-buffers=auto
+#"server-option" => "--frame-timeout=5000",
+#"server-option" => "--frame-buffers=auto");
 
 ### Other options:
 # server-option = --editable-config-file=#path

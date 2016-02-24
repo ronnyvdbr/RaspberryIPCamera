@@ -1,5 +1,5 @@
 <!-- check if our login_user is set, otherwise redirect to the logon screen -->
-<?php include('logincheck.php');?>
+<?php //include('logincheck.php');?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -63,7 +63,8 @@
  <!-- ********************************************************************************************************************** -->
   <?php 
 	$camerasettings = parse_ini_file("/etc/uv4l/uv4l-raspicam.conf");
-	//var_dump($camerasettings);
+	if($camerasettings['drc'] == "") {$camerasettings['drc'] = "off";}
+	var_dump($camerasettings);
   ?>
 <!-- ********************************************************************************************************************** -->
   <?php
@@ -72,17 +73,25 @@
 		$sharpness = $rotate = $shutterspeed = /*$zoomfactor = */$jpegquality = $framerate = 0;
 		$shutterspeed = 0;
 		$isosensitivity = 0;
-		$horizontalmirror = $verticalmirror = $textoverlay = $objectfacedetection = "false";
+		$resolution = $horizontalmirror = $verticalmirror = $textoverlay = $objectfacedetection = "false";
 		$stillsdenoise = $videodenoise = $imagestabilisation = "false";
 		$awbmode = $exposuremode = $exposuremetering = $drcstrenght = "";
 
-		$widtherr = $heighterr = $formaterr = $brightnesserr = $contrasterr = $saturationerr = $redbalanceerr = "";
+		/*$widtherr = $heighterr = */$formaterr = $brightnesserr = $contrasterr = $saturationerr = $redbalanceerr = "";
 		$bluebalanceerr = $sharpnesserr = $rotateerr = $shutterspeederr = /*$zoomfactorerr = */$isosensitivityerr = "";
-		$jpegqualityerr = $framerateerr = $horizontalmirrorerr = $verticalmirrorerr = $textoverlayerr = "";
+		$jpegqualityerr = $framerateerr = $resolutionerr = $horizontalmirrorerr = $verticalmirrorerr = $textoverlayerr = "";
 		$objectfacedetectionerr = $stillsdenoiseerr = $videodenoiseerr = $imagestabilisationerr = $awbmodeerr = "";
 		$exposuremodeerr = $exposuremeteringerr = $drcstrenghterr = "";
 		
-		if (!empty($_POST["width"])) {
+		if (!empty($_POST["resolution"])) {
+		  $resolution = test_input($_POST["resolution"]);
+		  if(!$resolution == "2592×1944" || !$resolution == "1920×1080" || !$resolution == "1296×972" || !$resolution == "1296×730" || !$resolution == "1280×720" || !$resolution == "640x480") {
+			  $resolutionerr = "Only '2592×1944', '1920×1080', '1296×972', '1296×730', '1280×720', or '640x480' is allowed as input!";
+			  logmessage($resolutionerr);
+		  }
+		}
+
+		/*if (!empty($_POST["width"])) {
 		  $width = test_input($_POST["width"]);
 		  if (!preg_match("/^[0-9]*$/",$width)) {
 			$widtherr = "height field contains incorrect data, only 0-9 allowed!"; 
@@ -96,7 +105,7 @@
 			$heighterr = "height field contains incorrect data, only 0-9 allowed!"; 
 			logmessage($heighterr);
 		  }
-		}
+		}*/
 
 		if (!empty($_POST["format"])) {
 		  $format = test_input($_POST["format"]);
@@ -309,6 +318,7 @@
 
 		if (!empty($_POST["drcstrenght"])) {
 		  $drcstrenght = test_input($_POST["drcstrenght"]);
+		  echo "drcstrength=" . $drcstrenght;
 		  if(!$drcstrenght == "high" || !$drcstrenght == "low" || !$drcstrenght == "medium" || !$drcstrenght == "off") {
 			$drcstrenghterr = "Only high, low, medium, or off is allowed as input for drcstrenght selector!"; 
 			logmessage($drcstrenghterr);
@@ -316,10 +326,10 @@
 		}
 		
 		// Only continue when no errors are found.
-		if(empty($widtherr) && empty($heighterr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
+		if(/*empty($widtherr) && empty($heighterr) && */empty($resolutionerr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
 			
-			$camerasettings['width'] = $width;
-			$camerasettings['height'] = $height;
+			/*$camerasettings['width'] = $width;
+			$camerasettings['height'] = $height;*/
 			$camerasettings['encoding'] = $format;
 			$camerasettings['brightness'] = $brightness;
 			$camerasettings['contrast'] = $contrast;
@@ -343,12 +353,64 @@
 			$camerasettings['exposure'] = $exposuremode;
 			$camerasettings['metering'] = $exposuremetering;
 			$camerasettings['drc'] = $drcstrenght;
-/*var_dump($cameradefaultsettings);
-echo "<br>";
+						switch ($resolution) {
+			  case "2592×1944":
+			  	logmessage("in resolution routine");
+				$camerasettings['width'] = 2592;
+				$camerasettings['height'] = 1944;
+				if($framerate > 15) 
+					$camerasettings['framerate'] = 15;
+			  break;
+			  case "1920×1080":
+			  	$camerasettings['width'] = 1920;
+				$camerasettings['height'] = 1080;
+				if($framerate > 30) 
+					$camerasettings['framerate'] = 30;
+			  break;
+			  case "1296×972":
+			  	$camerasettings['width'] = 1296;
+				$camerasettings['height'] = 972;
+				if($framerate > 42) 
+					$camerasettings['framerate'] = 42;
+			  break;
+			  case "1296×730":
+			  	$camerasettings['width'] = 1296;
+				$camerasettings['height'] = 730;
+				if($framerate > 49) 
+					$camerasettings['framerate'] = 49;
+			  break;
+			  case "1280×720":
+			  	$camerasettings['width'] = 1280;
+				$camerasettings['height'] = 720;
+				if($framerate > 49) 
+					$camerasettings['framerate'] = 49;
+			  break;
+			  case "640x480-1":
+			  	$camerasettings['width'] = 640;
+				$camerasettings['height'] = 480;
+				if($framerate < 43)
+					$camerasettings['framerate'] = 43;
+				if($framerate > 60) 
+					$camerasettings['framerate'] = 60;
+			  break;
+			  case "640x480-2":
+			  	$camerasettings['width'] = 640;
+				$camerasettings['height'] = 480;
+				if($framerate < 61)
+					$camerasettings['framerate'] = 61;
+				if($framerate > 90) 
+					$camerasettings['framerate'] = 90;
+			  break;
+			}
+
+echo "<br><br>CameraDefaults:<br>";
+var_dump($cameradefaultsettings);
+echo "<br><br>CameraSettings:<br>";
 var_dump($camerasettings);
-echo "<br>";
+echo "<br><br>Camerasettings + defaultsettings<br>";
 var_dump($camerasettings + $cameradefaultsettings);
-echo "<br>";*/
+echo "<br><br>";
+			
 			write_camerasettings_conf($camerasettings + $cameradefaultsettings, "/etc/uv4l/uv4l-raspicam.conf");
 		}
 	}
@@ -362,29 +424,49 @@ echo "<br>";*/
         <div class="row">
           <div class="col-sm-1"></div>
           <div class="col-sm-10">
+
               <div class="form-group">
-                <label class="control-label col-sm-4" for="width">Width:</label>
-                  <div class="col-sm-5">
-                    <input name="width" type="number" class="form-control" id="width" form="frm-camerasettings" min="64" step="8" <?php if(!empty($camerasettings['width'])) {echo "value=" . $camerasettings['width'];}?>>
-                  </div>
-              </div><!--form group-->
-              <div class="form-group">
-                <label class="control-label col-sm-4" for="height">Height:</label>
+                <label class="control-label col-sm-4" for="resolution">Resolution:</label>
                 <div class="col-sm-5">
-                  <input name="height" type="number" class="form-control" id="height" form="frm-camerasettings" min="64" step="8" <?php if(!empty($camerasettings['height'])) {echo "value=" . $camerasettings['height'];}?>>
+                  <select name="resolution" class="form-control" id="resolution" form="frm-camerasettings">
+                    <option value="2592×1944" <?php if($camerasettings['width'] == "2592") {echo "selected='selected'";}?>>2592×1944 / 1-15 fps / 4:3 / Full FOV</option>
+                    <option value="1920×1080" <?php if($camerasettings['width'] == "1920") {echo "selected='selected'";}?>>1920×1080 / 1-30 fps / 16:9 / Partial FOV</option>
+                    <option value="1296×972" <?php if($camerasettings['height'] == "972") {echo "selected='selected'";}?>>1296×972 / 1-42 fps / 4:3 / Full FFOV</option>
+                    <option value="1296×730" <?php if($camerasettings['height'] == "730") {echo "selected='selected'";}?>>1296×730 / 1-49fps / 16:9 / Full FFOV</option>
+                    <option value="1280×720" <?php if($camerasettings['width'] == "1280") {echo "selected='selected'";}?>>1280×720 / 1-49fps / 16:9 / Full FFOV</option>
+                    <option value="640x480-1" <?php if($camerasettings['width'] == "640" && $camerasettings['framerate'] <= 60) {echo "selected='selected'";}?>>640x480 / 42.1-60 fps / 4:3 / Full FFOV</option>
+                    <option value="640x480-2" <?php if($camerasettings['width'] == "640" && $camerasettings['framerate'] > 60) {echo "selected='selected'";}?>>640x480 / 60.1-90 fps / 4:3 / Full FFOV</option>
+                  </select>
                 </div>
               </div><!--form group-->
+
+
+<!--              <div class="form-group">
+                <label class="control-label col-sm-4" for="width">Width:</label>
+                  <div class="col-sm-5">
+                    <input name="width" type="number" class="form-control" id="width" form="frm-camerasettings" min="64" step="8" <?php //if(!empty($camerasettings['width'])) {echo "value=" . $camerasettings['width'];}?>>
+                  </div>
+              </div><!--form group-->
+              
+<!--              <div class="form-group">
+                <label class="control-label col-sm-4" for="height">Height:</label>
+                <div class="col-sm-5">
+                  <input name="height" type="number" class="form-control" id="height" form="frm-camerasettings" min="64" step="8" <?php //if(!empty($camerasettings['height'])) {echo "value=" . $camerasettings['height'];}?>>
+                </div>
+              </div><!--form group-->
+              
               <div class="form-group">
                 <label class="control-label col-sm-4" for="format">Format:</label>
                 <div class="col-sm-5">
                   <select name="format" class="form-control" id="format" form="frm-camerasettings">
-                    <option value="mjpeg">MJPEG Video (streamable)</option>
-                    <option value="h264">H264 (raw, streamable)</option>
+                    <option value="mjpeg" <?php if($camerasettings['encoding'] == "mjpeg") {echo "selected='selected'";}?>>MJPEG Video (streamable)</option>
+                    <option value="h264" <?php if($camerasettings['encoding'] == "h264") {echo "selected='selected'";}?>>H264 (raw, streamable)</option>
                   </select>            
                 </div>
               </div><!--form group-->
               <div class="alert alert-info">
-                <strong>Info!</strong> NOTE: if the camera is already in use for streaming by another application/client, applying the resolution &amp; format will not have any effect (until all the streaming sessions have been closed).
+                <p class="text-center">To view the MJPEG stream open the URL: <a href="http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=stream">http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=stream</a></p>
+                <p class="text-center">To view a single JPEG just call: <a href="http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=snapshot" class="text-center">http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=snapshot</a></p>
               </div><!-- end div alert -->
           </div><!-- end div col-sm-10 -->
           <div class="col-sm-1"></div>
@@ -633,7 +715,7 @@ echo "<br>";*/
                       <option value="high" <?php if($camerasettings['drc'] == "high") {echo "selected='selected'";}?>>high</option>
                       <option value="low" <?php if($camerasettings['drc'] == "low") {echo "selected='selected'";}?>>low</option>
                       <option value="medium" <?php if($camerasettings['drc'] == "medium") {echo "selected='selected'";}?>>medium</option>
-                      <option value="off" <?php if($camerasettings['drc'] == "") {echo "selected='selected'";}?>>off</option>
+                      <option value="off" <?php if($camerasettings['drc'] == "off") {echo "selected='selected'";}?>>off</option>
                     </select>
                   </div>
               </div><!--form group-->
@@ -679,7 +761,7 @@ echo "<br>";*/
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-camerasettings-apply'])) {
 		// Only continue when no errors are found.
-		if(empty($widtherr) && empty($heighterr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
+		if(/*empty($widtherr) && empty($heighterr) && */empty($resolutionerr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
 		
 		
 		
@@ -689,7 +771,8 @@ echo "<br>";*/
 		shell_exec("sudo systemctl restart uv4l_raspicam.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log"); 
 		logmessage("Writing changes for mjpg-server to systemd unit file.");
 		shell_exec("sudo sed -i '9s/.*/ExecStart=\/home\/pi\/mjpg-streamer\/mjpg-streamer\/mjpg_streamer -i \"\/home\/pi\/mjpg-streamer\/mjpg-streamer\/input_uvc.so -d \/dev\/video0 -r " . $camerasettings['width'] . "x" . $camerasettings['height'] . " -f " . $camerasettings['framerate'] . " -n\" -o \/home\/pi\/mjpg-streamer\/mjpg-streamer\/output_http.so/' /etc/systemd/system/mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		
+		logmessage("Reloading systemd daemon.");
+		shell_exec("sudo systemctl daemon-reload 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		logmessage("Starting mjpg-server.");
 		shell_exec("sudo systemctl start mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}

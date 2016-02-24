@@ -1,5 +1,5 @@
 <!-- check if our login_user is set, otherwise redirect to the logon screen -->
-<?php include('logincheck.php');?>
+<?php //include('logincheck.php');?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -65,7 +65,7 @@
           <div class="panel-heading"><h4 class="text-center">Camera View</h4></div><!--end panel heading-->
           
           <div class="panel-body">
-            <img class="img-responsive img-rounded" src="http://<?php echo shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");?>:8080/?action=stream" alt=""/>
+            <img class="img-responsive img-rounded center-block" src="http://<?php echo shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");?>:8080/?action=stream" alt=""/>
           </div><!--end panel-body-->
           </div><!--end panel-->
       </div>  <!-- /row -->

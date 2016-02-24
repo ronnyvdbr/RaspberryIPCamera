@@ -8,8 +8,8 @@
 <file name="bootstrap.min.js" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130985725782319299" remote="130985746080000000" Dst="1" />
 <file name="bootstrap.js" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209830912343" remote="130971736120000000" Dst="1" />
 <file name="npm.js" server="192.168.20.138//home/pi/RaspberryIPCamera/www/" local="130970209831898000" remote="130971736120000000" Dst="1" />
-<file name="ie10-viewport-bug-workaround.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782349304" remote="130997568820000000" Dst="1" />
-<file name="bootstrap.min.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782319299" remote="130997568820000000" Dst="1" />
-<file name="bootstrap.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782175751" remote="130997386040000000" Dst="1" />
-<file name="npm.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782369312" remote="130997386040000000" Dst="1" />
+<file name="ie10-viewport-bug-workaround.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782349304" remote="131000112270000000" Dst="1" />
+<file name="bootstrap.min.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782319299" remote="131000112270000000" Dst="1" />
+<file name="bootstrap.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782175751" remote="131000112270000000" Dst="1" />
+<file name="npm.js" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725782369312" remote="131000112270000000" Dst="1" />
 </dwsync>
