@@ -318,7 +318,7 @@
 
 		if (!empty($_POST["drcstrenght"])) {
 		  $drcstrenght = test_input($_POST["drcstrenght"]);
-		  echo "drcstrength=" . $drcstrenght;
+		  //echo "drcstrength=" . $drcstrenght;
 		  if(!$drcstrenght == "high" || !$drcstrenght == "low" || !$drcstrenght == "medium" || !$drcstrenght == "off") {
 			$drcstrenghterr = "Only high, low, medium, or off is allowed as input for drcstrenght selector!"; 
 			logmessage($drcstrenghterr);
@@ -403,13 +403,13 @@
 			  break;
 			}
 
-echo "<br><br>CameraDefaults:<br>";
+//echo "<br><br>CameraDefaults:<br>";
 //var_dump($cameradefaultsettings);
-echo "<br><br>CameraSettings:<br>";
+//echo "<br><br>CameraSettings:<br>";
 //var_dump($camerasettings);
-echo "<br><br>Camerasettings + defaultsettings<br>";
+//echo "<br><br>Camerasettings + defaultsettings<br>";
 //var_dump($camerasettings + $cameradefaultsettings);
-echo "<br><br>";
+//echo "<br><br>";
 			
 			write_camerasettings_conf($camerasettings + $cameradefaultsettings, "/etc/uv4l/uv4l-raspicam.conf");
 		}
@@ -465,8 +465,7 @@ echo "<br><br>";
                 </div>
               </div><!--form group-->
               <div class="alert alert-info">
-                <p class="text-center">To view the MJPEG stream open the URL: <a href="http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=stream">http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=stream</a></p>
-                <p class="text-center">To view a single JPEG just call: <a href="http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=snapshot" class="text-center">http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/?action=snapshot</a></p>
+                <p class="text-center">To connect to MJPEG stream use the URL: <a href="http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/stream/video.mjpeg">http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/stream/video.mjpeg</a></p>
               </div><!-- end div alert -->
           </div><!-- end div col-sm-10 -->
           <div class="col-sm-1"></div>
