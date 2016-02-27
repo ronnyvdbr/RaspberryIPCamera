@@ -48,6 +48,7 @@ sudo apt-get update
 sudo apt-get -y install uv4l uv4l-raspicam
 sudo apt-get -y install uv4l-raspicam-extras
 sudo apt-get -y install uv4l-uvc
+sudo apt-get -y install uv4l-server
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 sudo chgrp www-data /etc/uv4l/uv4l-raspicam.conf
 sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
@@ -63,13 +64,22 @@ sudo chgrp www-data /etc/ntp.conf
 sudo chmod 664 /etc/ntp.conf
 
 
+
+
+
+
+
+
+
+
+## DEPRECATED
 ## install mjpeg streamer
 # first install dependencies
-sudo apt-get install libv4l-dev
-sudo apt-get install libjpeg-dev
-git clone https://github.com/ronnyvdbr/mjpg-streamer.git
-cd ~/mjpg-streamer/mjpg-streamer
-make USE_LIBV4L2=true clean all
+#sudo apt-get install libv4l-dev
+#sudo apt-get install libjpeg-dev
+#git clone https://github.com/ronnyvdbr/mjpg-streamer.git
+#cd ~/mjpg-streamer/mjpg-streamer
+##make USE_LIBV4L2=true clean all
 
 
 
