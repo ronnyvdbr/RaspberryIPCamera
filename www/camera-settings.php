@@ -64,7 +64,7 @@
   <?php 
 	$camerasettings = parse_ini_file("/etc/uv4l/uv4l-raspicam.conf");
 	if($camerasettings['drc'] == "") {$camerasettings['drc'] = "off";}
-	var_dump($camerasettings);
+	//var_dump($camerasettings);
   ?>
 <!-- ********************************************************************************************************************** -->
   <?php
@@ -404,11 +404,11 @@
 			}
 
 echo "<br><br>CameraDefaults:<br>";
-var_dump($cameradefaultsettings);
+//var_dump($cameradefaultsettings);
 echo "<br><br>CameraSettings:<br>";
-var_dump($camerasettings);
+//var_dump($camerasettings);
 echo "<br><br>Camerasettings + defaultsettings<br>";
-var_dump($camerasettings + $cameradefaultsettings);
+//var_dump($camerasettings + $cameradefaultsettings);
 echo "<br><br>";
 			
 			write_camerasettings_conf($camerasettings + $cameradefaultsettings, "/etc/uv4l/uv4l-raspicam.conf");
