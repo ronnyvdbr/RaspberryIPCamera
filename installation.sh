@@ -50,6 +50,10 @@ sudo apt-get -y install uv4l-raspicam-extras
 sudo apt-get -y install uv4l-uvc
 sudo apt-get -y install uv4l-server
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
+sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-server.conf /etc/uv4l/uv4l-server.conf
+sudo sed -i "s/--editable-config-file=\$CONFIGFILE/--editable-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/init.d/uv4l_raspicam
+sudo systemctl daemon-reload
+
 sudo chgrp www-data /etc/uv4l/uv4l-raspicam.conf
 sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 
@@ -62,14 +66,6 @@ sudo chmod 664 /etc/timezone
 
 sudo chgrp www-data /etc/ntp.conf
 sudo chmod 664 /etc/ntp.conf
-
-
-
-
-
-
-
-
 
 
 ## DEPRECATED
