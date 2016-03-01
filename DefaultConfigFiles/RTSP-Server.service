@@ -1,0 +1,9 @@
+After=network-online
+Requires=uv4l_raspicam.service
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/home/pi/gst-rtsp-server/examples/test-launch "(rpicamsrc keyframe-interval=10 preview=0 ! video/x-h264,width=1280,height=720,framerate=15/1,stream-format=byte-stream,alignment=au,profile=baseline ! rtph264pay name=pay0 pt=96)"
+
+[Install]
+WantedBy=multi-user.target
