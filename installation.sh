@@ -72,6 +72,14 @@ sudo chmod 664 /etc/timezone
 sudo chgrp www-data /etc/ntp.conf
 sudo chmod 664 /etc/ntp.conf
 
+
+git clone https://github.com/mpromonet/h264_v4l2_rtspserver.git
+sudo apt-get -y install cmake
+sudo apt-get -y install liblivemedia-dev libv4l-dev liblog4cpp5-dev
+cd h264_v4l2_rtspserver
+cmake . && make
+sudo make install
+
 sudo reboot
 
 ## DEPRECATED
