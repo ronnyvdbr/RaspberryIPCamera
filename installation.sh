@@ -57,6 +57,11 @@ sudo systemctl daemon-reload
 sudo chgrp www-data /etc/uv4l/uv4l-raspicam.conf
 sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 
+# Put system service file for RTSP server into place
+sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RTSP-Server.service /etc/systemd/system/RTSP-Server.service
+sudo systemctl daemon-reload
+sudo systemctl disable RTSP-Server.service
+
 # Put correct security rights on configuration files
 sudo chgrp www-data /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
 sudo chmod 664 /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
@@ -67,6 +72,7 @@ sudo chmod 664 /etc/timezone
 sudo chgrp www-data /etc/ntp.conf
 sudo chmod 664 /etc/ntp.conf
 
+sudo reboot
 
 ## DEPRECATED
 ## install mjpeg streamer
