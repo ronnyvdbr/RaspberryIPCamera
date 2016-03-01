@@ -2,7 +2,7 @@
 # To begin with, start by downloading a Raspbian Jessie Lite image from the Raspbian foundation website, write to sd card, boot it up.
 # Ssh into it with username pi and password raspberry
 
-# Bring the OS up to date:
+# Bring the OS up to date: --note: make sure to reboot if the upgrade included kernel updates
 sudo apt-get update && sudo apt-get -y upgrade
 
 # Install git since we'll be pulling this from git repo.
