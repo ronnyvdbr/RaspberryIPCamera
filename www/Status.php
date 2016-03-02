@@ -58,15 +58,27 @@
   <!-- InstanceBeginEditable name="body" -->
   	<?php date_default_timezone_set(trim(file_get_contents("/etc/timezone"),"\n"));?>
     <?php $configsettings = parse_ini_file("/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");?>
-
+	<?php $camerasettings = parse_ini_file("/etc/uv4l/uv4l-raspicam.conf");?>
+    
     <div class="container">
       <div class="row">
           <div class="panel panel-default">
           <div class="panel-heading"><h4 class="text-center">Camera View</h4></div><!--end panel heading-->
           
           <div class="panel-body">
-            <img class="img-responsive img-rounded center-block" src="http://<?php echo shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");?>:8080/stream/video.mjpeg" alt=""/>
-            
+          	<?php 
+				if($camerasettings['encoding'] == "mjpeg") {
+				  echo('<img class="img-responsive img-rounded center-block" src="http://');
+				  echo shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");
+				  echo(':8080/stream/video.mjpeg" alt=""/>');
+				}
+				
+				if($camerasettings['encoding'] == "h264") {
+				echo('<p class="text-center">The IP Camera is currently running in RTSP server mode and can be accessed by an external RTSP player (VLC, mplayer, Synology Surveillance station, etc ...) via below mrl.</p><p class="text-center"><mark>rtsp://');
+				echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+				echo(':8554</mark>');
+				}
+			?>
           </div><!--end panel-body-->
           </div><!--end panel-->
       </div>  <!-- /row -->
@@ -74,11 +86,11 @@
           <div class="panel panel-default">
           <div class="panel-heading"><h4 class="text-center">General Settings</h4></div><!--end panel heading-->
           <div class="panel-body">
-            	<div class="col-sm-6"><p class="text-center bg-info">Current Timezone:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Current Timezone:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . date_default_timezone_get();?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Current Date/Time:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Current Date/Time:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . date('d/m/Y - H:i:s');?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Software Version:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Software Version:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . $configsettings['SoftwareVersion'];?></p></div>
           </div><!--end panel-body-->
           </div><!--end panel-->
@@ -87,21 +99,21 @@
           <div class="panel panel-default">
           <div class="panel-heading"><h4 class="text-center">Network Settings</h4></div><!--end panel heading-->
           <div class="panel-body">
-            	<div class="col-sm-6"><p class="text-center bg-info">IP Address Assignment:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>IP Address Assignment:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . $configsettings['IPAssignment'];?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Cable Connection Status:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Cable Connection Status:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /sys/class/net/eth0/operstate");?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Mac Address:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Mac Address:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /sys/class/net/eth0/address");?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">IP Address:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>IP Address:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'");?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Subnet Mask:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Subnet Mask:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("ifconfig eth0 | awk '/Mask:/{ print $4;} ' | sed 's/Mask://'");?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Default Gateway:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Default Gateway:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("ip route | awk '/default/ { print $3 }'");?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Primary DNS Server:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Primary DNS Server:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /etc/resolv.conf | awk -v n=1 '/^nameserver/{l++} (l==n){print}' | sed -e 's/nameserver //g'");?></p></div>
-            	<div class="col-sm-6"><p class="text-center bg-info">Secondary DNS Server:</p></div>
+            	<div class="col-sm-6"><p class="text-center bg-info"><strong>Secondary DNS Server:</strong></p></div>
             	<div class="col-sm-6"><p class="text-center bg-info"><?php echo "&nbsp;" . shell_exec("cat /etc/resolv.conf | awk -v n=2 '/^nameserver/{l++} (l==n){print}' | sed -e 's/nameserver //g'");?></p></div>
           </div><!--end panel-body-->
           </div><!--end panel-->

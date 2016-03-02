@@ -460,12 +460,32 @@
                 <div class="col-sm-5">
                   <select name="format" class="form-control" id="format" form="frm-camerasettings">
                     <option value="mjpeg" <?php if($camerasettings['encoding'] == "mjpeg") {echo "selected='selected'";}?>>MJPEG Video (streamable)</option>
-                    <option value="h264" <?php if($camerasettings['encoding'] == "h264") {echo "selected='selected'";}?>>H264 (raw, streamable)</option>
+                    <option value="h264" <?php if($camerasettings['encoding'] == "h264") {echo "selected='selected'";}?>>H264 (Streamable over RTSP)</option>
                   </select>            
                 </div>
               </div><!--form group-->
               <div class="alert alert-info">
-                <p class="text-center">To connect to MJPEG stream use the URL: <a href="http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/stream/video.mjpeg">http://<?php echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));?>:8080/stream/video.mjpeg</a></p>
+              
+				<?php 
+                    if($camerasettings['encoding'] == "mjpeg") {
+					echo('<p class="text-center">To connect to MJPEG stream use the URL:</p>'); 
+					echo('<p class="text-center" style="width: 100%; display: inline-block; word-wrap: break-word;"><a href="http://');
+					echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+					echo(':8080/stream/video.mjpeg"><span>http://');
+					echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+					echo(':8080/stream/video.mjpeg</span></a></p>');
+					}
+				?>
+
+				<?php 
+                    if($camerasettings['encoding'] == "h264") {
+					echo('<p class="text-center">To connect to RTSP stream use the MRL:</p>'); 
+					echo('<p class="text-center"><mark>rtsp://');
+					echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+					echo(':8554</mark></p>');
+					}
+				?>
+              
               </div><!-- end div alert -->
           </div><!-- end div col-sm-10 -->
           <div class="col-sm-1"></div>
@@ -554,12 +574,6 @@
                   </div>
 
               </div><!--form group-->
-
-                <div class="row">
-                  <div class"col-sm-5">
-                    <p class="bg-info col-sm-8 col-sm-offset-2">test</p>
-                  </div>
-                </div><!--end row-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="shutterspeed">Shutter Speed:</label>
@@ -761,19 +775,25 @@
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-camerasettings-apply'])) {
 		// Only continue when no errors are found.
 		if(/*empty($widtherr) && empty($heighterr) && */empty($resolutionerr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
-		
-		
-		
-		logmessage("Stopping mjpg-server.");
-		shell_exec("sudo systemctl stop mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		logmessage("Restarting uv4l_raspicam.service via systemctl.");
-		shell_exec("sudo systemctl restart uv4l_raspicam.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log"); 
-		logmessage("Writing changes for mjpg-server to systemd unit file.");
-		shell_exec("sudo sed -i '9s/.*/ExecStart=\/home\/pi\/mjpg-streamer\/mjpg-streamer\/mjpg_streamer -i \"\/home\/pi\/mjpg-streamer\/mjpg-streamer\/input_uvc.so -d \/dev\/video0 -r " . $camerasettings['width'] . "x" . $camerasettings['height'] . " -f " . $camerasettings['framerate'] . " -n\" -o \/home\/pi\/mjpg-streamer\/mjpg-streamer\/output_http.so/' /etc/systemd/system/mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		logmessage("Reloading systemd daemon.");
-		shell_exec("sudo systemctl daemon-reload 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-		logmessage("Starting mjpg-server.");
-		shell_exec("sudo systemctl start mjpg-server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			
+			if($camerasettings['encoding'] == "mjpeg") {
+				
+				logmessage("Stopping & disabling RTSP server if running.");
+				shell_exec("sudo systemctl stop RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+				shell_exec("sudo systemctl disable RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+				logmessage("Restarting uv4l_raspicam.service via systemctl.");
+				shell_exec("sudo systemctl restart uv4l_raspicam.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log"); 
+			}
+			
+			if($camerasettings['encoding'] == "h264") {
+				logmessage("Restarting uv4l_raspicam.service via systemctl.");
+				shell_exec("sudo systemctl restart uv4l_raspicam.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log"); 
+				logmessage("Starting & enabling RTSP server if stopped.");
+				shell_exec("sudo systemctl enable RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+				shell_exec("sudo systemctl stop RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+				shell_exec("sudo systemctl start RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+
+			}
 		}
 	}
   ?>
