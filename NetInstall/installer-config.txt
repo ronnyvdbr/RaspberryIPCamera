@@ -14,7 +14,7 @@ ip_netmask=0.0.0.0
 ip_broadcast=0.0.0.0
 ip_gateway=0.0.0.0
 ip_nameservers=
-online_config=https://raw.githubusercontent.com/ronnyvdbr/RaspberryIPCamera/master/NetInstall/online_config.txt
+online_config= # https://raw.githubusercontent.com/ronnyvdbr/RaspberryIPCamera/master/NetInstall/online_config.txt
 usbroot= # set to 1 to install to first USB disk
 cmdline="dwc_otg.lpm_enable=0 console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 console=tty1 elevator=deadline"
 rootfstype=ext4
