@@ -1,1 +1,71 @@
+chroot /rootfs
 
+## Set up pi user
+useradd pi
+echo 'pi:raspberry'|chpasswd
+usermod -a -G sudo pi
+mkdir /home/pi
+cp /root/.profile /home/pi/.profile
+cp /root/.bashrc /home/pi/.bashrc
+sed -i 's/pi:x:1000:1000::\/home\/pi:\/bin\/sh/pi:x:1000:1000::\/home\/pi:\/bin\/bash/g' /etc/passwd
+sed -i 's/# export LS_OPTIONS=/export LS_OPTIONS=/g' /home/pi/.bashrc
+sed -i 's/# eval/eval/g' /home/pi/.bashrc
+sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc
+sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc
+sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc
+chown -R pi /home/pi
+chgrp -R pi /home/pi
+chmod -R 755 /home/pi
+
+
+cd /home/pi
+runuser -l  pi -c 'git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git'
+usermod -a -G www-data pi
+rm /etc/nginx/sites-enabled/default
+cp RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
+ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
+mount -o remount rw /boot
+echo "start_x=1" | sudo tee -a /boot/config.txt
+echo "gpu_mem=256" | sudo tee -a /boot/config.txt
+echo "disable_camera_led=1" | sudo tee -a /boot/config.txt
+cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands
+curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | sudo apt-key add -
+echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | sudo tee -a /etc/apt/sources.list
+apt-get update
+apt-get -y install uv4l uv4l-raspicam
+apt-get -y install uv4l-raspicam-extras
+apt-get -y install uv4l-uvc
+apt-get -y install uv4l-server
+cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
+cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-server.conf /etc/uv4l/uv4l-server.conf
+sed -i "s/--editable-config-file=\$CONFIGFILE/--editable-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/init.d/uv4l_raspicam
+systemctl daemon-reload
+chgrp www-data /etc/uv4l/uv4l-raspicam.conf
+chmod 664 /etc/uv4l/uv4l-raspicam.conf
+cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RTSP-Server.service /etc/systemd/system/RTSP-Server.service
+systemctl daemon-reload
+systemctl disable RTSP-Server.service
+chgrp www-data /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
+chmod 664 /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
+chgrp www-data /etc/timezone
+chmod 664 /etc/timezone
+chgrp www-data /etc/ntp.conf
+chmod 664 /etc/ntp.conf
+
+## set up RTSP Server
+runuser -l  pi -c 'git clone https://github.com/mpromonet/h264_v4l2_rtspserver.git
+apt-get -y install cmake
+apt-get -y install liblivemedia-dev libv4l-dev liblog4cpp5-dev
+cd h264_v4l2_rtspserver
+runuser -l  pi -c 'cmake . && make'
+make install
+
+## clean installation
+apt-get install localepurge
+localepurge
+apt-get remove localepurge
+
+find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
+find /usr/share/doc -empty|xargs rmdir || true
+rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
+rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/*
