@@ -1,4 +1,4 @@
-read -p "starting customisations"
+read -p 'waiting'
 ln -s /proc /rootfs/proc
 ln -s /dev/pts /rootfs/dev/pts
 mount -o remount rw /bootfs
