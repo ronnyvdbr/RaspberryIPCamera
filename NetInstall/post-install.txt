@@ -24,10 +24,7 @@ usermod -a -G www-data pi
 rm /etc/nginx/sites-enabled/default
 cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
 ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
-mount -o remount rw /boot
-echo "start_x=1" | tee -a /boot/config.txt
-echo "gpu_mem=256" | tee -a /boot/config.txt
-echo "disable_camera_led=1" | tee -a /boot/config.txt
+
 cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands
 curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | apt-key add -
 echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | tee -a /etc/apt/sources.list
