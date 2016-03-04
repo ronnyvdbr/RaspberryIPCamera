@@ -1,5 +1,6 @@
-chroot /rootfs
+cat << 'EOF' > /rootfs/post-install.sh
 
+#!/bin/bash
 ## Set up pi user
 useradd pi
 echo 'pi:raspberry'|chpasswd
@@ -69,3 +70,8 @@ find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
 find /usr/share/doc -empty|xargs rmdir || true
 rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
 rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/*
+
+EOF
+chmod +x  /rootfs/post-install.sh
+chroot /rootfs /post-install.sh
+rm -f rootfs/post-install.sh
