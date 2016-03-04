@@ -1,3 +1,8 @@
+mount -o remount rw /bootfs
+echo "start_x=1" | tee -a /bootfs/config.txt
+echo "gpu_mem=256" | tee -a /bootfs/config.txt
+echo "disable_camera_led=1" | tee -a /bootfs/config.txt
+
 cat << 'EOF' > /rootfs/post-install.sh
 
 ## Set up pi user
