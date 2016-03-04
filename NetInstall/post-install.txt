@@ -23,15 +23,15 @@ cd /home/pi
 runuser -l  pi -c 'git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git'
 usermod -a -G www-data pi
 rm /etc/nginx/sites-enabled/default
-cp RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
+cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
 ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
 mount -o remount rw /boot
-echo "start_x=1" | sudo tee -a /boot/config.txt
-echo "gpu_mem=256" | sudo tee -a /boot/config.txt
-echo "disable_camera_led=1" | sudo tee -a /boot/config.txt
+echo "start_x=1" | tee -a /boot/config.txt
+echo "gpu_mem=256" | tee -a /boot/config.txt
+echo "disable_camera_led=1" | tee -a /boot/config.txt
 cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands
-curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | sudo apt-key add -
-echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | sudo tee -a /etc/apt/sources.list
+curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | apt-key add -
+echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | tee -a /etc/apt/sources.list
 apt-get update
 apt-get -y install uv4l uv4l-raspicam
 apt-get -y install uv4l-raspicam-extras
@@ -55,8 +55,6 @@ chmod 664 /etc/ntp.conf
 
 ## set up RTSP Server
 runuser -l  pi -c 'git clone https://github.com/mpromonet/h264_v4l2_rtspserver.git
-apt-get -y install cmake
-apt-get -y install liblivemedia-dev libv4l-dev liblog4cpp5-dev
 cd h264_v4l2_rtspserver
 runuser -l  pi -c 'cmake . && make'
 make install
@@ -64,7 +62,7 @@ make install
 ## clean installation
 apt-get install localepurge
 localepurge
-apt-get remove localepurge
+apt-get remove localepurge cmake liblivemedia-dev libv4l-dev liblog4cpp5-dev 
 
 find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
 find /usr/share/doc -empty|xargs rmdir || true
