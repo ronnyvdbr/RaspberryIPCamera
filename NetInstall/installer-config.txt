@@ -1,5 +1,5 @@
 preset=server
-packages=git,nginx,php5-fpm,curl,sudo,cmake,liblivemedia-dev,libv4l-dev,liblog4cpp5-dev
+packages=apt-utils,git,nginx,php5-fpm,curl,sudo,cmake,liblivemedia-dev,libv4l-dev,liblog4cpp5-dev
 mirror=http://mirrordirector.raspbian.org/raspbian/
 release=jessie
 hostname=RaspberryIPCamera
