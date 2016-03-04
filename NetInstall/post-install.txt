@@ -1,6 +1,5 @@
 cat << 'EOF' > /rootfs/post-install.sh
 
-#!/bin/bash
 ## Set up pi user
 useradd pi
 echo 'pi:raspberry'|chpasswd
