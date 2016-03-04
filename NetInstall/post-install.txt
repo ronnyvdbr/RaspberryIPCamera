@@ -1,3 +1,6 @@
+read -p "starting customisations"
+ln -s /proc /rootfs/proc
+ln -s /dev/pts /rootfs/dev/pts
 mount -o remount rw /bootfs
 echo "start_x=1" | tee -a /bootfs/config.txt
 echo "gpu_mem=256" | tee -a /bootfs/config.txt
