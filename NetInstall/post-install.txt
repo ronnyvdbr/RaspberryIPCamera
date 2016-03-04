@@ -1,10 +1,11 @@
-read -p 'waiting'
-ln -s /proc /rootfs/proc
-ln -s /dev/pts /rootfs/dev/pts
-mount -o remount rw /bootfs
-echo "start_x=1" | tee -a /bootfs/config.txt
-echo "gpu_mem=256" | tee -a /bootfs/config.txt
-echo "disable_camera_led=1" | tee -a /bootfs/config.txt
+read -p "waiting"
+set -o verbose
+mount --bind /proc /rootfs/proc
+mount --bind /dev/pts /rootfs/dev/pts
+mount -o remount rw /boot
+echo "start_x=1" | tee -a /boot/config.txt
+echo "gpu_mem=256" | tee -a /boot/config.txt
+echo "disable_camera_led=1" | tee -a /boot/config.txt
 
 cat << 'EOF' > /rootfs/post-install.sh
 
