@@ -74,4 +74,4 @@ rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/*
 EOF
 chmod +x  /rootfs/post-install.sh
 chroot /rootfs /post-install.sh
-rm -f rootfs/post-install.sh
+rm -f /rootfs/post-install.sh
