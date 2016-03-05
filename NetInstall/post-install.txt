@@ -1,66 +1,58 @@
 read -p "waiting"
 set -o verbose
-
-cat << 'EOF' > /rootfs/post-install.sh
 ## Set up pi user
-useradd pi
-echo 'pi:raspberry'|chpasswd
-usermod -a -G sudo pi
-mkdir /home/pi
-cp /root/.profile /home/pi/.profile
-cp /root/.bashrc /home/pi/.bashrc
-sed -i 's/pi:x:1000:1000::\/home\/pi:\/bin\/sh/pi:x:1000:1000::\/home\/pi:\/bin\/bash/g' /etc/passwd
-sed -i 's/# export LS_OPTIONS=/export LS_OPTIONS=/g' /home/pi/.bashrc
-sed -i 's/# eval/eval/g' /home/pi/.bashrc
-sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc
-sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc
-sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc
-chown -R pi /home/pi
-chgrp -R pi /home/pi
-chmod -R 755 /home/pi
-
-cd /home/pi
-runuser -l  pi -c 'git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git'
-usermod -a -G www-data pi
-rm /etc/nginx/sites-enabled/default
-cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
-ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
-
-cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands
-curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | apt-key add -
-echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | tee -a /etc/apt/sources.list
-export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get -y install uv4l uv4l-raspicam
-apt-get -y install uv4l-raspicam-extras
-apt-get -y install uv4l-uvc
-apt-get -y install uv4l-server
-cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
-cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-server.conf /etc/uv4l/uv4l-server.conf
-sed -i "s/--editable-config-file=\$CONFIGFILE/--editable-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/init.d/uv4l_raspicam
-chgrp www-data /etc/uv4l/uv4l-raspicam.conf
-chmod 664 /etc/uv4l/uv4l-raspicam.conf
-cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RTSP-Server.service /etc/systemd/system/RTSP-Server.service
-chmod o+x /etc/systemd/system/RTSP-Server.service
-systemctl disable RTSP-Server.service
-chgrp www-data /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
-chmod 664 /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
-chgrp www-data /etc/timezone
-chmod 664 /etc/timezone
-chgrp www-data /etc/ntp.conf
-chmod 664 /etc/ntp.conf
-cd /home/pi
-runuser -l  pi -c 'git clone https://github.com/mpromonet/h264_v4l2_rtspserver.git
-cd h264_v4l2_rtspserver
-runuser -l  pi -c 'cmake . && make'
-make install
-apt-get install localepurge
-localepurge
-apt-get remove localepurge cmake liblivemedia-dev libv4l-dev liblog4cpp5-dev 
-find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true
-find /usr/share/doc -empty|xargs rmdir || true
-rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
-rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/*
-EOF
-chmod +x  /rootfs/post-install.sh
-chroot /rootfs /post-install.sh | tee -a /rootfs/post-install.log
+chroot /rootfs useradd pi 2>&1 | tee -a /post-install.log
+chroot /rootfs echo 'pi:raspberry'|chpasswd 2>&1 | tee -a /post-install.log
+chroot /rootfs usermod -a -G sudo pi 2>&1 | tee -a /post-install.log
+chroot /rootfs mkdir /home/pi 2>&1 | tee -a /post-install.log
+chroot /rootfs cp /root/.profile /home/pi/.profile 2>&1 | tee -a /post-install.log
+chroot /rootfs cp /root/.bashrc /home/pi/.bashrc 2>&1 | tee -a /post-install.log
+chroot /rootfs sed -i 's/pi:x:1000:1000::\/home\/pi:\/bin\/sh/pi:x:1000:1000::\/home\/pi:\/bin\/bash/g' /etc/passwd 2>&1 | tee -a /post-install.log
+chroot /rootfs sed -i 's/# export LS_OPTIONS=/export LS_OPTIONS=/g' /home/pi/.bashrc 2>&1 | tee -a /post-install.log
+chroot /rootfs sed -i 's/# eval/eval/g' /home/pi/.bashrc 2>&1 | tee -a /post-install.log
+chroot /rootfs sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc 2>&1 | tee -a /post-install.log
+chroot /rootfs sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc 2>&1 | tee -a /post-install.log
+chroot /rootfs sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc 2>&1 | tee -a /post-install.log
+chroot /rootfs chown -R pi /home/pi 2>&1 | tee -a /post-install.log
+chroot /rootfs chgrp -R pi /home/pi 2>&1 | tee -a /post-install.log
+chroot /rootfs chmod -R 755 /home/pi 2>&1 | tee -a /post-install.log
+chroot /rootfs runuser -l  pi -c 'git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git /home/pi/RaspberryIPCamera' 2>&1 | tee -a /post-install.log
+chroot /rootfs usermod -a -G www-data pi 2>&1 | tee -a /post-install.log
+chroot /rootfs rm /etc/nginx/sites-enabled/default 2>&1 | tee -a /post-install.log
+chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf 2>&1 | tee -a /post-install.log
+chroot /rootfs ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf 2>&1 | tee -a /post-install.log
+chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands 2>&1 | tee -a /post-install.log
+chroot /rootfs curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | apt-key add - 2>&1 | tee -a /post-install.log
+chroot /rootfs echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | tee -a /etc/apt/sources.list 2>&1 | tee -a /post-install.log
+chroot /rootfs export DEBIAN_FRONTEND=noninteractive 2>&1 | tee -a /post-install.log
+chroot /rootfs apt-get update 2>&1 | tee -a /post-install.log
+chroot /rootfs apt-get -y install uv4l uv4l-raspicam 2>&1 | tee -a /post-install.log
+chroot /rootfs apt-get -y install uv4l-raspicam-extras 2>&1 | tee -a /post-install.log
+chroot /rootfs apt-get -y install uv4l-uvc 2>&1 | tee -a /post-install.log
+chroot /rootfs apt-get -y install uv4l-server 2>&1 | tee -a /post-install.log
+chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf 2>&1 | tee -a /post-install.log
+chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-server.conf /etc/uv4l/uv4l-server.conf 2>&1 | tee -a /post-install.log
+chroot /rootfs sed -i "s/--editable-config-file=\$CONFIGFILE/--editable-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/init.d/uv4l_raspicam 2>&1 | tee -a /post-install.log
+chroot /rootfs chgrp www-data /etc/uv4l/uv4l-raspicam.conf 2>&1 | tee -a /post-install.log
+chroot /rootfs chmod 664 /etc/uv4l/uv4l-raspicam.conf 2>&1 | tee -a /post-install.log
+chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RTSP-Server.service /etc/systemd/system/RTSP-Server.service 2>&1 | tee -a /post-install.log
+chroot /rootfs chmod o+x /etc/systemd/system/RTSP-Server.service 2>&1 | tee -a /post-install.log
+chroot /rootfs systemctl disable RTSP-Server.service 2>&1 | tee -a /post-install.log
+chroot /rootfs chgrp www-data /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini 2>&1 | tee -a /post-install.log
+chroot /rootfs chmod 664 /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini 2>&1 | tee -a /post-install.log
+chroot /rootfs chgrp www-data /etc/timezone 2>&1 | tee -a /post-install.log
+chroot /rootfs chmod 664 /etc/timezone 2>&1 | tee -a /post-install.log
+chroot /rootfs chgrp www-data /etc/ntp.conf 2>&1 | tee -a /post-install.log
+chroot /rootfs chmod 664 /etc/ntp.conf 2>&1 | tee -a /post-install.log
+chroot /rootfs cd /home/pi 2>&1 | tee -a /post-install.log
+chroot /rootfs runuser -l  pi -c 'git clone https://github.com/mpromonet/h264_v4l2_rtspserver.git 2>&1 | tee -a /post-install.log
+chroot /rootfs cd h264_v4l2_rtspserver 2>&1 | tee -a /post-install.log
+chroot /rootfs runuser -l  pi -c 'cmake . && make' 2>&1 | tee -a /post-install.log
+chroot /rootfs make install 2>&1 | tee -a /post-install.log
+chroot /rootfs apt-get install localepurge 2>&1 | tee -a /post-install.log
+chroot /rootfs localepurge 2>&1 | tee -a /post-install.log
+chroot /rootfs apt-get remove localepurge cmake liblivemedia-dev libv4l-dev liblog4cpp5-dev 2>&1 | tee -a /post-install.log
+chroot /rootfs find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true 2>&1 | tee -a /post-install.log
+chroot /rootfs find /usr/share/doc -empty|xargs rmdir || true 2>&1 | tee -a /post-install.log
+chroot /rootfs rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/* 2>&1 | tee -a /post-install.log
+chroot /rootfs rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/* 2>&1 | tee -a /post-install.log
