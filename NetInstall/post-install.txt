@@ -45,5 +45,9 @@ chroot /rootfs chmod 664 /etc/timezone 2>&1 | chroot /rootfs tee -a /post-instal
 chroot /rootfs chgrp www-data /etc/ntp.conf 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs chmod 664 /etc/ntp.conf 2>&1 | chroot /rootfs tee -a /post-install.log
 
+chroot /rootfs wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/ryvlzz3bknp0eh5/h264-v4l2-rtspserver_20160306-1_armhf.deb?dl=0 2>&1 | chroot /rootfs tee -a /post-install.log
+chroot /rootfs wget -O /home/pi/live555_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/k7uncvqeugd9gpv/live555_20160306-1_armhf.deb?dl=0 2>&1 | chroot /rootfs tee -a /post-install.log
+chroot /rootfs dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb 2>&1 | chroot /rootfs tee -a /post-install.log
+chroot /rootfs dpkg -i /home/pi/live555_20160306-1_armhf.deb 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs apt-get install localepurge && localpurge && apt-get remove localepurge 2>&1 | chroot /rootfs tee -a /post-install.log
 read -p "waiting"
