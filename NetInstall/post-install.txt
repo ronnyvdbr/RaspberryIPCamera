@@ -1,5 +1,6 @@
 read -p "waiting"
 set -o verbose
+mount --bind /dev/pts /rootfs/dev/pts
 ## Set up pi user
 chroot /rootfs useradd pi 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs echo 'pi:raspberry' | chroot /rootfs chpasswd 2>&1 | chroot /rootfs tee -a /post-install.log
@@ -16,8 +17,8 @@ chroot /rootfs sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc 2>&1 | chroot /
 chroot /rootfs chown -R pi /home/pi 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs chgrp -R pi /home/pi 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs chmod -R 755 /home/pi 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs runuser -l  pi -c 'git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git /home/pi/RaspberryIPCamera' 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs runuser -l  pi -c 'git clone https://github.com/mpromonet/h264_v4l2_rtspserver.git /home/pi/h264_v4l2_rtspserver' 2>&1 | chroot /rootfs tee -a /post-install.log
+chroot /rootfs runuser -l  pi -c 'git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git /home/pi/RaspberryIPCamera' | chroot /rootfs tee -a /post-install.log
+chroot /rootfs runuser -l  pi -c 'git clone https://github.com/mpromonet/h264_v4l2_rtspserver.git /home/pi/h264_v4l2_rtspserver' | chroot /rootfs tee -a /post-install.log
 chroot /rootfs usermod -a -G www-data pi 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs rm /etc/nginx/sites-enabled/default 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf 2>&1 | chroot /rootfs tee -a /post-install.log
@@ -43,7 +44,7 @@ chroot /rootfs chgrp www-data /etc/timezone 2>&1 | chroot /rootfs tee -a /post-i
 chroot /rootfs chmod 664 /etc/timezone 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs chgrp www-data /etc/ntp.conf 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs chmod 664 /etc/ntp.conf 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs runuser -l  pi -c 'cmake /home/pi/h264_v4l2_rtspserver && make -C /home/pi/h264_v4l2_rtspserver' 2>&1 | chroot /rootfs tee -a /post-install.log
+chroot /rootfs runuser -l pi -c 'chroot /rootfs cmake /home/pi/h264_v4l2_rtspserver && chroot /rootfs make -C /home/pi/h264_v4l2_rtspserver' 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs make -C /home/pi/h264_v4l2_rtspserver install 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs apt-get install localepurge 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs localepurge 2>&1 | chroot /rootfs tee -a /post-install.log
