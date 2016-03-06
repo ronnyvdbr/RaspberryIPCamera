@@ -44,12 +44,6 @@ chroot /rootfs chgrp www-data /etc/timezone 2>&1 | chroot /rootfs tee -a /post-i
 chroot /rootfs chmod 664 /etc/timezone 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs chgrp www-data /etc/ntp.conf 2>&1 | chroot /rootfs tee -a /post-install.log
 chroot /rootfs chmod 664 /etc/ntp.conf 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs runuser -l pi -c 'chroot /rootfs cmake /home/pi/h264_v4l2_rtspserver && chroot /rootfs make -C /home/pi/h264_v4l2_rtspserver' 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs make -C /home/pi/h264_v4l2_rtspserver install 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs apt-get install localepurge 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs localepurge 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs apt-get remove localepurge cmake liblivemedia-dev libv4l-dev liblog4cpp5-dev 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs find /usr/share/doc -empty|xargs rmdir || true 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/* 2>&1 | chroot /rootfs tee -a /post-install.log
-chroot /rootfs rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/* 2>&1 | chroot /rootfs tee -a /post-install.log
+
+chroot /rootfs apt-get install localepurge && localpurge && apt-get remove localepurge 2>&1 | chroot /rootfs tee -a /post-install.log
+read -p "waiting"
