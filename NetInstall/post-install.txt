@@ -50,6 +50,6 @@ chroot /rootfs dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 chroot /rootfs dpkg -i /home/pi/live555_20160306-1_armhf.deb
 chroot /rootfs rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 chroot /rootfs rm /home/pi/live555_20160306-1_armhf.deb
-echo "start_x=1" >> /bootfs/config.txt
-echo "gpu_mem=128" >> /bootfs/config.txt
+echo "start_x=1" >> /rootfs/boot/config.txt
+echo "gpu_mem=128" >> /rootfs/boot/config.txt
 read -p "waiting"
