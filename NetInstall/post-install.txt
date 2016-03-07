@@ -1,6 +1,8 @@
 set -o verbose
 export DEBIAN_FRONTEND=noninteractive
-chroot /rootfs apt-get -y install localepurge
+chroot /rootfs echo "localepurge localepurge/nopurge multiselect en, en_US.UTF-8"|chroot /rootfs debconf-set-selections
+chroot /rootfs apt-get install localepurge
+chroot /rootfs dpkg-reconfigure localepurge
 chroot /rootfs localepurge
 chroot /rootfs apt-get remove localepurge
 chroot /rootfs useradd pi
