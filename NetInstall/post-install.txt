@@ -48,7 +48,7 @@ chroot /rootfs chgrp www-data /etc/timezone
 chroot /rootfs chmod 664 /etc/timezone
 chroot /rootfs chgrp www-data /etc/ntp.conf
 chroot /rootfs chmod 664 /etc/ntp.conf
-chroot /rootfs wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/ryvlzz3bknp0eh5/h264-v4l2-rtspserver_20160306-1_armhf.deb?dl=0
+chroot /rootfs wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/1nkuoaemreesu4g/h264-v4l2-rtspserver_20160306-1_armhf_2.deb?dl=0
 chroot /rootfs wget -O /home/pi/live555_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/k7uncvqeugd9gpv/live555_20160306-1_armhf.deb?dl=0
 chroot /rootfs dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 chroot /rootfs dpkg -i /home/pi/live555_20160306-1_armhf.deb
