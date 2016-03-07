@@ -49,7 +49,7 @@ chroot /rootfs dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 chroot /rootfs dpkg -i /home/pi/live555_20160306-1_armhf.deb
 chroot /rootfs rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 chroot /rootfs rm /home/pi/live555_20160306-1_armhf.deb
-chroot /rootfs apt-get install localepurge && chroot /rootfs localpurge && chroot /rootfs apt-get remove localepurge
+chroot /rootfs localpurge && chroot /rootfs apt-get remove localepurge
 echo "start_x=1" >> /bootfs/config.txt
 echo "gpu_mem=128" >> /bootfs/config.txt
 read -p "waiting"
