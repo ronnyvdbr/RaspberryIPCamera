@@ -1,5 +1,6 @@
 read -p "waiting"
 set -o verbose
+export DEBIAN_FRONTEND=noninteractive
 chroot /rootfs useradd pi
 chroot /rootfs echo 'pi:raspberry' | chroot /rootfs chpasswd
 chroot /rootfs usermod -a -G sudo pi
