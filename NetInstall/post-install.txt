@@ -12,10 +12,13 @@ chroot /rootfs sed -i 's/# eval/eval/g' /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc
+chroot /rootfs wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
+chroot /rootfs unzip /home/pi/RaspberryIPCamera.zip
+chroot /rootfs mv /home/pi/RaspberryIPCamera-master /home/pi/RaspberryIPCamera
+chroot /rootfs rm /home/pi/RaspberryIPCamera.zip
 chroot /rootfs chown -R pi /home/pi
 chroot /rootfs chgrp -R pi /home/pi
 chroot /rootfs chmod -R 755 /home/pi
-chroot /rootfs runuser -l  pi -c 'git clone https://github.com/ronnyvdbr/RaspberryIPCamera.git /home/pi/RaspberryIPCamera'
 chroot /rootfs usermod -a -G www-data pi
 chroot /rootfs rm /etc/nginx/sites-enabled/default
 chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
@@ -44,7 +47,9 @@ chroot /rootfs wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https:
 chroot /rootfs wget -O /home/pi/live555_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/k7uncvqeugd9gpv/live555_20160306-1_armhf.deb?dl=0
 chroot /rootfs dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 chroot /rootfs dpkg -i /home/pi/live555_20160306-1_armhf.deb
+chroot /rootfs rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
+chroot /rootfs rm /home/pi/live555_20160306-1_armhf.deb
 chroot /rootfs apt-get install localepurge && chroot /rootfs localpurge && chroot /rootfs apt-get remove localepurge
-echo "start_x=1" >> /boot/config.txt
-echo "gpu_mem=128" >> /boot/config.txt
+echo "start_x=1" >> /bootfs/config.txt
+echo "gpu_mem=128" >> /bootfs/config.txt
 read -p "waiting"
