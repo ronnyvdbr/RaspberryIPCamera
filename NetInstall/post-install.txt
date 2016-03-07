@@ -16,7 +16,7 @@ chroot /rootfs sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc
 read -p "waiting"
-chroot /rootfs curl -o  /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
+chroot /rootfs wget -O  /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
 read -p "waiting"
 chroot /rootfs unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
 mv /rootfs/home/pi/RaspberryIPCamera-master /rootfs/home/pi/RaspberryIPCamera
