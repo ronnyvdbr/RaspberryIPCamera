@@ -1,5 +1,5 @@
 preset=server
-packages=nginx,php5-fpm,sudo,unzip,localpurge
+packages=nginx,php5-fpm,sudo,unzip,curl,localpurge
 mirror=http://mirrordirector.raspbian.org/raspbian/
 release=jessie
 hostname=RaspberryIPCamera
