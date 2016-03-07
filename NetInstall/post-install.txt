@@ -4,7 +4,9 @@ chroot /rootfs localpurge && chroot /rootfs apt-get remove localepurge
 chroot /rootfs useradd pi
 chroot /rootfs echo 'pi:raspberry' | chroot /rootfs chpasswd
 chroot /rootfs usermod -a -G sudo pi
+read -p "waiting"
 chroot /rootfs mkdir /home/pi
+read -p "waiting"
 chroot /rootfs cp /root/.profile /home/pi/.profile
 chroot /rootfs cp /root/.bashrc /home/pi/.bashrc
 chroot /rootfs sed -i 's/pi:x:1000:1000::\/home\/pi:\/bin\/sh/pi:x:1000:1000::\/home\/pi:\/bin\/bash/g' /etc/passwd
@@ -13,7 +15,9 @@ chroot /rootfs sed -i 's/# eval/eval/g' /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc
+read -p "waiting"
 chroot /rootfs curl -o  /rootfs/home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
+read -p "waiting"
 chroot /rootfs unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
 mv /rootfs/home/pi/RaspberryIPCamera-master /rootfs/home/pi/RaspberryIPCamera
 rm /rootfs/home/pi/RaspberryIPCamera.zip
