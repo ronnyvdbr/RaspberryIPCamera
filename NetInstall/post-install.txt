@@ -13,10 +13,10 @@ chroot /rootfs sed -i 's/# eval/eval/g' /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc
-chroot /rootfs wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
-chroot /rootfs unzip /home/pi/RaspberryIPCamera.zip
-chroot /rootfs mv /home/pi/RaspberryIPCamera-master /home/pi/RaspberryIPCamera
-chroot /rootfs rm /home/pi/RaspberryIPCamera.zip
+wget -O /rootfs/home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
+chroot /rootfs unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
+mv /rootfs/home/pi/RaspberryIPCamera-master /rootfs/home/pi/RaspberryIPCamera
+rm /rootfs/home/pi/RaspberryIPCamera.zip
 chroot /rootfs chown -R pi /home/pi
 chroot /rootfs chgrp -R pi /home/pi
 chroot /rootfs chmod -R 755 /home/pi
