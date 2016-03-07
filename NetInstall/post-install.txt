@@ -13,7 +13,7 @@ chroot /rootfs sed -i 's/# eval/eval/g' /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ls=/alias ls=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias ll=/alias ll=/g" /home/pi/.bashrc
 chroot /rootfs sed -i "s/# alias l=/alias l=/g" /home/pi/.bashrc
-wget -O /rootfs/home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
+chroot /rootfs curl -o  /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/master.zip
 chroot /rootfs unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
 mv /rootfs/home/pi/RaspberryIPCamera-master /rootfs/home/pi/RaspberryIPCamera
 rm /rootfs/home/pi/RaspberryIPCamera.zip
@@ -25,7 +25,7 @@ chroot /rootfs rm /etc/nginx/sites-enabled/default
 chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
 chroot /rootfs ln -s /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-enabled/RaspberryIPCamera.Nginx.Siteconf
 chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands
-chroot /rootfs wget -qO- http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | chroot /rootfs apt-key add -
+chroot /rootfs curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | chroot /rootfs apt-key add -
 chroot /rootfs echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | chroot /rootfs tee -a /etc/apt/sources.list
 chroot /rootfs apt-get update
 chroot /rootfs apt-get -y install uv4l uv4l-raspicam
