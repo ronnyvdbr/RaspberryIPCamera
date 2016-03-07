@@ -1,4 +1,3 @@
-read -p "waiting"
 set -o verbose
 export DEBIAN_FRONTEND=noninteractive
 chroot /rootfs useradd pi
