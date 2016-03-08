@@ -20,6 +20,7 @@ chroot /rootfs chown -R pi /home/pi
 chroot /rootfs chgrp -R pi /home/pi
 chroot /rootfs chmod -R 755 /home/pi
 chroot /rootfs usermod -a -G www-data pi
+chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/interfaces /etc/network/interfaces
 chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/rc.local /etc/rc.local
 chroot /rootfs rm /etc/nginx/sites-enabled/default
 chroot /rootfs cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RaspberryIPCamera.Nginx.Siteconf /etc/nginx/sites-available/RaspberryIPCamera.Nginx.Siteconf
