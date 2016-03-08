@@ -1,5 +1,5 @@
 preset=server
-packages=nginx,php5-fpm,sudo,unzip,curl,debconf-utils
+packages=nginx,php5-fpm,sudo,unzip,curl,debconf-utils,wireless-tools,firmware-atheros,firmware-brcm80211,firmware-ipw2x00,firmware-iwlwifi,firmware-libertas,firmware-ralink,firmware-realtek,firmware-ti-connectivity,firmware-zd1211
 mirror=http://mirrordirector.raspbian.org/raspbian/
 release=jessie
 hostname=RaspberryIPCamera
