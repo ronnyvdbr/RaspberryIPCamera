@@ -1,1 +1,21 @@
+# get rid of the regular syslog
+dpkg --purge rsyslog
+apt-get install busybox-syslogdlogread
 
+# start pi readonly on next boot
+mount -o remount rw /boot
+echo " fastboot noswap ro" >> /boot/cmdline.txt
+
+
+
+rm -rf /var/lib/dhcp/
+ln -s /tmp /var/lib/dhcp
+rm -rf /var/run /var/spool /var/lock
+ln -s /tmp /var/run 
+ln -s /tmp /var/spool
+ln -s /tmp /var/lock
+
+
+# edit the file /etc/rc.local
+# add the following line before exit 0
+mkdir /var/log/nginx
