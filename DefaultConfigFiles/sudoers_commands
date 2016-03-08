@@ -15,3 +15,6 @@ www-data ALL = (root) NOPASSWD: /bin/systemctl disable RTSP-Server.service
 www-data ALL = (root) NOPASSWD: /bin/systemctl restart RTSP-Server.service
 www-data ALL = (root) NOPASSWD: /bin/systemctl enable RTSP-Server.service
 www-data ALL = (root) NOPASSWD: /bin/systemctl start RTSP-Server.service
+www-data ALL = (root) NOPASSWD: /bin/mount -o rw,remount,rw /
+www-data ALL = (root) NOPASSWD: /bin/mount -o ro,remount,ro /
+
