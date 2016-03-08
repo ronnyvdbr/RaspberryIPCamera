@@ -52,3 +52,18 @@ chroot /rootfs rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 chroot /rootfs rm /home/pi/live555_20160306-1_armhf.deb
 echo "start_x=1" >> /rootfs/boot/config.txt
 echo "gpu_mem=128" >> /rootfs/boot/config.txt
+# start of read only design
+# get rid of the regular syslog
+chroot /rootfs dpkg --purge rsyslog
+chroot /rootfs apt-get install busybox-syslogdlogread
+# start pi readonly on next boot
+echo " fastboot noswap ro" >> /rootfs/boot/cmdline.txt
+# remap some system folders to temp space
+chroot /rootfs rm -rf /var/lib/dhcp/
+chroot /rootfs ln -s /tmp /var/lib/dhcp
+chroot /rootfs rm -rf /var/run /var/spool /var/lock
+chroot /rootfs ln -s /tmp /var/run 
+chroot /rootfs ln -s /tmp /var/spool
+chroot /rootfs ln -s /tmp /var/lock
+chroot /rootfs rm -rf /var/lib/php5/sessions
+chroot /rootfs ln -s /tmp/php5/sessions /var/lib/php5/sessions
