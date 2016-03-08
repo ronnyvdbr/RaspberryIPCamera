@@ -23,7 +23,7 @@
 <file name="functions.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131000037052330083" remote="131019224470000000" Dst="1" />
 <file name="camera-settings-array.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131007670327274219" remote="131019224470000000" Dst="1" />
 <file name="camera-settings.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131019284164087809" remote="131019284160000000" Dst="1" />
-<file name="network-settings.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131019278460425029" remote="131019278480000000" Dst="1" />
+<file name="network-settings.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131019409131307679" remote="131019409120000000" Dst="1" />
 <file name="Status.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131019331862912854" remote="131019331860000000" Dst="1" />
 <file name="Login.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131019302320356420" remote="131019289680000000" Dst="1" />
 <file name="logout.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131000037052410092" remote="131019278600000000" Dst="1" />

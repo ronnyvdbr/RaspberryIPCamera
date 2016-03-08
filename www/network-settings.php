@@ -567,13 +567,16 @@ $("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("
 <!-- ********************************************************************************************************************** -->
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-timezone-apply'])) {
+	  shell_exec("sudo mount -o rw,remount,rw /");
 	  shell_exec("sudo dpkg-reconfigure -f noninteractive tzdata 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+	  shell_exec("sudo mount -o ro,remount,ro /");
 	}
   ?>
 <!-- ********************************************************************************************************************** -->
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-timesync-apply'])) {
 	  if (empty($timeservererr)) {
+		shell_exec("sudo mount -o rw,remount,rw /");
 		if 	(array_key_exists ("timesync_checkbox" , $_POST)) {
 			shell_exec("sudo systemctl enable ntp 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			shell_exec("sudo systemctl reload-or-restart ntp 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
@@ -582,6 +585,7 @@ $("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("
 			shell_exec("sudo systemctl disable ntp 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			shell_exec("sudo systemctl stop ntp 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}
+		shell_exec("sudo mount -o ro,remount,ro /");
 	  }
 	}
   ?>
@@ -590,6 +594,7 @@ $("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-network-apply'])) {
 	  if(empty($ipaddresserr) && empty($subnetmaskerr) && empty($defaultgatewayerr) && empty($primarydnserr) && empty($secondarydnserr)) {
 		  logmessage("about to apply network settings");
+		  shell_exec("sudo mount -o rw,remount,rw /");
 		  if($configurationsettings['IPAssignment'] == 'DHCP') {
 			  shell_exec("sudo sed -i '42,\$d' /etc/dhcpcd.conf 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  shell_exec("sudo dhcpcd -n eth0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
@@ -632,6 +637,7 @@ $("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("
 	  		  if($configurationsettings['WifiClient'] == 'enabled') {
 				  shell_exec("sudo dhcpcd -n wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			  }
+		  shell_exec("sudo mount -o ro,remount,ro /");
 		  }
 	  }
 	}
@@ -639,7 +645,11 @@ $("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("
 <!-- ********************************************************************************************************************** -->
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-wifi-apply'])) {
+	
 	  if(empty($ssiderror) && empty($securitymodeerr)) {
+		
+		logmessage("Setting file system read/write.");
+		shell_exec("sudo mount -o rw,remount,rw /");
 
 		if($configurationsettings['WifiSecurityMode'] == 'None') {
 		  logmessage("Configuring Wifi for open authentication and no security.");
@@ -682,7 +692,8 @@ $("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("
 			logmessage("Bringing down interface wlan0.");
 			shell_exec("sudo ifdown wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}
-
+		logmessage("Setting file system read only.");
+		shell_exec("sudo mount -o ro,remount,ro /");
 	  }
 	}
   ?>
