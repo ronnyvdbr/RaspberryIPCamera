@@ -1,0 +1,21 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+mkdir /var/log/nginx
+mkdir /tmp/php5
+mkdir /tmp/php5/sessions
+chown -R www-data /tmp/php5
+chgrp -R www-data /tmp/php5
+chmod -R 750 /tmp/php5
+
+exit 0
