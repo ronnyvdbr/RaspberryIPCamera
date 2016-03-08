@@ -31,7 +31,9 @@
 
   <body>
 <?php
-$configurationsettings = parse_ini_file("/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+
+$passwordsettings = parse_ini_file("/home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret");
+
 
 $error=''; // Variable To Store Error Message
 if (isset($_POST['submit'])) {
@@ -40,7 +42,7 @@ if (isset($_POST['submit'])) {
 	}
 	else {
 	  // Define $username and $password
-	  if($_POST['username'] == $configurationsettings['AdminUsername'] && $_POST['password'] == $configurationsettings['AdminPassword']) {		  
+	  if($_POST['username'] == $passwordsettings['AdminUsername'] && password_verify($_POST['password'], $passwordsettings['AdminPassword'])) {
 
 		$_SESSION['login_user']=$_POST['username']; // Initializing Session
 		echo "<script type='text/javascript'> document.location = 'Status.php'; </script>"; // Redirecting To Other Page
@@ -66,7 +68,7 @@ echo "<script type='text/javascript'> document.location = 'Status.php'; </script
         <label for="username" class="sr-only">Username</label>
         <input name="username" type="text" autofocus required class="form-control" id="user-name" form="frm-login" placeholder="Username">
         <label for="password" class="sr-only">Password</label>
-        <input name="password" type="password" required="required" class="form-control" id="pass-word" form="frm-login" placeholder="Password">
+        <input name="password" type="password" required class="form-control" id="pass-word" form="frm-login" placeholder="Password">
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> Remember me

@@ -1,5 +1,5 @@
 <!-- check if our login_user is set, otherwise redirect to the logon screen -->
-<?php //include('logincheck.php');?>
+<?php include('logincheck.php');?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -411,7 +411,9 @@
 //var_dump($camerasettings + $cameradefaultsettings);
 //echo "<br><br>";
 			
+			shell_exec("sudo mount -o rw,remount,rw /");
 			write_camerasettings_conf($camerasettings + $cameradefaultsettings, "/etc/uv4l/uv4l-raspicam.conf");
+			shell_exec("sudo mount -o ro,remount,ro /");
 		}
 	}
   ?>
@@ -777,22 +779,24 @@
 		if(/*empty($widtherr) && empty($heighterr) && */empty($resolutionerr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
 			
 			if($camerasettings['encoding'] == "mjpeg") {
-				
+				shell_exec("sudo mount -o rw,remount,rw /");
 				logmessage("Stopping & disabling RTSP server if running.");
 				shell_exec("sudo systemctl stop RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 				shell_exec("sudo systemctl disable RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 				logmessage("Restarting uv4l_raspicam.service via systemctl.");
 				shell_exec("sudo systemctl restart uv4l_raspicam.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log"); 
+				shell_exec("sudo mount -o ro,remount,ro /");
 			}
 			
 			if($camerasettings['encoding'] == "h264") {
+				shell_exec("sudo mount -o rw,remount,rw /");
 				logmessage("Restarting uv4l_raspicam.service via systemctl.");
 				shell_exec("sudo systemctl restart uv4l_raspicam.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log"); 
 				logmessage("Starting & enabling RTSP server if stopped.");
 				shell_exec("sudo systemctl enable RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 				shell_exec("sudo systemctl stop RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 				shell_exec("sudo systemctl start RTSP-Server.service 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
-
+				shell_exec("sudo mount -o ro,remount,ro /");
 			}
 		}
 	}

@@ -33,4 +33,8 @@
 <file name="bootstrap.css.map" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781455685" remote="131000112270000000" Dst="1" />
 <file name="bootstrap.min.css.map" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781515686" remote="131000112270000000" Dst="1" />
 <file name="signin.css" server="192.168.20.147//home/pi/RaspberryIPCamera/www/" local="130985725781555684" remote="131000112270000000" Dst="1" />
+<file name="bootstrap.min.css" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725781495682" remote="131019224460000000" Dst="1" />
+<file name="Status.css" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725781200622" remote="131019224470000000" Dst="1" />
+<file name="ie10-viewport-bug-workaround.css" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725781535688" remote="131019224470000000" Dst="1" />
+<file name="signin.css" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725781555684" remote="131019267490000000" Dst="1" />
 </dwsync>

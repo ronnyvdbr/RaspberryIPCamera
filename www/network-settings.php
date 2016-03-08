@@ -1,5 +1,5 @@
 <!-- check if our login_user is set, otherwise redirect to the logon screen -->
-<?php //include('logincheck.php');?>
+<?php include('logincheck.php');?>
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -61,11 +61,15 @@
  <!-- ********************************************************************************************************************** -->
   <?php date_default_timezone_set(trim(file_get_contents("/etc/timezone"),"\n"));
   		$configurationsettings = parse_ini_file("/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+		$passwordsettings = parse_ini_file("/home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret");
+
   ?>
 <!-- ********************************************************************************************************************** -->
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-timezone-apply'])) {
+	shell_exec("sudo mount -o rw,remount,rw /");
 	file_put_contents("/etc/timezone", $_POST["sel-timezone"]);
+	shell_exec("sudo mount -o ro,remount,ro /");
 	}
   ?>
 <!-- ********************************************************************************************************************** -->
@@ -101,8 +105,10 @@
 			array_push($insertservers,"server $timeserver iburst\n");
 		}
 		array_splice($arrconfigfilecontents,20,0,$insertservers);
+		shell_exec("sudo mount -o rw,remount,rw /");
 		file_put_contents("/etc/ntp.conf", implode($arrconfigfilecontents));
 		write_php_ini($configurationsettings, "/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+		shell_exec("sudo mount -o ro,remount,ro /");
 	}
   }
   ?>
@@ -180,8 +186,10 @@
 			$configurationsettings['Dns2'] = $secondarydns;
 		else
 			$configurationsettings['Dns2'] = "";
-
+		shell_exec("sudo mount -o rw,remount,rw /");
 		write_php_ini($configurationsettings, "/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+		shell_exec("sudo mount -o ro,remount,ro /");
+
 	  }
 	}
 	     ?>
@@ -241,7 +249,9 @@
   		  $configurationsettings['WifiPassword'] = $password;
 	      
 		  logmessage("Writing Wifi Settings to configuration file: /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+		  shell_exec("sudo mount -o rw,remount,rw /");
 		  write_php_ini($configurationsettings, "/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+		  shell_exec("sudo mount -o ro,remount,ro /");
 	  }
 	}
 ?>
@@ -250,15 +260,17 @@
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-password-apply'])) {
 		$passworderror = "";
 		
-		if(!$_POST['currentpassword'] == $configurationsettings['AdminPassword']) {
+		if(!password_verify($_POST['currentpassword'], $passwordsettings['AdminPassword'])) {
 			$passworderror = "Current password is incorrect!";
 		}
 		elseif(!$_POST['newpassword'] == $_POST['passwordrepeat']) {
 			$passworderror = "New passwords don't match";
 		}
 		else {
-			$configurationsettings['AdminPassword'] = $_POST['newpassword'];
-			write_php_ini($configurationsettings, "/home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini");
+			$passwordsettings['AdminPassword'] = password_hash($_POST['newpassword'], PASSWORD_DEFAULT);
+			shell_exec("sudo mount -o rw,remount,rw /");
+			write_php_ini($passwordsettings, "/home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret");
+			shell_exec("sudo mount -o ro,remount,ro /");
 			echo "<script type='text/javascript'> document.location = 'logout.php'; </script>"; // Redirecting To Login Page
 		}
 	}
@@ -401,21 +413,21 @@
                 <div class="form-group">
                   <label class="control-label col-sm-4" for="currentpassword">Current Password:</label>
                   <div class="col-sm-5">
-                    <input name="currentpassword" type="password" required="required" class="form-control" id="currentpassword" form="frm-password" >
+                    <input name="currentpassword" type="password" required class="form-control" id="currentpassword" form="frm-password" >
                   </div>
                 </div><!--form group-->
                 
                 <div class="form-group">
                   <label class="control-label col-sm-4" for="newpassword">New Password:</label>
                   <div class="col-sm-5">
-                    <input name="newpassword" type="password" required="required" class="form-control" id="newpassword" form="frm-password" >
+                    <input name="newpassword" type="password" required class="form-control" id="newpassword" form="frm-password" >
                   </div>
                 </div><!--form group-->
 
                 <div class="form-group">
                   <label class="control-label col-sm-4" for="passwordrepeat">Password Repeat:</label>
                   <div class="col-sm-5">
-                    <input name="passwordrepeat" type="password" required="required" class="form-control" id="passwordrepeat" form="frm-password" >
+                    <input name="passwordrepeat" type="password" required class="form-control" id="passwordrepeat" form="frm-password" >
                   </div>
                 </div><!--form group-->
 
