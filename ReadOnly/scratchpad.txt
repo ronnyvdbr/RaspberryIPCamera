@@ -15,6 +15,9 @@ ln -s /tmp /var/run
 ln -s /tmp /var/spool
 ln -s /tmp /var/lock
 
+drwx-wx-wt 2 root root 4096 Mar  8 16:52 sessions
+rm -rf /var/lib/php5/sessions
+ln -s /tmp/php5/sessions /var/lib/php5/sessions
 
 # edit the file /etc/rc.local
 # add the following line before exit 0
