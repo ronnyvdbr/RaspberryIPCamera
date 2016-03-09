@@ -37,4 +37,7 @@
 <file name="Status.css" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725781200622" remote="131019224470000000" Dst="1" />
 <file name="ie10-viewport-bug-workaround.css" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725781535688" remote="131019224470000000" Dst="1" />
 <file name="signin.css" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725781555684" remote="131019267490000000" Dst="1" />
+<file name="bootstrap.min.css" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="130985725781495682" remote="131020013020000000" Dst="1" />
+<file name="ie10-viewport-bug-workaround.css" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="130985725781535688" remote="131020013020000000" Dst="1" />
+<file name="signin.css" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="130985725781555684" remote="131020013020000000" Dst="1" />
 </dwsync>

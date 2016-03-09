@@ -35,6 +35,8 @@
 $passwordsettings = parse_ini_file("/home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret");
 
 
+
+
 $error=''; // Variable To Store Error Message
 if (isset($_POST['submit'])) {
 	if (empty($_POST['username']) || empty($_POST['password'])) {
@@ -42,6 +44,7 @@ if (isset($_POST['submit'])) {
 	}
 	else {
 	  // Define $username and $password
+	  
 	  if($_POST['username'] == $passwordsettings['AdminUsername'] && password_verify($_POST['password'], $passwordsettings['AdminPassword'])) {
 
 		$_SESSION['login_user']=$_POST['username']; // Initializing Session
