@@ -1,23 +1,23 @@
 # get rid of the regular syslog
-dpkg --purge rsyslog
-apt-get install busybox-syslogd
+sudo dpkg --purge rsyslog
+sudo apt-get install busybox-syslogd
 
 # start pi readonly on next boot
-mount -o remount rw /boot
-echo "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fastboot noswap ro" > /boot/cmdline.txt
+sudo mount -o remount rw /boot
+echo "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fastboot noswap ro" | sudo tee /boot/cmdline.txt
 
-rm -rf /var/lib/dhcp/
-ln -s /tmp /var/lib/dhcp
-rm -rf /var/run /var/spool /var/lock
-ln -s /tmp /var/run 
-ln -s /tmp /var/spool
-ln -s /tmp /var/lock
+sudo rm -rf /var/lib/dhcp/
+sudo ln -s /tmp /var/lib/dhcp
+sudo rm -rf /var/run /var/lock /var/log
+sudo ln -s /tmp /var/run 
+sudo ln -s /tmp /var/lock
+sudo ln -s /tmp /var/log
 
-# drwx-wx-wt 2 root root 4096 Mar  8 16:52 sessions
-rm -rf /var/lib/php5/sessions
-mkdir /tmp/php5
-mkdir /tmp/php5/sessions
-chmod -R 750 /tmp/php5
-ln -s /tmp/php5/sessions /var/lib/php5/sessions
+
+sudo rm -rf /var/lib/php5/sessions
+sudo mkdir /tmp/php5
+sudo mkdir /tmp/php5/sessions
+sudo chmod -R 750 /tmp/php5
+sudo ln -s /tmp/php5/sessions /var/lib/php5/sessions
 
 # copy rc.local from default config files
