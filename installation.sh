@@ -131,10 +131,6 @@ sudo sed -i '8i\ExecStartPre=/bin/mkdir /tmp/phpsessions' /lib/systemd/system/ph
 sudo sed -i '9i\ExecStartPre=/bin/chgrp www-data /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
 sudo sed -i '10i\ExecStartPre=/bin/chmod 775 /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
 
-sudo reboot
-
-## backup genomen op desktop - RaspberryIPCamera-v1.5-beta.img
-# Now would be a good moment to take a spare backup of your SD card in case you fuck up later.
 
 # Let's clean as much rubbish from our image so we can repack this for internet distribution in a normal size.
 sudo mount -o remount rw /
@@ -144,11 +140,6 @@ sudo apt-get -y remove --purge localepurge
 sudo apt-get -y remove --purge avahi-daemon build-essential nfs-common console-setup curl dosfstools lua5.1 luajit manpages-dev parted python-rpi.gpio python
 sudo apt-get -y autoremove --purge
 sudo apt-get clean
-sudo rm /var/lib/apt/lists/*
 sudo rm -rf /var/swap
-sudo find /usr/share/doc -depth -type f ! -name copyright | sudo xargs rm || true
-sudo find /usr/share/doc -empty | sudo xargs rmdir || true
-sudo rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/*
-sudo rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/*
 
-
+sudo reboot
