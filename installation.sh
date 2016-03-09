@@ -99,17 +99,30 @@ rm /home/pi/live555_20160306-1_armhf.deb
 # First get rid of some unnecessary pagkages.
 sudo apt-get -y remove --purge  logrotate triggerhappy dphys-swapfile fake-hwclock samba-common
 sudo apt-get -y autoremove --purge
-# remove 
-
-
-
+# remove rsyslog and install a memory resident variant
+sudo apt-get -y remove --purge rsyslog
+sudo apt-get -y install busybox-syslogd
 
 # now remap some folders to temp space
-sudo rm -rf /var/lib/dhcp/ /var/spool /var/lock
-ln -s /tmp /var/lib/dhcp
-ln -s /tmp /var/spool
-ln -s /tmp /var/lock
-ln -s /tmp/resolv.conf /etc/resolv.conf
+sudo rm -rf /var/lib/dhcp/ /var/spool /var/lock 
+sudo rm /etc/resolv.conf
+sudo ln -s /tmp /var/lib/dhcp
+sudo ln -s /tmp /var/spool
+sudo ln -s /tmp /var/lock
+sudo ln -s /tmp/resolv.conf /etc/resolv.conf
+sudo rm -rf /var/lib/php5/sessions
+sudo ln -s /tmp /var/lib/php5/sessions
 
+# configure the boot options to be read-only on next boot
+sudo mount -o remount rw /boot
+echo "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fastboot noswap ro" | sudo tee /boot/cmdline.txt
+
+# Datei /etc/fstab
+proc            /proc           proc    defaults              0 0
+/dev/mmcblk0p1  /boot           vfat    ro,defaults           0 2
+/dev/mmcblk0p2  /               ext4    ro,defaults,noatime   0 1
+tmpfs           /var/log        tmpfs   nodev,nosuid          0 0
+tmpfs           /var/tmp        tmpfs   nodev,nosuid          0 0
+tmpfs           /tmp            tmpfs   nodev,nosuid          0 0
 
 sudo reboot
