@@ -111,7 +111,7 @@ sudo ln -s /tmp /var/spool
 sudo ln -s /tmp /var/lock
 sudo ln -s /tmp/resolv.conf /etc/resolv.conf
 sudo rm -rf /var/lib/php5/sessions
-sudo ln -s /tmp /var/lib/php5/sessions
+sudo ln -s /tmp/phpsessions /var/lib/php5/sessions
 
 # configure the boot options to be read-only on next boot
 sudo mount -o remount rw /boot
@@ -127,5 +127,10 @@ tmpfs           /tmp            tmpfs   nodev,nosuid          0 0
 
 # Create log folder for nginx, ohterwise it doesn't start with error
 sudo sed -i '20i\ExecStartPre=/bin/mkdir /var/log/nginx' /lib/systemd/system/nginx.service
+
+sudo sed -i '8i\ExecStartPre=/bin/mkdir /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
+sudo sed -i '9i\ExecStartPre=/bin/chgrp www-data /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
+sudo sed -i '10i\ExecStartPre=/bin/chmod 765 /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
+
 
 sudo reboot
