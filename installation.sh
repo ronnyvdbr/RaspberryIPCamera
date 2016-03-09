@@ -93,4 +93,7 @@ rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 rm /home/pi/live555_20160306-1_armhf.deb
 
 
+## backup genomen op desktop - RaspberryIPCamera-v1.5-beta.img
+
+
 sudo reboot
