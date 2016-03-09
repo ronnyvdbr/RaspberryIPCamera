@@ -68,7 +68,7 @@
           <div class="panel-body">
 			<?php 
 				if($camerasettings['encoding'] == "mjpeg") {
-				  echo('<img class="img-responsive img-rounded center-block" src="http://');
+				  echo('<img class="img-responsive img-rounded center-block" src="http://user:uv4luser1@');
 				  echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
 				  echo(':8080/stream/video.mjpeg" alt=""/>');
 				}

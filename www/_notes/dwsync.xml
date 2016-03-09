@@ -29,5 +29,6 @@
 <file name="logout.php" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131000037052410092" remote="131019278600000000" Dst="1" />
 <file name="RaspberryIPCameraSettings.ini" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="131014028339926647" remote="131019278600000000" Dst="1" />
 <file name="Login.php" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="131020024104201369" remote="131020024100000000" Dst="1" />
-<file name="logincheck.php" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="131020019448998054" remote="131020019450000000" Dst="1" />
+<file name="logincheck.php" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="131020024359317592" remote="131020216830000000" Dst="1" />
+<file name="Status.php" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="131020216604472428" remote="131020216830000000" Dst="1" />
 </dwsync>
