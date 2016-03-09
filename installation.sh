@@ -64,7 +64,7 @@ sudo apt-get -y install uv4l-uvc
 sudo apt-get -y install uv4l-server
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-server.conf /etc/uv4l/uv4l-server.conf
-sudo sed -i "s/--editable-config-file=\$CONFIGFILE/--editable-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/init.d/uv4l_raspicam
+sudo sed -i "s/--editable-config-file=\$CONFIGFILE/--server-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/init.d/uv4l_raspicam
 sudo systemctl daemon-reload
 # Set some permissions so our install can modify the config files
 sudo chgrp www-data /etc/uv4l/uv4l-raspicam.conf
