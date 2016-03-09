@@ -125,4 +125,7 @@ tmpfs           /var/log        tmpfs   nodev,nosuid          0 0
 tmpfs           /var/tmp        tmpfs   nodev,nosuid          0 0
 tmpfs           /tmp            tmpfs   nodev,nosuid          0 0
 
+# Create log folder for nginx, ohterwise it doesn't start with error
+sudo sed -i '20i\ExecStartPre=mkdir /var/log/nginx' /lib/systemd/system/nginx.service
+
 sudo reboot
