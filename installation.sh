@@ -92,8 +92,24 @@ sudo dpkg -i /home/pi/live555_20160306-1_armhf.deb
 rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 rm /home/pi/live555_20160306-1_armhf.deb
 
-
 ## backup genomen op desktop - RaspberryIPCamera-v1.5-beta.img
+# Now would be a good moment to take a spare backup of your SD card in case you fuck up later.
+
+# Let's make everything read-only now.
+# First get rid of some unnecessary pagkages.
+sudo apt-get -y remove --purge  logrotate triggerhappy dphys-swapfile fake-hwclock samba-common
+sudo apt-get -y autoremove --purge
+# remove 
+
+
+
+
+# now remap some folders to temp space
+sudo rm -rf /var/lib/dhcp/ /var/spool /var/lock
+ln -s /tmp /var/lib/dhcp
+ln -s /tmp /var/spool
+ln -s /tmp /var/lock
+ln -s /tmp/resolv.conf /etc/resolv.conf
 
 
 sudo reboot
