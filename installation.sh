@@ -20,9 +20,11 @@ unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
 mv /home/pi/RaspberryIPCamera-master /home/pi/RaspberryIPCamera
 rm /home/pi/RaspberryIPCamera.zip
 
-# Set permissions for the config file
+# Set permissions for the config files
 sudo chgrp www-data /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
 chmod 664 /home/pi/RaspberryIPCamera/www/RaspberryIPCameraSettings.ini
+sudo chgrp www-data /home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret
+chmod 664 /home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret
 
 
 # add our pi user to www-data group.
