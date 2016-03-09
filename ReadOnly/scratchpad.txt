@@ -6,8 +6,6 @@ apt-get install busybox-syslogd
 mount -o remount rw /boot
 echo "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fastboot noswap ro" > /boot/cmdline.txt
 
-
-
 rm -rf /var/lib/dhcp/
 ln -s /tmp /var/lib/dhcp
 rm -rf /var/run /var/spool /var/lock
@@ -17,8 +15,9 @@ ln -s /tmp /var/lock
 
 # drwx-wx-wt 2 root root 4096 Mar  8 16:52 sessions
 rm -rf /var/lib/php5/sessions
+mkdir /tmp/php5
+mkdir /tmp/php5/sessions
+chmod -R 750 /tmp/php5
 ln -s /tmp/php5/sessions /var/lib/php5/sessions
 
-# edit the file /etc/rc.local
-# add the following line before exit 0
-mkdir /var/log/nginx
+# copy rc.local from default config files
