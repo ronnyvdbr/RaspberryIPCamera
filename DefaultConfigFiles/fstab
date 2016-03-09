@@ -1,0 +1,8 @@
+proc            /proc           proc    defaults          0       0
+/dev/mmcblk0p1  /boot           vfat    defaults,ro          0       2
+/dev/mmcblk0p2  /               ext4    defaults,noatime,ro  0       1
+# a swapfile is not a swap partition, no line here
+#   use  dphys-swapfile swap[on|off]  for that
+tmpfs   /var/log        tmpfs   nodev,nosuid    0       0
+tmpfs   /var/tmp        tmpfs   nodev,nosuid    0       0
+tmpfs   /tmp        tmpfs   nodev,nosuid    0   0
