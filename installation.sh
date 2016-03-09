@@ -130,7 +130,7 @@ sudo sed -i '20i\ExecStartPre=/bin/mkdir /var/log/nginx' /lib/systemd/system/ngi
 
 sudo sed -i '8i\ExecStartPre=/bin/mkdir /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
 sudo sed -i '9i\ExecStartPre=/bin/chgrp www-data /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
-sudo sed -i '10i\ExecStartPre=/bin/chmod 765 /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
+sudo sed -i '10i\ExecStartPre=/bin/chmod 775 /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
 
 
 sudo reboot
