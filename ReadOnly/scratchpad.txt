@@ -1,6 +1,6 @@
 # get rid of the regular syslog
 dpkg --purge rsyslog
-apt-get install busybox-syslogdlogread
+apt-get install busybox-syslogd
 
 # start pi readonly on next boot
 mount -o remount rw /boot
