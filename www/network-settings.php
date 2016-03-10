@@ -23,13 +23,14 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link href="css/background.css" rel="stylesheet" type="text/css">
 	<!-- InstanceBeginEditable name="head" -->
     <?php include 'functions.php';?>
 	<?php logmessage("Loading page network-settings.php");?>
 	<!-- InstanceEndEditable -->
 </head>
 
-<body>
+<body id="even-stops">
   <nav class="navbar navbar-default" role="navigation">
       <div class="container">
         <div class="navbar-header">

@@ -23,6 +23,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link href="css/background.css" rel="stylesheet" type="text/css">
 	<!-- InstanceBeginEditable name="head" -->
 	<?php include 'functions.php';?>
 	<?php include 'camera-settings-array.php';?>
@@ -30,7 +31,7 @@
     <!-- InstanceEndEditable -->
 </head>
 
-<body>
+<body id="even-stops">
   <nav class="navbar navbar-default" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -470,21 +471,34 @@
               
 				<?php 
                     if($camerasettings['encoding'] == "mjpeg") {
-					echo('<p class="text-center">To connect to MJPEG stream use the URL:</p>'); 
-					echo('<p class="text-center" style="width: 100%; display: inline-block; word-wrap: break-word;"><a href="http://');
-					echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
-					echo(':8080/stream/video.mjpeg"><span>http://');
-					echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
-					echo(':8080/stream/video.mjpeg</span></a></p>');
+					  echo('<p class="text-center">To connect to MJPEG stream use the URL:</p>'); 
+					  echo('<p class="text-center" style="width: 100%; display: inline-block; word-wrap: break-word;"><a href="http://');
+					  if (preg_match('/^up/',shell_exec("cat /sys/class/net/eth0/operstate"))) {
+						echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+						echo(':8080/stream/video.mjpeg"><span>http://');
+						echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+						echo(':8080/stream/video.mjpeg</span></a></p>');
+					  }
+					  else {
+						echo trim(shell_exec("ifconfig wlan0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+						echo(':8080/stream/video.mjpeg"><span>http://');
+						echo trim(shell_exec("ifconfig wlan0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+						echo(':8080/stream/video.mjpeg</span></a></p>');
+					  }
 					}
 				?>
 
 				<?php 
                     if($camerasettings['encoding'] == "h264") {
-					echo('<p class="text-center">To connect to RTSP stream use the MRL:</p>'); 
-					echo('<p class="text-center"><mark>rtsp://');
-					echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
-					echo(':8554</mark></p>');
+					  echo('<p class="text-center">To connect to RTSP stream use the MRL:</p>'); 
+					  echo('<p class="text-center"><mark>rtsp://');
+					  if (preg_match('/^up/',shell_exec("cat /sys/class/net/eth0/operstate"))) {
+						echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+					  }
+					  else {
+						echo trim(shell_exec("ifconfig wlan0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+					  }
+					  echo(':8554</mark></p>');
 					}
 				?>
               
@@ -737,27 +751,15 @@
           </div><!-- end div col-sm-10 -->
           <div class="col-sm-1"></div>
         </div><!-- end div row -->
+        <br>
+        <div class="form-group">
+          <div class="col-sm-4"></div>
+            <div class="col-sm-5">
+              <input name="btn-camerasettings-apply" type="submit" class="form-control btn btn-primary" id="btn-camerasettings-apply" form="frm-camerasettings" value="Apply">
+            </div>
+        </div><!--form group-->
       </div><!-- end div panel body -->
     </div><!-- end div panel -->
-
-  <div class="alert alert-info">
-    <strong>Notes</strong>
-    <ul>
-      <li>If you want to turn on <i>text-overlay</i> while the camera is in use by another application AND <i>text-overlay</i> was turned off when that application opened the Camera, you need to close that application first.  The same consideration is valid for <i>object-detection</i> (<i>face</i> detection by default). In case, you can also turn on these options when loading the driver.</li>
-      <li>When <i>text-overlay</i> is enabled, both image width and image height should be multiple of 16.</li>
-      <li><i>red-balance</i> and <i>blue-balance</i> have effect only when <i>awb mode</i> is set to <i>off</i>.</li>
-      <li><b>Many other controls are available on driver loading only.</b></li>
-    </ul>
-  </div><!--end dif alert info-->
-
-  <div class="well well-sm">
-    <div class="form-group">
-      <div class="col-sm-4"></div>
-        <div class="col-sm-5">
-          <input name="btn-camerasettings-apply" type="submit" class="form-control btn btn-primary" id="btn-camerasettings-apply" form="frm-camerasettings" value="Apply">
-        </div>
-    </div><!--form group-->
-  </div>
   </form>
  </div><!-- end div container -->
 <!-- InstanceEndEditable -->

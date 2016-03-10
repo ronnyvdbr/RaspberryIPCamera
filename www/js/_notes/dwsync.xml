@@ -15,4 +15,9 @@
 <file name="ie10-viewport-bug-workaround.js" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725782349304" remote="131019224470000000" Dst="1" />
 <file name="bootstrap.min.js" server="192.168.20.146//home/pi/RaspberryIPCamera/www/" local="130985725782319299" remote="131019224470000000" Dst="1" />
 <file name="ie10-viewport-bug-workaround.js" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="130985725782349304" remote="131020013020000000" Dst="1" />
+<file name="bootstrap.min.js" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="130985725782319299" remote="131020705020000000" Dst="1" />
+<file name="ie10-viewport-bug-workaround.js" server="192.168.20.9//home/pi/RaspberryIPCamera/www/" local="130985725782349304" remote="116445240620000000" Dst="1" />
+<file name="bootstrap.min.js" server="192.168.20.9//home/pi/RaspberryIPCamera/www/" local="130985725782319299" remote="116445240620000000" Dst="1" />
+<file name="bootstrap.js" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="130985725782175751" remote="131020803350000000" Dst="1" />
+<file name="npm.js" server="192.168.20.133//home/pi/RaspberryIPCamera/www/" local="130985725782369312" remote="131020803350000000" Dst="1" />
 </dwsync>
