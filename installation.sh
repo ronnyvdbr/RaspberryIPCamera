@@ -1,3 +1,4 @@
+#!/bin/bash
 ########################################################################################
 # Installation procedure for the Raspberry Pi - IP Camera
 ########################################################################################
@@ -22,15 +23,20 @@ sudo systemctl restart sshd.service
 sudo raspi-config --expand-rootfs
 sudo partprobe
 sudo resize2fs /dev/mmcblk0p2
-# update raspbian
-sudo apt-get update && sudo apt-get -y upgrade
 
 ########################################################################################
 # Update Firmware - Making sure that your Raspbian firmware is the latest version.
 ########################################################################################
 sudo apt-get -y install rpi-update
 sudo rpi-update
-sudo reboot
+# insert our installation script in /etc/rc.local for rerun after reboot
+sudo sed -i '19i/home/pi/RaspberryIPCamera/installation.sh' /etc/rc.local
+sudo sed -i -e 2,35d /home/pi/RaspberryIPCamera && sudo reboot
+
+# update raspbian
+sudo apt-get update && sudo apt-get -y upgrade
+sudo sed -i -e 2,4d /home/pi/RaspberryIPCamera && sudo reboot
+sudo sed -i -e 19,19d /etc/rc.local && sudo sed -i -e 2,2d /home/pi/RaspberryIPCamera
 
 ########################################################################################
 # Download a copy of our git repository and extract it
