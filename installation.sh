@@ -94,6 +94,20 @@ sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 ########################################################################################
 # Install the RTSP server
 ########################################################################################
+# first compile the live555 library as a prerequisite
+wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz
+tar -zxvf live555-latest.tar.gz
+cd live
+./genMakefiles linux
+sudo make CPPFLAGS=-DALLOW_RTSP_SERVER_PORT_REUSE=1 install
+# clone the rtsp server's git repository, compile and install
+sudo apt-get install git
+git clone https://github.com/mpromonet/v4l2rtspserver.git
+cd v4l2rtspserver
+cmake . && make
+sudo make install
+
+###### old and deprecated ################
 # Download pre-compiled versions of the RTSP server to facilitate in bug fixing.
 # In the original compile, the services could not be restarted immediately because of a port not being released.
 wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/1nkuoaemreesu4g/h264-v4l2-rtspserver_20160306-1_armhf_2.deb?dl=0
@@ -104,12 +118,15 @@ sudo dpkg -i /home/pi/live555_20160306-1_armhf.deb
 # Remove the packages to consume disk space.
 rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
 rm /home/pi/live555_20160306-1_armhf.deb
+###### end old and deprecated ################
+
 # Put system service file for RTSP server into place
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RTSP-Server.service /etc/systemd/system/RTSP-Server.service
 # Notify systemd of a service installation.
 sudo systemctl daemon-reload
 # Set the startup for the service to disabled for our default config.
 sudo systemctl disable RTSP-Server.service
+
 
 ########################################################################################
 # Set some additional rights and config files
