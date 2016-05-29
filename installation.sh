@@ -1,9 +1,8 @@
-#!/bin/bash
 ########################################################################################
 # Installation procedure for the Raspberry Pi - IP Camera
 ########################################################################################
 
-# This procedure was designed on top of a foundation Raspbian Jessie lite image with build date 18-03-2016
+# This procedure was designed on top of a foundation Raspbian Jessie lite image with build date 10-05-2016
 # Download the latest Raspbian Jessie Lite image from https://downloads.raspberrypi.org/raspbian_lite_latest
 # Unzip your downloaded image, and write it to SD card with win32 disk imager.
 # Boot up your SD card in your Raspberry Pi, and Log into the Raspbian Jessie OS, with pi as username and raspberry as password.
@@ -19,24 +18,20 @@ sudo ssh-keygen -t rsa -N "" -f /etc/ssh/ssh_host_rsa_key
 sudo ssh-keygen -t ecdsa -N "" -f /etc/ssh/ssh_host_ecdsa_key
 sudo ssh-keygen -t ed25519 -N "" -f /etc/ssh/ssh_host_ed25519_key
 sudo systemctl restart sshd.service
-# Resize our root partition to maximum size
-sudo raspi-config --expand-rootfs
-sudo partprobe
-sudo resize2fs /dev/mmcblk0p2
+# Resize our root partition to maximum size (only needed for older raspbian versions)
+# the latest version resizes automatically
+# sudo raspi-config --expand-rootfs
+# sudo partprobe
+# sudo resize2fs /dev/mmcblk0p2
 
 ########################################################################################
 # Update Firmware - Making sure that your Raspbian firmware is the latest version.
 ########################################################################################
+# update firmware
 sudo apt-get -y install rpi-update
 sudo rpi-update
-# insert our installation script in /etc/rc.local for rerun after reboot
-sudo sed -i '19i/home/pi/RaspberryIPCamera/installation.sh' /etc/rc.local
-sudo sed -i -e 2,35d /home/pi/RaspberryIPCamera && sudo reboot
-
 # update raspbian
 sudo apt-get update && sudo apt-get -y upgrade
-sudo sed -i -e 2,4d /home/pi/RaspberryIPCamera && sudo reboot
-sudo sed -i -e 19,19d /etc/rc.local && sudo sed -i -e 2,2d /home/pi/RaspberryIPCamera
 
 ########################################################################################
 # Download a copy of our git repository and extract it
