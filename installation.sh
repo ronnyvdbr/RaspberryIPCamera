@@ -110,14 +110,14 @@ sudo make install
 ###### old and deprecated ################
 # Download pre-compiled versions of the RTSP server to facilitate in bug fixing.
 # In the original compile, the services could not be restarted immediately because of a port not being released.
-wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/1nkuoaemreesu4g/h264-v4l2-rtspserver_20160306-1_armhf_2.deb?dl=0
-wget -O /home/pi/live555_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/k7uncvqeugd9gpv/live555_20160306-1_armhf.deb?dl=0
+# wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/1nkuoaemreesu4g/h264-v4l2-rtspserver_20160306-1_armhf_2.deb?dl=0
+# wget -O /home/pi/live555_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/k7uncvqeugd9gpv/live555_20160306-1_armhf.deb?dl=0
 # Install our pre-compiled packages
-sudo dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
-sudo dpkg -i /home/pi/live555_20160306-1_armhf.deb
+# sudo dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
+# sudo dpkg -i /home/pi/live555_20160306-1_armhf.deb
 # Remove the packages to consume disk space.
-rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
-rm /home/pi/live555_20160306-1_armhf.deb
+# rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
+# rm /home/pi/live555_20160306-1_armhf.deb
 ###### end old and deprecated ################
 
 # Put system service file for RTSP server into place
