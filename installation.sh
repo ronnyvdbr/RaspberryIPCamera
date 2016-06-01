@@ -94,7 +94,7 @@ sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 ########################################################################################
 # Install the RTSP server
 ########################################################################################
-sudo apt-get -y install g++
+sudo apt-get -y install g++ cmake
 # first compile the live555 library as a prerequisite
 wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz
 tar -zxvf live555-latest.tar.gz
