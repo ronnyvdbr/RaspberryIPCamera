@@ -75,7 +75,7 @@ echo "disable_camera_led=1" | sudo tee -a /boot/config.txt
 ########################################################################################
 # Add the supplier's repository key to our key database
 curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | sudo apt-key add -
-echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main" | sudo tee -a /etc/apt/sources.list
+echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ jessie main" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
 # Now fetch and install the required modules.
 sudo apt-get -y install uv4l uv4l-raspicam
