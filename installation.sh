@@ -2,7 +2,7 @@
 # Installation procedure for the Raspberry Pi - IP Camera
 ########################################################################################
 
-# This procedure was designed on top of a foundation Raspbian Jessie lite image with build date 10-05-2016
+# This procedure was designed on top of a foundation Raspbian Jessie lite image with build date 23-09-2016
 # Download the latest Raspbian Jessie Lite image from https://downloads.raspberrypi.org/raspbian_lite_latest
 # Unzip your downloaded image, and write it to SD card with win32 disk imager.
 # Boot up your SD card in your Raspberry Pi, and Log into the Raspbian Jessie OS, with pi as username and raspberry as password.
@@ -18,6 +18,7 @@ sudo ssh-keygen -t rsa -N "" -f /etc/ssh/ssh_host_rsa_key
 sudo ssh-keygen -t ecdsa -N "" -f /etc/ssh/ssh_host_ecdsa_key
 sudo ssh-keygen -t ed25519 -N "" -f /etc/ssh/ssh_host_ed25519_key
 sudo systemctl restart sshd.service
+
 # Resize our root partition to maximum size (only needed for older raspbian versions)
 # the latest version resizes automatically
 # sudo raspi-config --expand-rootfs
@@ -27,11 +28,8 @@ sudo systemctl restart sshd.service
 ########################################################################################
 # Update Firmware - Making sure that your Raspbian firmware is the latest version.
 ########################################################################################
-# update firmware
-sudo apt-get -y install rpi-update
-sudo rpi-update
 # update raspbian
-sudo apt-get update && sudo apt-get -y upgrade
+sudo apt-get update && sudo apt-get -y dist-upgrade
 
 ########################################################################################
 # Download a copy of our git repository and extract it
@@ -63,12 +61,8 @@ chmod 664 /home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret
 ########################################################################################
 # Enable our Raspberry Pi Camera Module in our boot configuration.
 ########################################################################################
-# First mount our boot partition read-write so we can make changes to our boot config.
-sudo mount -o remount rw /boot
-# Now modify our config.txt for the changes.
-echo "start_x=1" | sudo tee -a /boot/config.txt
-echo "gpu_mem=256" | sudo tee -a /boot/config.txt
-echo "disable_camera_led=1" | sudo tee -a /boot/config.txt
+# run below command, enable the camera and reboot your Raspberry Pi
+sudo raspi-config
 
 ########################################################################################
 # Install all UV4L components
@@ -94,32 +88,20 @@ sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 ########################################################################################
 # Install the RTSP server
 ########################################################################################
-sudo apt-get -y install g++ cmake
+# we will be compiling software, so install some prerequisite
+sudo apt-get -y install cmake
 # first compile the live555 library as a prerequisite
-wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz
-tar -zxvf live555-latest.tar.gz
+wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz -O - | tar xvzf -
 cd live
 ./genMakefiles linux
 sudo make CPPFLAGS=-DALLOW_RTSP_SERVER_PORT_REUSE=1 install
+cd ..
 # clone the rtsp server's git repository, compile and install
 sudo apt-get install git
 git clone https://github.com/mpromonet/v4l2rtspserver.git
 cd v4l2rtspserver
 cmake . && make
 sudo make install
-
-###### old and deprecated ################
-# Download pre-compiled versions of the RTSP server to facilitate in bug fixing.
-# In the original compile, the services could not be restarted immediately because of a port not being released.
-# wget -O /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/1nkuoaemreesu4g/h264-v4l2-rtspserver_20160306-1_armhf_2.deb?dl=0
-# wget -O /home/pi/live555_20160306-1_armhf.deb https://dl.dropboxusercontent.com/s/k7uncvqeugd9gpv/live555_20160306-1_armhf.deb?dl=0
-# Install our pre-compiled packages
-# sudo dpkg -i /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
-# sudo dpkg -i /home/pi/live555_20160306-1_armhf.deb
-# Remove the packages to consume disk space.
-# rm /home/pi/h264-v4l2-rtspserver_20160306-1_armhf.deb
-# rm /home/pi/live555_20160306-1_armhf.deb
-###### end old and deprecated ################
 
 # Put system service file for RTSP server into place
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RTSP-Server.service /etc/systemd/system/RTSP-Server.service
