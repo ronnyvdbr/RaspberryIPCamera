@@ -99,6 +99,7 @@ cd ..
 # clone the rtsp server's git repository, compile and install
 sudo apt-get -y install git
 git clone https://github.com/mpromonet/v4l2rtspserver.git
+sudo apt-get install -y libasound2-dev liblog4cpp5-dev liblivemedia-dev
 cd v4l2rtspserver
 cmake . && make
 sudo make install
@@ -126,7 +127,7 @@ sudo chmod 664 /etc/ntp.conf
 # Make our SD card read only, to preserve it and contribute to system stability
 ########################################################################################
 # First get rid of some unnecessary pagkages.
-sudo apt-get -y remove --purge  logrotate triggerhappy dphys-swapfile fake-hwclock samba-common
+sudo apt-get -y remove --purge cron logrotate triggerhappy dphys-swapfile fake-hwclock samba-common
 sudo apt-get -y autoremove --purge
 # remove rsyslog and install a memory resident variant
 sudo apt-get -y remove --purge rsyslog
@@ -142,8 +143,10 @@ sudo rm -rf /var/lib/php5/sessions
 sudo ln -s /tmp/phpsessions /var/lib/php5/sessions
 # configure the boot options to be read-only on next boot
 sudo mount -o remount rw /boot
-echo "dwc_otg.lpm_enable=0 console=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fastboot noswap ro" | sudo tee /boot/cmdline.txt
-# Our /etc/fstab should look like the one below
+echo "dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fastboot noswap" | sudo tee /boot/cmdline.txt
+# edit your fstab file
+sudo nano /etc/fstab
+# Our /etc/fstab should look like the one below, copy and paste it
 proc            /proc           proc    defaults              0 0
 /dev/mmcblk0p1  /boot           vfat    ro,defaults           0 2
 /dev/mmcblk0p2  /               ext4    ro,defaults,noatime   0 1
@@ -156,6 +159,11 @@ sudo sed -i '20i\ExecStartPre=/bin/mkdir /var/log/nginx' /lib/systemd/system/ngi
 sudo sed -i '8i\ExecStartPre=/bin/mkdir /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
 sudo sed -i '9i\ExecStartPre=/bin/chgrp www-data /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
 sudo sed -i '10i\ExecStartPre=/bin/chmod 775 /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
+# reboot your raspberry pi here, check if you are read only
+sudo reboot
+# log in again and check the mounts
+mount | grep /dev/mmcblk0p2
+# your / filesystem should be ro
 
 ########################################################################################
 # Clean unneeded packages from our design to make the image size smaller for redistribution
