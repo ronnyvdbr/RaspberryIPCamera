@@ -97,7 +97,7 @@ cd live
 sudo make CPPFLAGS=-DALLOW_RTSP_SERVER_PORT_REUSE=1 install
 cd ..
 # clone the rtsp server's git repository, compile and install
-sudo apt-get install git
+sudo apt-get -y install git
 git clone https://github.com/mpromonet/v4l2rtspserver.git
 cd v4l2rtspserver
 cmake . && make
