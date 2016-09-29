@@ -34,7 +34,7 @@ sudo apt-get update && sudo apt-get -y dist-upgrade
 ########################################################################################
 # Download a copy of our git repository and extract it
 ########################################################################################
-wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/v1.6-beta.zip
+wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/v1.7-beta.zip
 unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
 mv /home/pi/RaspberryIPCamera-1.6-beta /home/pi/RaspberryIPCamera
 rm /home/pi/RaspberryIPCamera.zip
