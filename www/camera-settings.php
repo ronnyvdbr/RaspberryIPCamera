@@ -1,5 +1,5 @@
-<!-- check if our login_user is set, otherwise redirect to the logon screen -->
-<?php include('logincheck.php');?>
+<!-- check if our login_user is set, otherwise redirect to the logon screen <?php include('logincheck.php');?>-->
+
 <!DOCTYPE html>
 <html lang="en"><!-- InstanceBegin template="/Templates/Site-Template.dwt.php" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -71,7 +71,7 @@
   <?php
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['btn-camerasettings-apply'])) {
 		$width = $height = $format = $brightness = $contrast = $saturation = $redbalance = $bluebalance = 0;
-		$sharpness = $rotate = $shutterspeed = /*$zoomfactor = */$jpegquality = $framerate = 0;
+		$sharpness = $rotate = $shutterspeed = /*$zoomfactor = */$jpegquality = $framerate = $bitrate = 0;
 		$shutterspeed = 0;
 		$isosensitivity = 0;
 		$resolution = $horizontalmirror = $verticalmirror = $textoverlay = $objectfacedetection = "false";
@@ -82,7 +82,7 @@
 		$bluebalanceerr = $sharpnesserr = $rotateerr = $shutterspeederr = /*$zoomfactorerr = */$isosensitivityerr = "";
 		$jpegqualityerr = $framerateerr = $resolutionerr = $horizontalmirrorerr = $verticalmirrorerr = $textoverlayerr = "";
 		$objectfacedetectionerr = $stillsdenoiseerr = $videodenoiseerr = $imagestabilisationerr = $awbmodeerr = "";
-		$exposuremodeerr = $exposuremeteringerr = $drcstrenghterr = "";
+		$exposuremodeerr = $exposuremeteringerr = $drcstrenghterr = $bitrateerr = "";
 		
 		if (!empty($_POST["resolution"])) {
 		  $resolution = test_input($_POST["resolution"]);
@@ -210,6 +210,14 @@
 			logmessage($framerateerr);
 		  }
 		}
+
+		if (!empty($_POST["bitrate"])) {
+		  $bitrate = test_input($_POST["bitrate"]);
+		  if (!preg_match("/^[0-9]*$/",$bitrate)) {
+			$bitrateerr = "framerate field contains incorrect data, only 0-9 allowed!"; 
+			logmessage($bitrateerr);
+		  }
+		}
 		
 		if (!empty($_POST["horizontalmirror"])) {
 		  $horizontalmirror = test_input($_POST["horizontalmirror"]);
@@ -327,7 +335,7 @@
 		}
 		
 		// Only continue when no errors are found.
-		if(/*empty($widtherr) && empty($heighterr) && */empty($resolutionerr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
+		if(/*empty($widtherr) && empty($heighterr) && */empty($resolutionerr) && empty($formaterr) && empty($brightnesserr) && empty($contrasterr) && empty($saturationerr) && empty($redbalanceerr) && empty($bluebalanceerr) && empty($sharpnesserr) && empty($rotateerr) && empty($shutterspeederr) && /*empty($zoomfactorerr) && */empty($isosensitivityerr) && empty($jpegqualityerr) && empty($framerateerr) && empty($bitrateerr) && empty($horizontalmirrorerr) && empty($verticalmirrorerr) && empty($textoverlayerr) && empty($objectfacedetectionerr) && empty($stillsdenoiseerr) && empty($videodenoiseerr) && empty($imagestabilisationerr) && empty($awbmodeerr) && empty($exposuremodeerr) && empty($exposuremeteringerr) && empty($drcstrenghterr)) {
 			
 			/*$camerasettings['width'] = $width;
 			$camerasettings['height'] = $height;*/
@@ -343,6 +351,7 @@
 			$camerasettings['iso'] = $isosensitivity;
 			$camerasettings['quality'] = $jpegquality;
 			$camerasettings['framerate'] = $framerate;
+			$camerasettings['bitrate'] = $bitrate;
 			$camerasettings['hflip'] = $horizontalmirror;
 			$camerasettings['vflip'] = $verticalmirror;
 			$camerasettings['text-overlay'] = $textoverlay;
@@ -637,6 +646,18 @@
 					fps.
                   </div>
               </div><!--form group-->
+
+              <div class="form-group">
+                <label class="control-label col-sm-4" for="bitrate">Streaming Bitrate:</label>
+                  <div class="col-sm-5">
+                    <input name="bitrate" type="range" class="form-control" id="bitrate" form="frm-camerasettings" max="17000000" min="100000" step="100000" <?php echo "value=" . intval($camerasettings['bitrate']);?> oninput="bitratenum.value=Math.round(bitrate.value/1000);">
+                  </div>
+                  <div class="col-sm-2">
+					<output name="bitratenum" id="bitratenum" for="bitrate"><?php echo intval($camerasettings['bitrate']/1000) ;?> Kb/s</output>
+                  </div>
+
+              </div><!--form group-->
+
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="horizontalmirror">Horizontal Mirror:</label>
