@@ -154,7 +154,7 @@ tmpfs           /var/log        tmpfs   nodev,nosuid          0 0
 tmpfs           /var/tmp        tmpfs   nodev,nosuid          0 0
 tmpfs           /tmp            tmpfs   nodev,nosuid          0 0
 # Modify service unit of nginx service to create log folder before starting, otherwise error
-sudo sed -i '20i\ExecStartPre=/bin/mkdir /var/log/nginx' /lib/systemd/system/nginx.service
+sudo sed -i '20i\ExecStartPre=if [ ! -d "/var/log/nginx" ]; then /bin/mkdir /var/log/nginx fi' /lib/systemd/system/nginx.service
 # Modify service unit of php5-fpm service to create a tmp folder to store sessions in, otherwise error
 sudo sed -i '8i\ExecStartPre=/bin/mkdir /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
 sudo sed -i '9i\ExecStartPre=/bin/chgrp www-data /tmp/phpsessions' /lib/systemd/system/php5-fpm.service
