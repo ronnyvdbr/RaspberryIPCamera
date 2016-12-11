@@ -16,5 +16,7 @@ www-data ALL = (root) NOPASSWD: /bin/systemctl restart RTSP-Server.service
 www-data ALL = (root) NOPASSWD: /bin/systemctl enable RTSP-Server.service
 www-data ALL = (root) NOPASSWD: /bin/systemctl start RTSP-Server.service
 www-data ALL = (root) NOPASSWD: /bin/mount
+www-data ALL = (root) NOPASSWD: /usr/bin/vcgencmd get_camera
+
 
 

@@ -68,15 +68,21 @@
           
           <div class="panel-body">
 			<?php 
-				if($camerasettings['encoding'] == "mjpeg") {
-				  echo('<img class="img-responsive img-rounded center-block" src="http://user:uv4luser1@');
-				  if (preg_match('/^up/',shell_exec("cat /sys/class/net/eth0/operstate"))) {
-					echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+				$CameraStatus = shell_exec("sudo vcgencmd get_camera");
+				if(strpos($CameraStatus, "supported=1 detected=1") !== false) {
+				  if($camerasettings['encoding'] == "mjpeg") {
+					  echo('<img class="img-responsive img-rounded center-block" src="http://user:uv4luser1@');
+					  if (preg_match('/^up/',shell_exec("cat /sys/class/net/eth0/operstate"))) {
+						echo trim(shell_exec("ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+					  }
+					  else {
+						echo trim(shell_exec("ifconfig wlan0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
+					  }
+					  echo(':8080/stream/video.mjpeg" alt=""/>');
 				  }
-				  else {
-					echo trim(shell_exec("ifconfig wlan0 | awk '/inet / { print $2 }' | sed 's/addr://'"));
-				  }
-				  echo(':8080/stream/video.mjpeg" alt=""/>');
+				}
+				else {
+				  echo '<p align="center" style="color:red; font-size:18px;">Error: cannot detect the camera module!</p>';
 				}
 				
 				if($camerasettings['encoding'] == "h264") {
