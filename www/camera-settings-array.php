@@ -40,16 +40,13 @@
 # quantisation-parameter #arg
 ### video overlay options:
 	"nopreview" => "true",
-#	"fullscreen" => "false", 
-#	"opacity" => "255",
+	"fullscreen" => "false", 
+	"opacity" => "255",
 ### preview window <x, y, w, h>:
-# preview = 480
-# preview = 240
-# preview = 320
-# preview = 240
+	"preview" => "0,0,1920,1080",
 ### post-processing options:
 	"text-overlay" => "false",
-# text-filename = /usr/share/uv4l/raspicam/text.json
+    "text-filename" => "/usr/share/uv4l/raspicam/text.json",
 	"object-detection" => "false",
 # object-detection-mode = accurate_tracking
 # min-object-size = 80

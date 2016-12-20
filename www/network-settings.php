@@ -688,10 +688,15 @@ $("#timesync_checkbox").on('click', function() { if($(this).is(':checked')) {$("
 			shell_exec("sudo ifdown wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 			logmessage("Bringing up interface wlan0.");
 			shell_exec("sudo ifup wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			logmessage("Scheduling interface to come up at next boot. Writing configuration to /etc/network/interfaces");
+			shell_exec("sudo sed -i 's/# allow-hotplug wlan0/allow-hotplug wlan0/g' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
 		}
 		if($configurationsettings['WifiClient'] == 'disabled') {
 			logmessage("Bringing down interface wlan0.");
 			shell_exec("sudo ifdown wlan0 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+			logmessage("Unscheduling interface to come up at next boot. Writing configuration to /etc/network/interfaces");
+			shell_exec("sudo sed -i 's/allow-hotplug wlan0/# allow-hotplug wlan0/g' /etc/network/interfaces 2>&1 | sudo tee -a /var/log/RaspberryIPCamera.log");
+
 		}
 		logmessage("Setting file system read only.");
 		shell_exec("sudo mount -o ro,remount,ro /");

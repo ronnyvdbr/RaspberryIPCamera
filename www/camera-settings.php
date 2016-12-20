@@ -529,7 +529,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="brightness">Brightness:</label>
                   <div class="col-sm-5">
-                    <input name="brightness" type="range" class="form-control" id="brightness" form="frm-camerasettings" max="100" min="0" step="1" <?php echo "value=" . $camerasettings['brightness'];?> oninput="brightnessnum.value=brightness.value">
+                    <input name="brightness" type="range" class="form-control" id="brightness" form="frm-camerasettings" max="100" min="0" step="1" <?php echo "value=" . $camerasettings['brightness'];?> oninput="brightnessnum.value=brightness.value + ' pts.'">
                   </div>
                   <div class="col-sm-2">
 					<output name="brightnessnum" id="brightnessnum" class="show" for="brightness"><?php echo $camerasettings['brightness'];?> pts.</output>
@@ -539,7 +539,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="contrast">Contrast:</label>
                   <div class="col-sm-5">
-                    <input name="contrast" type="range" class="form-control" id="contrast" form="frm-camerasettings" max="100" min="-100" step="1" <?php echo "value=" . $camerasettings['contrast'];?> oninput="contrastnum.value=contrast.value">
+                    <input name="contrast" type="range" class="form-control" id="contrast" form="frm-camerasettings" max="100" min="-100" step="1" <?php echo "value=" . $camerasettings['contrast'];?> oninput="contrastnum.value=contrast.value + ' pts.'">
                   </div>
                   <div class="col-sm-2">
 					<output name="contrastnum" id="contrastnum" for="contrast"><?php echo $camerasettings['contrast'];?> pts.</output>
@@ -550,7 +550,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="saturation">Saturation:</label>
                   <div class="col-sm-5">
-                    <input name="saturation" type="range" class="form-control" id="saturation" form="frm-camerasettings" max="100" min="-100" step="1" <?php echo "value=" . $camerasettings['saturation'];?> oninput="saturationnum.value=saturation.value">
+                    <input name="saturation" type="range" class="form-control" id="saturation" form="frm-camerasettings" max="100" min="-100" step="1" <?php echo "value=" . $camerasettings['saturation'];?> oninput="saturationnum.value=saturation.value + ' pts.'">
                   </div>
                   <div class="col-sm-2">
 					<output name="saturationnum" id="saturationnum" for="saturation"><?php echo $camerasettings['saturation'];?> pts.</output>
@@ -561,7 +561,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="redbalance">Red Balance:</label>
                   <div class="col-sm-5">
-                    <input name="redbalance" type="range" class="form-control" id="redbalance" form="frm-camerasettings" max="800" min="0" step="1" <?php echo "value=" . $camerasettings['red-gain'];?> oninput="redbalancenum.value=redbalance.value">
+                    <input name="redbalance" type="range" class="form-control" id="redbalance" form="frm-camerasettings" max="800" min="0" step="1" <?php echo "value=" . $camerasettings['red-gain'];?> oninput="redbalancenum.value=redbalance.value + ' pts.'">
                   </div>
                   <div class="col-sm-2">
 					<output name="redbalancenum" id="redbalancenum" for="redbalance"><?php echo $camerasettings['red-gain'];?> pts.</output>
@@ -572,7 +572,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="bluebalance">Blue Balance:</label>
                   <div class="col-sm-5">
-                    <input name="bluebalance" type="range" class="form-control" id="bluebalance" form="frm-camerasettings" max="800" min="0" step="1" <?php echo "value=" . $camerasettings['blue-gain'];?> oninput="bluebalancenum.value=bluebalance.value">
+                    <input name="bluebalance" type="range" class="form-control" id="bluebalance" form="frm-camerasettings" max="800" min="0" step="1" <?php echo "value=" . $camerasettings['blue-gain'];?> oninput="bluebalancenum.value=bluebalance.value + ' pts.'">
                   </div>
                   <div class="col-sm-2">
 					<output name="bluebalancenum" id="bluebalancenum" for="bluebalance"><?php echo $camerasettings['blue-gain'];?> pts.</output>
@@ -582,7 +582,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="sharpness">Sharpness:</label>
                   <div class="col-sm-5">
-                    <input name="sharpness" type="range" class="form-control" id="sharpness" form="frm-camerasettings" max="100" min="-100" step="1" <?php echo "value=" . $camerasettings['sharpness'];?> oninput="sharpnessnum.value=sharpness.value">
+                    <input name="sharpness" type="range" class="form-control" id="sharpness" form="frm-camerasettings" max="100" min="-100" step="1" <?php echo "value=" . $camerasettings['sharpness'];?> oninput="sharpnessnum.value=sharpness.value + ' pts.'">
                   </div>
                   <div class="col-sm-2">
 					<output name="sharpnessnum" id="sharpnessnum" for="sharpness"><?php echo $camerasettings['sharpness'];?> pts.</output>
@@ -592,10 +592,10 @@
               <div class="form-group">
                 <label class="control-label col-sm-4" for="rotate">Rotate:</label>
                   <div class="col-sm-5">
-                    <input name="rotate" type="range" class="form-control" id="rotate" form="frm-camerasettings" max="360" min="0" step="90" <?php echo "value=" . $camerasettings['rotation'];?> oninput="rotatenum.value=rotate.value">
+                    <input name="rotate" type="range" class="form-control" id="rotate" form="frm-camerasettings" max="360" min="0" step="90" <?php echo "value=" . $camerasettings['rotation'];?> oninput="rotatenum.value=rotate.value + ' °'">
                   </div>
                   <div class="col-sm-2">
-					<output name="rotatenum" id="rotatenum" for="rotate"><?php echo $camerasettings['rotation'];?> degrees</output>
+					<output name="rotatenum" id="rotatenum" for="rotate"><?php echo $camerasettings['rotation'];?> °</output>
                   </div>
 
               </div><!--form group-->
@@ -606,16 +606,9 @@
                     <input name="shutterspeed" type="number" class="form-control" id="shutterspeed" form="frm-camerasettings" max="65535" min="0" step="1" <?php echo "value=" . $camerasettings['shutter-speed'];?>> 
                   </div>
                   <div class="col-sm-2">
-					µS
+					<output name="shutterspeedunit" id="shutterspeedunit" for="shutterspeed">µs</output>
                   </div>
-              </div><!--form group-->
-			<!--
-              <div class="form-group">
-                <label class="control-label col-sm-4" for="zoomfactor">Zoom Factor:</label>
-                  <div class="col-sm-5">
-                    <input name="zoomfactor" type="number" class="form-control" id="zoomfactor" form="frm-camerasettings" max="8" min="1" step="1" value="1">
-                  </div>
-              </div><!--form group-->
+              </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-4" for="isosensitivity">Iso Sensitivity:</label>
@@ -623,17 +616,17 @@
                     <input name="isosensitivity" type="number" class="form-control" id="isosensitivity" form="frm-camerasettings" max="800" min="0" step="50" <?php echo "value=" . $camerasettings['iso'];?>>
                 </div>
                   <div class="col-sm-2">
-					lux
+					<output name="isosensitivityunit" id="isosensitivityunit" for="isosensitivity">lux</output>
                   </div>
               </div><!--form group-->
 
               <div class="form-group">
                 <label class="control-label col-sm-4" for="jpegquality">Jpeg Quality:</label>
                   <div class="col-sm-5">
-                    <input name="jpegquality" type="number" class="form-control" id="jpegquality" form="frm-camerasettings" max="100" min="1" step="1" <?php if(!empty($camerasettings['quality'])) {echo "value=" . $camerasettings['quality'];}?>>
+                    <input name="jpegquality" type="range" class="form-control" id="jpegquality" form="frm-camerasettings" max="100" min="25" step="5" <?php echo "value=" . $camerasettings['quality'];?> oninput="jpegqualitynum.value=jpegquality.value">
                   </div>
                   <div class="col-sm-2">
-					pts.
+					<output name="jpegqualitynum" id="jpegqualitynum" for="jpegquality"><?php echo $camerasettings['quality'];?></output>
                   </div>
               </div><!--form group-->
 
