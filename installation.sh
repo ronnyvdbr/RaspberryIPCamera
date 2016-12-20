@@ -36,8 +36,8 @@ sudo apt-get update && sudo apt-get -y dist-upgrade
 ########################################################################################
 wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/v1.7-beta.zip
 unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
-mv /home/pi/RaspberryIPCamera-1.6-beta /home/pi/RaspberryIPCamera
 rm /home/pi/RaspberryIPCamera.zip
+mv /home/pi/RaspberryIPCamera* /home/pi/RaspberryIPCamera
 
 ########################################################################################
 # Set-up nginx with php support and enable our Raspberry IP Camera website.
@@ -89,7 +89,7 @@ sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 # Install the RTSP server
 ########################################################################################
 # we will be compiling software, so install some prerequisite
-sudo apt-get -y install cmake
+sudo apt-get -y install cmake libasound2-dev
 # first compile the live555 library as a prerequisite
 wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz -O - | tar xvzf -
 cd live
