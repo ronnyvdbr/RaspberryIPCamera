@@ -89,7 +89,7 @@ sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 # Install the RTSP server
 ########################################################################################
 # we will be compiling software, so install some prerequisite
-sudo apt-get -y install cmake
+sudo apt-get -y install cmake libasound2-dev
 # first compile the live555 library as a prerequisite
 wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz -O - | tar xvzf -
 cd live
