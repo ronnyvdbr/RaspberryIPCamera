@@ -144,7 +144,7 @@ sudo ln -s /tmp/phpsessions /var/lib/php5/sessions
 # configure the boot options to be read-only on next boot
 sudo mount -o remount rw /boot
 echo "dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait fastboot noswap" | sudo tee /boot/cmdline.txt
-# edit your fstab file
+# we will now edit the fstab file using nano and add 3 more lines like describe below
 sudo nano /etc/fstab
 # Our /etc/fstab should look like the one below, copy and paste it
 proc            /proc           proc    defaults              0 0
@@ -179,7 +179,14 @@ sudo apt-get clean
 sudo rm -rf /var/swap
 
 ########################################################################################
-# Final reboot before we can start using our IP Camera
+# Final reboot before we can start using our IP Camera.
+# Issue below reboot command to restart your Raspberry Pi.
+# The Raspberry Pi is configured for DHCP and will therefore retrieve an IP address
+# from the network automatically.
+# Use a ping sweep tool to find the IP address of your Raspberry Pi or check out 
+# your DHCP server lease table. (or connect your Raspberry Pi with HDMI, login and check
+# the IP address with 'ifconfig')
+# Lastly, open your browser and enter the IP address in the address bar.
 ########################################################################################
 sudo reboot
 
