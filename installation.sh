@@ -1,5 +1,5 @@
 ########################################################################################
-# Installation procedure for the Raspberry Pi - IP Camera
+# Installation procedure for the Raspberry Pi - IP Camera.
 ########################################################################################
 
 # This procedure was designed on top of a foundation Raspbian Jessie lite image with build date 23-09-2016
@@ -7,6 +7,13 @@
 # Unzip your downloaded image, and write it to SD card with win32 disk imager.
 # Boot up your SD card in your Raspberry Pi, and Log into the Raspbian Jessie OS, with pi as username and raspberry as password.
 # Start executing below commands in sequence.
+
+########################################################################################
+# Enable the SSH server on the Raspberry Pi.
+# Connect the Raspberry Pi with a screen over HDMI, also connect a keyboard.
+# Login with username 'pi' and password 'raspberry'.
+########################################################################################
+sudo raspi-config
 
 ########################################################################################
 # Bootstrap - Preparing the Raspbian OS.
@@ -19,12 +26,6 @@ sudo ssh-keygen -t ecdsa -N "" -f /etc/ssh/ssh_host_ecdsa_key
 sudo ssh-keygen -t ed25519 -N "" -f /etc/ssh/ssh_host_ed25519_key
 sudo systemctl restart sshd.service
 
-# Resize our root partition to maximum size (only needed for older raspbian versions)
-# the latest version resizes automatically
-# sudo raspi-config --expand-rootfs
-# sudo partprobe
-# sudo resize2fs /dev/mmcblk0p2
-
 ########################################################################################
 # Update Firmware - Making sure that your Raspbian firmware is the latest version.
 ########################################################################################
@@ -32,7 +33,7 @@ sudo systemctl restart sshd.service
 sudo apt-get update && sudo apt-get -y dist-upgrade
 
 ########################################################################################
-# Download a copy of our git repository and extract it
+# Download a copy of our git repository and extract it.
 ########################################################################################
 wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/v1.7-beta.zip
 unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
