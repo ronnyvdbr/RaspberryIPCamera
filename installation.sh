@@ -5,13 +5,16 @@
 # This procedure was designed on top of a foundation Raspbian Jessie lite image with build date 23-09-2016
 # Download the latest Raspbian Jessie Lite image from https://downloads.raspberrypi.org/raspbian_lite_latest
 # Unzip your downloaded image, and write it to SD card with win32 disk imager.
+# Since we will be needing the ssh server we need to activate it: access your sd card and create a file 
+# with the name 'ssh' in the /boot folder. (this should be done before your first boot).
 # Boot up your SD card in your Raspberry Pi, and Log into the Raspbian Jessie OS, with pi as username and raspberry as password.
 # Start executing below commands in sequence.
 
 ########################################################################################
-# Enable the SSH server on the Raspberry Pi.
 # Connect the Raspberry Pi with a screen over HDMI, also connect a keyboard.
+# Alternatively, scan your network for the Raspberry Pi's IP address and ssh into it.
 # Login with username 'pi' and password 'raspberry'.
+# We will enable the camera on the device
 ########################################################################################
 sudo raspi-config
 
