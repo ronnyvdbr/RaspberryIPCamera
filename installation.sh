@@ -17,6 +17,13 @@
 # We will enable the camera on the device
 ########################################################################################
 sudo raspi-config
+# go to menu option 5 - Interfacing Options
+# press enter on P1 Camera
+# select yes to enable the camera and press enter
+# press enter again to confirm
+# press the tab key and press enter on finish
+# accept to reboot the raspberry pi
+# log back in to your raspberry pi
 
 ########################################################################################
 # Bootstrap - Preparing the Raspbian OS.
@@ -27,7 +34,7 @@ sudo ssh-keygen -t dsa -N "" -f /etc/ssh/ssh_host_dsa_key
 sudo ssh-keygen -t rsa -N "" -f /etc/ssh/ssh_host_rsa_key
 sudo ssh-keygen -t ecdsa -N "" -f /etc/ssh/ssh_host_ecdsa_key
 sudo ssh-keygen -t ed25519 -N "" -f /etc/ssh/ssh_host_ed25519_key
-sudo systemctl restart sshd.service
+sudo systemctl restart ssh.service
 
 ########################################################################################
 # Update Firmware - Making sure that your Raspbian firmware is the latest version.
