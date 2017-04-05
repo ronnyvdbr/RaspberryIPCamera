@@ -94,7 +94,7 @@ sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 # Install the RTSP server
 ########################################################################################
 # we will be compiling software, so install some prerequisite
-sudo apt-get -y install cmake libasound2-dev
+sudo apt-get -y install cmake 
 # first compile the live555 library as a prerequisite
 wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz -O - | tar xvzf -
 cd live
@@ -104,11 +104,10 @@ cd ..
 # clone the rtsp server's git repository, compile and install
 sudo apt-get -y install git
 git clone https://github.com/mpromonet/v4l2rtspserver.git
-sudo apt-get install -y libasound2-dev liblog4cpp5-dev liblivemedia-dev
+sudo apt-get install -y libasound2-dev liblog4cpp5-dev
 cd v4l2rtspserver
 cmake . && make
 sudo make install
-
 # Put system service file for RTSP server into place
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/RTSP-Server.service /etc/systemd/system/RTSP-Server.service
 # Notify systemd of a service installation.
