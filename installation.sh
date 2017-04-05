@@ -2,7 +2,7 @@
 # Installation procedure for the Raspberry Pi - IP Camera.
 ########################################################################################
 
-# This procedure was designed on top of a foundation Raspbian Jessie lite image with build date 23-09-2016
+# This procedure was designed on top of a foundation Raspbian Jessie lite image with release date 02-03-2017
 # Download the latest Raspbian Jessie Lite image from https://downloads.raspberrypi.org/raspbian_lite_latest
 # Unzip your downloaded image, and write it to SD card with win32 disk imager.
 # Since we will be needing the ssh server we need to activate it: access your sd card and create a file 
