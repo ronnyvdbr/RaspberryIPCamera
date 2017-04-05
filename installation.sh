@@ -70,12 +70,6 @@ sudo chgrp www-data /home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret
 chmod 664 /home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret
 
 ########################################################################################
-# Enable our Raspberry Pi Camera Module in our boot configuration.
-########################################################################################
-# run below command, enable the camera and reboot your Raspberry Pi
-sudo raspi-config
-
-########################################################################################
 # Install all UV4L components
 ########################################################################################
 # Add the supplier's repository key to our key database
