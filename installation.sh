@@ -5,8 +5,8 @@
 # This procedure was designed on top of a foundation Raspbian Jessie lite image with release date 02-03-2017
 # Download the latest Raspbian Jessie Lite image from https://downloads.raspberrypi.org/raspbian_lite_latest
 # Unzip your downloaded image, and write it to SD card with win32 disk imager.
-# Since we will be needing the ssh server we need to activate it: access your sd card and create a file 
-# with the name 'ssh' in the /boot folder. (this should be done before your first boot).
+# Since we will be needing the ssh server we need to activate it: access your sd card and create an empty file 
+# with the name 'ssh' in the root (where u can find cmdlines.txt) folder. (this should be done before your first boot).
 # Boot up your SD card in your Raspberry Pi, and Log into the Raspbian Jessie OS, with pi as username and raspberry as password.
 # Start executing below commands in sequence.
 
