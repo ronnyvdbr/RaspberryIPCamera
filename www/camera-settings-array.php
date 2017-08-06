@@ -43,7 +43,7 @@
 	"fullscreen" => "false", 
 	"opacity" => "255",
 ### preview window <x, y, w, h>:
-	"preview" => "0,0,1920,1080",
+#	"preview" => "0,0,1920,1080",
 ### post-processing options:
 	"text-overlay" => "false",
     "text-filename" => "/usr/share/uv4l/raspicam/text.json",
