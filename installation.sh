@@ -2,12 +2,12 @@
 # Installation procedure for the Raspberry Pi - IP Camera.
 ########################################################################################
 
-# This procedure was designed on top of a foundation Raspbian Jessie lite image with release date 02-03-2017
-# Download the latest Raspbian Jessie Lite image from https://downloads.raspberrypi.org/raspbian_lite_latest
+# This procedure was designed on top of a foundation Raspbian Stretch lite image with release date 11-13-2018
+# Download the latest Raspbian Stretch Lite image from https://downloads.raspberrypi.org/raspbian_lite_latest
 # Unzip your downloaded image, and write it to SD card with win32 disk imager.
 # Since we will be needing the ssh server we need to activate it: access your sd card and create an empty file 
 # with the name 'ssh' in the root (where u can find cmdlines.txt) folder. (this should be done before your first boot).
-# Boot up your SD card in your Raspberry Pi, and Log into the Raspbian Jessie OS, with pi as username and raspberry as password.
+# Boot up your SD card in your Raspberry Pi, and Log into the Raspbian Stretch OS, with pi as username and raspberry as password.
 # Start executing below commands in sequence.
 
 ########################################################################################
@@ -45,7 +45,7 @@ sudo apt-get update && sudo apt-get -y dist-upgrade
 ########################################################################################
 # Download a copy of our git repository and extract it.
 ########################################################################################
-wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/v1.7-beta.zip
+wget -O /home/pi/RaspberryIPCamera.zip https://github.com/ronnyvdbr/RaspberryIPCamera/archive/v1.8-beta.zip
 unzip /home/pi/RaspberryIPCamera.zip -d /home/pi
 rm /home/pi/RaspberryIPCamera.zip
 mv /home/pi/RaspberryIPCamera* /home/pi/RaspberryIPCamera
@@ -54,7 +54,16 @@ mv /home/pi/RaspberryIPCamera* /home/pi/RaspberryIPCamera
 # Set-up nginx with php support and enable our Raspberry IP Camera website.
 ########################################################################################
 # Install nginx with php support.
+sudo nano /etc/apt/sources.list
+# PASTE INTO /etc/apt/sources.list below first line, then save and exit
+: '
+deb http://mirrordirector.raspbian.org/raspbian/ jessie main contrib non-free rpi
+'
+# Update the APT sources for the new source we just added
+sudo apt-get update
 sudo apt-get -y install nginx php5-fpm
+# By default, APT will install PHP7.0; we have just installed php5, so we want to make sure to set the php version system-wide, just in case
+sudo update-alternatives --set php /usr/bin/php5
 # Disable the default nginx website.
 sudo rm /etc/nginx/sites-enabled/default
 # Copy our siteconf into place
@@ -73,8 +82,13 @@ chmod 664 /home/pi/RaspberryIPCamera/secret/RaspberryIPCamera.secret
 # Install all UV4L components
 ########################################################################################
 # Add the supplier's repository key to our key database
-curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | sudo apt-key add -
-echo "deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ jessie main" | sudo tee -a /etc/apt/sources.list
+curl http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
+# Open /etc/apt/sources.list in Nano
+sudo nano /etc/apt/sources.list
+# PASTE INTO /etc/apt/sources.list below second line, then save and exit
+: '
+deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main
+'
 sudo apt-get update
 # Now fetch and install the required modules.
 sudo apt-get -y install uv4l uv4l-raspicam
@@ -83,7 +97,7 @@ sudo apt-get -y install uv4l-server
 # Let's copy our own config files in place.
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-raspicam.conf /etc/uv4l/uv4l-raspicam.conf
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/uv4l-server.conf /etc/uv4l/uv4l-server.conf
-sudo sed -i "s/--editable-config-file=\$CONFIGFILE/--server-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/init.d/uv4l_raspicam
+sudo sed -i "s/--editable-config-file=\$CONFIGFILE/--server-config-file=\/etc\/uv4l\/uv4l-server.conf/g" /etc/systemd/system/uv4l_raspicam.service
 # Notify systemd of service changes.
 sudo systemctl daemon-reload
 # Set some permissions so our web gui can modify the config files.
@@ -94,7 +108,9 @@ sudo chmod 664 /etc/uv4l/uv4l-raspicam.conf
 # Install the RTSP server
 ########################################################################################
 # we will be compiling software, so install some prerequisite
-sudo apt-get -y install cmake 
+sudo apt-get -y install cmake
+# Make sure to be in home directory
+cd ~
 # first compile the live555 library as a prerequisite
 wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz -O - | tar xvzf -
 cd live
@@ -121,6 +137,12 @@ sudo systemctl disable RTSP-Server.service
 ########################################################################################
 # put a sudoers file in the correct location for php shell commands integration
 sudo cp /home/pi/RaspberryIPCamera/DefaultConfigFiles/sudoers_commands /etc/sudoers.d/sudoers_commands
+# There's a systemd-timesync service running on a default install of Stretch
+# Install NTP
+sudo apt-get install -y ntp
+# Stop & Disable systemd-timesync service
+sudo systemctl stop systemd-timesyncd
+sudo systemctl disable systemd-timesyncd
 # Put correct security rights on configuration files
 sudo chgrp www-data /etc/timezone
 sudo chmod 664 /etc/timezone
@@ -168,6 +190,56 @@ sudo reboot
 # log in again and check the mounts
 mount | grep /dev/mmcblk0p2
 # your / filesystem should be ro
+
+########################################################################################
+# Create easy to use alias to swap between readonly and readwrite
+########################################################################################
+# Open /etc/bash.bashrc
+sudo nano /etc/bash.bashrc
+# Paste the following lines to the bottom of the file, then save and exit
+: '
+# set variable identifying the filesystem you work in (used in the prompt below)
+set_bash_prompt(){
+    fs_mode=$(mount | sed -n -e "s/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p")
+    PS1='\[\033[01;32m\]\u@\h${fs_mode:+($fs_mode)}\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+}
+ 
+alias ro='sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'
+alias rw='sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'
+ 
+# setup fancy prompt"
+PROMPT_COMMAND=set_bash_prompt
+'
+# Open ~/.bashrc
+sudo nano ~/.bashrc
+# Paste the following lines to the bottom of the file, then save and exit
+: '
+# set variable identifying the filesystem you work in (used in the prompt below)
+set_bash_prompt(){
+    fs_mode=$(mount | sed -n -e "s/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p")
+    PS1='\[\033[01;32m\]\u@\h${fs_mode:+($fs_mode)}\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+}
+ 
+alias ro='sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot'
+alias rw='sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'
+ 
+# setup fancy prompt"
+PROMPT_COMMAND=set_bash_prompt
+'
+# Open /etc/bash.bash_logout (You will likely create this file by doing this)
+sudo nano /etc/bash.bash_logout
+#Paste the following lines to the bottom of the file, then save and exit
+: '
+mount -o remount,ro /
+mount -o remount,ro /boot
+'
+# Open ~/.bash_logout
+sudo nano ~/.bash_logout
+#Paste the following lines to the bottom of the file, then save and exit
+: '
+mount -o remount,ro /
+mount -o remount,ro /boot
+'
 
 ########################################################################################
 # Clean unneeded packages from our design to make the image size smaller for redistribution
